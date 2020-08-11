@@ -9,3 +9,33 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+}
+
+body {
+  color: #444444;
+  background-color: #f5f5f7;
+  font-size: 12px;
+}
+
+button {
+  appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+textarea {
+  border: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

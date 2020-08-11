@@ -3,8 +3,8 @@ export const STYLES = {
   margin: '10px',
   shadow: '0 1px 5px rgba(0, 0, 0, 0.2)',
   largeRadius: '20px',
-  mediumRadius: '15px',
-  smallRadius: '10px',
+  mediumRadius: '12px',
+  smallRadius: '6px',
 }
 
 export const COLORS = {

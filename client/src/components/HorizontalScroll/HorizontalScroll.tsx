@@ -1,23 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ProductCard } from './ProductCard'
+import { ProductCardList } from './ProductCardList'
 import { STYLES } from '../../utils/styleConstants'
+import { StyledWrapper } from '../../styles/StyledWrapper'
 
 export type ProductType = { price: number; name: string; thumbnail: string }
 
 type Props = {
   title: string
   productList: ProductType[]
+  double?: boolean
 }
 
-const StyledWrapper = styled.div`
-  padding: ${STYLES.padding} 0;
-  margin-top: 6px;
-  background-color: white;
-  box-shadow: ${STYLES.shadow};
-`
 const StyledContainer = styled.div`
+  padding: ${STYLES.padding} 0;
   width: 100%;
   overflow-x: hidden;
 `
@@ -25,24 +22,21 @@ const StyledHeader = styled.div`
   padding-left: ${STYLES.padding};
   h2 {
     margin: 0;
-    line-height: 40px;
+    line-height: 30px;
   }
 `
-const StyledProductList = styled.div`
-  display: flex;
+const StyledProductListWrap = styled.div`
   overflow-x: auto;
   padding-left: ${STYLES.padding};
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 `
 
-const StyledSpacer = styled.div`
-  width: 3px;
-  flex: 0 0 auto;
-`
-
 export const HorizontalScroll = (props: Props) => {
-  const { title, productList } = props
+  const { title, productList, double = false } = props
+
+  const length = productList.length
+  const half = Math.ceil(length / 2)
 
   return (
     <StyledWrapper>
@@ -50,12 +44,16 @@ export const HorizontalScroll = (props: Props) => {
         <StyledHeader>
           <h2>{title}</h2>
         </StyledHeader>
-        <StyledProductList>
-          {productList.map((product, idx) => {
-            return <ProductCard key={idx} product={product}></ProductCard>
-          })}
-          <StyledSpacer></StyledSpacer>
-        </StyledProductList>
+        <StyledProductListWrap>
+          {double ? (
+            <>
+              <ProductCardList productList={[...productList.slice(0, half)]}></ProductCardList>
+              <ProductCardList productList={[...productList.slice(half, length)]}></ProductCardList>
+            </>
+          ) : (
+            <ProductCardList productList={productList}></ProductCardList>
+          )}
+        </StyledProductListWrap>
       </StyledContainer>
     </StyledWrapper>
   )

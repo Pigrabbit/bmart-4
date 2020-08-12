@@ -17,7 +17,7 @@ require('dotenv').config({
 })
 
 const { graphqlHTTP } = require('express-graphql')
-const schema = require("./src/schema")
+const schema = require('./src/schema')
 
 app.get('/graphql', graphqlHTTP({ schema, graphiql: true }))
 app.post('/graphql', graphqlHTTP({ schema, graphiql: true }))

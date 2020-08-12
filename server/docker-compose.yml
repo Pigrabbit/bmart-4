@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    build: ./
+    ports:
+        - 3306:3306
+    env_file: 
+        - ./.env
+    environment:
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_PORT=$MYSQL_PORT
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - TZ=Asia/Seoul
+    restart: on-failure

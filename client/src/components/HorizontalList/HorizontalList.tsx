@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-
 import { ProductCardList } from './ProductCardList'
 import { STYLES } from '../../utils/styleConstants'
 import { StyledWrapper } from '../../styles/StyledWrapper'
@@ -31,11 +30,22 @@ const StyledProductListWrap = styled.div`
   -webkit-overflow-scrolling: touch;
 `
 
-export const HorizontalScroll = (props: Props) => {
+export const HorizontalList = (props: Props) => {
   const { title, productList, double = false } = props
 
-  const length = productList.length
-  const half = Math.ceil(length / 2)
+  const renderProductCardList = () => {
+    const length = productList.length
+    const half = Math.ceil(length / 2)
+
+    return double ? (
+      <>
+        <ProductCardList productList={[...productList.slice(0, half)]}></ProductCardList>
+        <ProductCardList productList={[...productList.slice(half, length)]}></ProductCardList>
+      </>
+    ) : (
+      <ProductCardList productList={productList}></ProductCardList>
+    )
+  }
 
   return (
     <StyledWrapper>
@@ -43,16 +53,7 @@ export const HorizontalScroll = (props: Props) => {
         <StyledHeader>
           <h2>{title}</h2>
         </StyledHeader>
-        <StyledProductListWrap>
-          {double ? (
-            <>
-              <ProductCardList productList={[...productList.slice(0, half)]}></ProductCardList>
-              <ProductCardList productList={[...productList.slice(half, length)]}></ProductCardList>
-            </>
-          ) : (
-            <ProductCardList productList={productList}></ProductCardList>
-          )}
-        </StyledProductListWrap>
+        <StyledProductListWrap>{renderProductCardList()}</StyledProductListWrap>
       </StyledContainer>
     </StyledWrapper>
   )

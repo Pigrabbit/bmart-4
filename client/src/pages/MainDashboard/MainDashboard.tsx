@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Carousel } from '../../components/Carousel'
-import { HorizontalScroll } from '../../components/HorizontalScroll'
+import { HorizontalList } from '../../components/HorizontalList'
 import { ProductCardType } from '../../types/productCard'
 
 const productList: ProductCardType[] = [
@@ -77,15 +77,12 @@ export const MainDashboard = (props: Props) => {
   return (
     <Container className="dashboard">
       <Carousel width={window.innerWidth}></Carousel>
-      <HorizontalScroll
-        title="동혁님을 위해 준비한 상품"
-        productList={productList}
-      ></HorizontalScroll>
-      <HorizontalScroll
+      <HorizontalList title="동혁님을 위해 준비한 상품" productList={productList}></HorizontalList>
+      <HorizontalList
         title="성현님을 위해 준비한 상품"
         productList={productList}
         double={true}
-      ></HorizontalScroll>
+      ></HorizontalList>
     </Container>
   )
 }

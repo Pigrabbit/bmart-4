@@ -22,9 +22,9 @@ export const ProductCardList = (props: Props) => {
 
   return (
     <StyledProductList>
-      {productList.map((product, idx) => {
-        return <ProductCard key={idx} product={product} width="36%" />
-      })}
+      {productList.map((product, idx) => (
+        <ProductCard key={idx} product={product} width="36%" />
+      ))}
       <StyledSpacer></StyledSpacer>
     </StyledProductList>
   )

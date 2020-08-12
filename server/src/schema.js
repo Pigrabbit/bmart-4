@@ -17,6 +17,10 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: getProductByCategoryResolver
     }
+    // TODO
+    // Add productList field
+    // Add wishlist field
+    // Add order field
   })
 })
 

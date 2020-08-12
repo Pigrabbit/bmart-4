@@ -19,6 +19,12 @@ const ProductType = new GraphQLObjectType({
     })
 })
 
+// TODO
+// Add UserType
+// Add OrderType
+// Add OrderProductType
+// Add WishlistType
+
 module.exports = {
     ProductType
 }

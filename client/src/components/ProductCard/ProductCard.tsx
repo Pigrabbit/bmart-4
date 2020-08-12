@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
-import { STYLES } from '../../utils/styleConstants'
 import { ProductCardType } from '../../types/productCard'
 
 type Props = {
   product: ProductCardType
   width?: string
+  style?: React.CSSProperties
 }
 
 type StyledContainerProp = { width: string }
@@ -14,7 +14,6 @@ type StyledContainerProp = { width: string }
 const StyledContainer = styled.div<StyledContainerProp>`
   width: ${(props) => props.width};
   flex: 0 0 auto;
-  margin-right: ${STYLES.margin};
 `
 const StyledThumbnail = styled.div`
   img {
@@ -30,11 +29,11 @@ const StyledContent = styled.div`
 `
 
 export const ProductCard = (props: Props) => {
-  const { product, width = '50%' } = props
+  const { product, width = '50%', style } = props
   const { price, name, thumbnail } = product
 
   return (
-    <StyledContainer width={width}>
+    <StyledContainer width={width} style={style}>
       <>
         <StyledThumbnail>
           <img src={thumbnail} alt="" />

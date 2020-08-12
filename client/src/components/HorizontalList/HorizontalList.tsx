@@ -39,11 +39,11 @@ export const HorizontalList = (props: Props) => {
 
     return double ? (
       <>
-        <ProductCardList productList={[...productList.slice(0, half)]}></ProductCardList>
-        <ProductCardList productList={[...productList.slice(half, length)]}></ProductCardList>
+        <ProductCardList productList={[...productList.slice(0, half)]} />
+        <ProductCardList productList={[...productList.slice(half, length)]} />
       </>
     ) : (
-      <ProductCardList productList={productList}></ProductCardList>
+      <ProductCardList productList={productList} />
     )
   }
 

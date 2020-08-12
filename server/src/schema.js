@@ -1,24 +1,7 @@
-const { GraphQLSchema, GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString, GraphQLInt, GraphQLList } = require('graphql')
-const pool = require('../db')
+const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = require('graphql')
 
-const ProductType = new GraphQLObjectType({
-  name: 'Product',
-  description: 'This represents product in store',
-  fields: () => ({
-    id: { type: GraphQLNonNull(GraphQLID) },
-    name: { type: GraphQLNonNull(GraphQLString) },
-    coupang_product_id: { type: GraphQLNonNull(GraphQLInt) },
-    category: { type: GraphQLNonNull(GraphQLString) },
-    price: { type: GraphQLNonNull(GraphQLInt) },
-    base_price: { type: GraphQLInt },
-    discount_rate: { type: GraphQLInt },
-    thumbnail_src: { type: GraphQLNonNull(GraphQLString) },
-    created_at: { type: GraphQLNonNull(GraphQLString) },
-    stock_count: { type: GraphQLNonNull(GraphQLInt) },
-    sold_count: { type: GraphQLNonNull(GraphQLInt) },
-    description: { type: GraphQLString }
-  })
-})
+const { ProductType } = require('./type')
+const { getProductByCategoryResolver } = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -32,18 +15,7 @@ const RootQueryType = new GraphQLObjectType({
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt }
       },
-      resolve: async (parent, args) => {
-        // getProductByCategory from db
-        const conn = await pool.getConnection()
-        try {
-          const query = 'SELECT * FROM product WHERE category = ? LIMIT ? OFFSET ?'
-          const [rows] = await conn.query(query, [args.category, args.limit, args.offset])
-
-          return rows
-        } finally {
-          conn.release()
-        }
-      }
+      resolve: getProductByCategoryResolver
     }
   })
 })

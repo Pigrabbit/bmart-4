@@ -28,6 +28,7 @@ const RootQueryType = new GraphQLObjectType({
             description: 'List of products',
             resolve: async () => {
                 // get Prodcut from db
+                return []
             }
         }
     })

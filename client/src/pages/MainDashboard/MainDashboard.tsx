@@ -3,10 +3,9 @@ import styled from 'styled-components'
 
 import { Carousel } from '../../components/Carousel'
 import { HorizontalScroll } from '../../components/HorizontalScroll'
+import { ProductCardType } from '../../types/productCard'
 
-import { ProductType } from '../../components/HorizontalScroll/HorizontalScroll'
-
-const productList: ProductType[] = [
+const productList: ProductCardType[] = [
   {
     name: '비요뜨 초코링 143g',
     price: 1390,

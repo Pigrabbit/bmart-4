@@ -39,3 +39,32 @@ textarea {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.view {
+  height: 100px;
+  margin: 0 auto;
+  overflow: hidden;
+
+  position: relative;
+}
+
+.carousel-container {
+  will-change: transform;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  margin: 0 auto;
+  display: flex;
+  height: 100px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-slide {
+  color: white;
+  font-size: 40px;
+  text-align: center;
+  line-height: 100px;
+  height: 100%;
+}

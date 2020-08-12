@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProductCard } from './ProductCard'
+import { ProductCard } from '../ProductCard'
 
 import { ProductType } from './HorizontalScroll'
 
@@ -24,7 +24,7 @@ export const ProductCardList = (props: Props) => {
   return (
     <StyledProductList>
       {productList.map((product, idx) => {
-        return <ProductCard key={idx} product={product}></ProductCard>
+        return <ProductCard key={idx} product={product} width="36%" />
       })}
       <StyledSpacer></StyledSpacer>
     </StyledProductList>

@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ProductCard } from '../ProductCard'
-
-import { ProductType } from './HorizontalScroll'
+import { ProductCardType } from '../../types/productCard'
 
 type Props = {
-  productList: ProductType[]
+  productList: ProductCardType[]
 }
 
 const StyledProductList = styled.div`

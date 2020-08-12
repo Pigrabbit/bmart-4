@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
-import { ProductType } from '../HorizontalScroll/HorizontalScroll'
 import { STYLES } from '../../utils/styleConstants'
+import { ProductCardType } from '../../types/productCard'
 
 type Props = {
-  product: ProductType
+  product: ProductCardType
   width?: string
 }
 

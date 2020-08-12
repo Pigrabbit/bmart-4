@@ -4,12 +4,11 @@ import styled from 'styled-components'
 import { ProductCardList } from './ProductCardList'
 import { STYLES } from '../../utils/styleConstants'
 import { StyledWrapper } from '../../styles/StyledWrapper'
-
-export type ProductType = { price: number; name: string; thumbnail: string }
+import { ProductCardType } from '../../types/productCard'
 
 type Props = {
   title: string
-  productList: ProductType[]
+  productList: ProductCardType[]
   double?: boolean
 }
 

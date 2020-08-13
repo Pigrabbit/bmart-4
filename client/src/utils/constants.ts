@@ -1,0 +1,1 @@
+export const SLIDER_INTERVAL_TIME = 2000

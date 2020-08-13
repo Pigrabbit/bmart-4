@@ -1,0 +1,15 @@
+{
+  "short_name": "Bmart",
+  "name": "bmart-4",
+  "icons": [
+    {
+      "src": "images/bmart-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#FFFFFF"
+}

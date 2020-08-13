@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/eslint --fix app.js",
+    "lint": "./node_modules/.bin/eslint --fix src/** app.js",
     "start:dev": "export NODE_ENV=dev && nodemon app.js",
     "start:prod": "export NODE_ENV=prod && pm2 start app.js -o ~/app/log/access.log -e ~/app/log/error.log",
     "test": "echo \"Error: no test specified\" && exit 1"

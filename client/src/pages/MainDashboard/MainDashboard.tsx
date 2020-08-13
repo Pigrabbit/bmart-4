@@ -5,6 +5,8 @@ import { Carousel } from '../../components/Carousel'
 import { VerticalList } from '../../components/VerticalList'
 import { HorizontalList } from '../../components/HorizontalList'
 import { ProductCardType } from '../../types/productCard'
+import { Footer } from '../../components/Footer'
+import { CS_PHONE ,CS_EMAIL } from '../../utils/constants'
 
 const productList: ProductCardType[] = [
   {
@@ -85,6 +87,7 @@ export const MainDashboard = (props: Props) => {
         productList={productList}
         double={true}
       ></HorizontalList>
+      <Footer phone={CS_PHONE} email={CS_EMAIL}/>
     </Container>
   )
 }

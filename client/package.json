@@ -17,7 +17,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.2",
+    "react-scripts": "^3.4.3",
     "styled-components": "^5.1.1",
     "typescript": "^3.7.5"
   },
@@ -43,9 +43,19 @@
     ]
   },
   "devDependencies": {
+    "@types/chai": "^4.2.12",
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "chai": "^4.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.3",
+    "enzyme-to-json": "^3.5.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.0.5"
+    "jest-enzyme": "^7.1.2",
+    "jest-fetch-mock": "^3.0.3",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.2.0"
   },
   "resolutions": {
     "styled-components": "^5"

@@ -6,6 +6,7 @@ import { VerticalList } from '../../components/VerticalList'
 import { HorizontalList } from '../../components/HorizontalList'
 import { bigBannerList, smallBannerList } from '../../utils/mockData'
 import { Footer } from '../../components/Footer'
+import { Header } from '../../components/Header'
 import { useQuery } from '@apollo/client'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
 
@@ -29,6 +30,7 @@ export const MainDashboard = (props: Props) => {
 
   return (
     <StyledContainer className="dashboard">
+      <Header />
       <Carousel bannerList={bigBannerList} />
       <HorizontalList
         title="성현님을 위해 준비한 상품"

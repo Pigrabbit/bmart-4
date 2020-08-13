@@ -48,19 +48,11 @@ export const CategoryListSection = (props: Props) => {
     <section className="category-list-section">
       <StyledHader>HEADER</StyledHader>
       {categoryList.map((category, idx) => {
-        if (idx + 1 === categoryList.length) {
-          return (
-            <div className="list-wrap" key={idx} ref={lastCategoryListRef}>
-              <CategoryList category={category}></CategoryList>
-            </div>
+        return idx + 1 === categoryList.length ? (
+          <CategoryList key={idx} ref={lastCategoryListRef} category={category} />
+        ) : (
+          <CategoryList key={idx} category={category} />
           )
-        } else {
-          return (
-            <div className="list-wrap" key={idx} ref={lastCategoryListRef}>
-              <CategoryList category={category}></CategoryList>
-            </div>
-          )
-        }
       })}
     </section>
   )

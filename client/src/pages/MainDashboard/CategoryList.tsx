@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { StyledWrapper } from '../../styles/StyledWrapper'
 import { useQuery } from '@apollo/client'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
@@ -8,7 +8,7 @@ type Props = {
   category: string
 }
 
-export const CategoryList = (props: Props) => {
+export const CategoryList = forwardRef((props: Props) => {
   const { category } = props
 
   const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
@@ -18,4 +18,4 @@ export const CategoryList = (props: Props) => {
   const { productListByCategory } = data
 
   return <VerticalList title={category} productList={productListByCategory} />
-}
+})

@@ -31,7 +31,7 @@ export const Footer = (props: Props) => {
     }
 
     return (
-        <StyledContainer className="footer">
+        <StyledContainer className="footer" data-testid="footer">
             <StyledButton className="footer-return-button" onClick={returnButtonClickHandler}>
                 반품·교환하기
             </StyledButton>

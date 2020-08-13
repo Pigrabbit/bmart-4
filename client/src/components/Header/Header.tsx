@@ -27,11 +27,15 @@ const StyledButton = styled.button`
 export const Header = () => {
   return (
     <StyledContainer className="header" data-testid="header">
-      <StyledImage src={`${process.env.PUBLIC_URL}/images/bmart-logo.png`} alt="" />
-      <StyledTitle>마트</StyledTitle>
-      <StyledOptions>
-        <StyledButton>검색</StyledButton>
-        <StyledButton>옵션</StyledButton>
+      <StyledImage
+        className="header-title-logo"
+        src={`${process.env.PUBLIC_URL}/images/bmart-logo.png`}
+        alt=""
+      />
+      <StyledTitle className="header-title-text">마트</StyledTitle>
+      <StyledOptions className="header-menu-list">
+        <StyledButton className="header-menu">검색</StyledButton>
+        <StyledButton className="header-menu">옵션</StyledButton>
       </StyledOptions>
     </StyledContainer>
   )

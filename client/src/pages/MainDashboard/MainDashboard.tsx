@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
 
 import { Carousel } from '../../components/Carousel'
@@ -8,6 +8,7 @@ import { bigBannerList, smallBannerList } from '../../utils/mockData'
 import { Footer } from '../../components/Footer'
 import { useQuery } from '@apollo/client'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
+import { CategoryListSection } from './CategoryListSection'
 
 type Props = {}
 
@@ -21,11 +22,11 @@ const StyledContainer = styled.main`
 `
 
 export const MainDashboard = (props: Props) => {
-  
-  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {variables: {category: '과일', offset: 10, limit: 10}})
+  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
+    variables: { category: '과일', offset: 10, limit: 10 },
+  })
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
-
 
   return (
     <StyledContainer className="dashboard">
@@ -38,6 +39,7 @@ export const MainDashboard = (props: Props) => {
       <Carousel bannerList={smallBannerList} />
       <HorizontalList title="동혁님을 위해 준비한 상품" productList={productListByCategory} />
       <VerticalList title="성현님을 위해 준비한 상품" productList={productListByCategory} />
+      <CategoryListSection />
       <Footer />
     </StyledContainer>
   )

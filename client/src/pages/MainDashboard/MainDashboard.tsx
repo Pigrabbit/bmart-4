@@ -5,10 +5,11 @@ import { Carousel } from '../../components/Carousel'
 import { VerticalList } from '../../components/VerticalList'
 import { HorizontalList } from '../../components/HorizontalList'
 import { productList, bigBannerList, smallBannerList } from '../../utils/mockData'
+import { Footer } from '../../components/Footer'
 
 type Props = {}
 
-const Container = styled.main`
+const StyledContainer = styled.main`
   position: fixed;
   left: 0;
   top: 0;
@@ -19,7 +20,7 @@ const Container = styled.main`
 
 export const MainDashboard = (props: Props) => {
   return (
-    <Container className="dashboard">
+    <StyledContainer className="dashboard">
       <Carousel bannerList={bigBannerList} />
       <HorizontalList
         title="성현님을 위해 준비한 상품"
@@ -29,6 +30,7 @@ export const MainDashboard = (props: Props) => {
       <Carousel bannerList={smallBannerList} />
       <HorizontalList title="동혁님을 위해 준비한 상품" productList={productList} />
       <VerticalList title="성현님을 위해 준비한 상품" productList={productList} />
-    </Container>
+      <Footer />
+    </StyledContainer>
   )
 }

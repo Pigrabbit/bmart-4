@@ -93,7 +93,6 @@ export const Carousel = (props: Props) => {
   }
 
   const clearSlideInterval = () => {
-    console.log('clear!')
     clearInterval(sliderInterval)
   }
 

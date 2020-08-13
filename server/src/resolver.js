@@ -1,6 +1,6 @@
 const pool = require('../db')
 
-const getProductByCategoryResolver = async (parent, args) => {
+const productListByCategoryResolver = async (parent, args) => {
     const conn = await pool.getConnection()
     try {
         const query = 'SELECT * FROM product WHERE category = ? LIMIT ? OFFSET ?'
@@ -12,5 +12,5 @@ const getProductByCategoryResolver = async (parent, args) => {
 }
 
 module.exports = {
-    getProductByCategoryResolver
+    productListByCategoryResolver
 }

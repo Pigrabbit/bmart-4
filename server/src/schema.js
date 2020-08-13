@@ -1,7 +1,7 @@
 const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = require('graphql')
 
 const { ProductType } = require('./type')
-const { getProductByCategoryResolver } = require('./resolver')
+const { productListByCategoryResolver } = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -15,7 +15,7 @@ const RootQueryType = new GraphQLObjectType({
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt }
       },
-      resolve: getProductByCategoryResolver
+      resolve: productListByCategoryResolver
     }
     // TODO
     // Add productList field

@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import { Carousel } from '../../components/Carousel'
 import { VerticalList } from '../../components/VerticalList'
 import { HorizontalList } from '../../components/HorizontalList'
-import { productList, bigBannerList, smallBannerList } from '../../utils/mockData'
+import { bigBannerList, smallBannerList } from '../../utils/mockData'
 import { Footer } from '../../components/Footer'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
 
 type Props = {}
 
@@ -19,20 +20,9 @@ const StyledContainer = styled.main`
   overflow-y: auto;
 `
 
-const PRODUCTLIST_BY_CATEGORY = gql`
-  query {
-    productListByCategory(category: "과일", offset: 10, limit: 5) {
-      id
-      price
-      name
-      thumbnailSrc
-    }
-  }
-`
-
 export const MainDashboard = (props: Props) => {
   
-  const { loading, error, data } = useQuery(PRODUCTLIST_BY_CATEGORY)
+  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {variables: {category: '과일', offset: 10, limit: 10}})
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
 

@@ -31,6 +31,7 @@ const PRODUCTLIST_BY_CATEGORY = gql`
 `
 
 export const MainDashboard = (props: Props) => {
+  
   const { loading, error, data } = useQuery(PRODUCTLIST_BY_CATEGORY)
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data

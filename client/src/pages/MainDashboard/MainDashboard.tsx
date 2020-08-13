@@ -25,7 +25,7 @@ const PRODUCTLIST_BY_CATEGORY = gql`
       id
       price
       name
-      thumbnail_src
+      thumbnailSrc
     }
   }
 `
@@ -35,19 +35,19 @@ export const MainDashboard = (props: Props) => {
   const { loading, error, data } = useQuery(PRODUCTLIST_BY_CATEGORY)
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
-  console.log(productListByCategory)
+
 
   return (
     <StyledContainer className="dashboard">
       <Carousel bannerList={bigBannerList} />
       <HorizontalList
         title="성현님을 위해 준비한 상품"
-        productList={productList}
+        productList={productListByCategory}
         double={true}
       ></HorizontalList>
       <Carousel bannerList={smallBannerList} />
-      <HorizontalList title="동혁님을 위해 준비한 상품" productList={productList} />
-      <VerticalList title="성현님을 위해 준비한 상품" productList={productList} />
+      <HorizontalList title="동혁님을 위해 준비한 상품" productList={productListByCategory} />
+      <VerticalList title="성현님을 위해 준비한 상품" productList={productListByCategory} />
       <Footer />
     </StyledContainer>
   )

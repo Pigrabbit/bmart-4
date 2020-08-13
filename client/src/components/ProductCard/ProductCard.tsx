@@ -30,13 +30,13 @@ const StyledContent = styled.div`
 
 export const ProductCard = (props: Props) => {
   const { product, width = '50%', style } = props
-  const { price, name, thumbnail } = product
+  const { price, name, thumbnailSrc } = product
 
   return (
     <StyledContainer width={width} style={style}>
       <>
         <StyledThumbnail>
-          <img src={thumbnail} alt="" />
+          <img src={`http://${thumbnailSrc}`} alt="" />
         </StyledThumbnail>
         <StyledContent>
           <div>{name}</div>

@@ -1,177 +1,117 @@
 import React, { useEffect, useRef } from 'react'
+import { BannerType } from '../../types/banner'
+import { SLIDER_INTERVAL_TIME } from '../../utils/constants'
+import styled from 'styled-components'
 import { StyledWrapper } from '../../styles/StyledWrapper'
 
-type Props = { width: number }
+type Props = {
+  width?: number
+  bannerList: BannerType[]
+}
 
-const images = [
-  { order: 0, backgroundColor: 'green' },
-  { order: 1, backgroundColor: 'navy' },
-  { order: 2, backgroundColor: 'red' },
-  // { order: 3, backgroundColor: "orange" },
-  // { order: 4, backgroundColor: "gray" },
-  // { order: 5, backgroundColor: "blue" },
-  // { order: 6, backgroundColor: "purple" },
-]
+const StyledCarousel = styled.div`
+  font-size: 0;
+  margin: 0 auto;
+  overflow: hidden;
+
+  position: relative;
+`
+const StyledContainer = styled.div`
+  font-size: 0;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+`
+const StyledSlider = styled.div`
+  font-size: 0;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  img {
+    width: 100%;
+  }
+`
 
 export const Carousel = (props: Props) => {
-  const { width } = props
+  let sliderInterval: any = null
+
+  const { width = window.innerWidth, bannerList } = props
   const silderRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    initEvents()
+    initSliderScrollEvent()
+    startSlideInterval()
   }, [])
 
-  let initialX = 0
-  let translateX = 0
-  let sliderInterval: any = null
-
-  const initEvents = () => {
+  const initSliderScrollEvent = () => {
     const silderElm = silderRef.current
     if (!silderElm) return
 
-    startSlideInterval()
-    silderElm.addEventListener('pointerdown', sliderPointerDownHandler)
+    silderElm.scrollLeft = width
+
+    silderElm.addEventListener('scroll', sliderScrollHandler)
+    silderElm.addEventListener('touchstart', clearSlideInterval)
+    silderElm.addEventListener('touchend', startSlideInterval)
+  }
+
+  const sliderScrollHandler = () => {
+    const silderElm = silderRef.current
+    if (!silderElm) return
+
+    const { scrollWidth, scrollLeft } = silderElm
+
+    if (scrollWidth - width - scrollLeft <= 0) {
+      silderElm.style.scrollBehavior = 'initial'
+      silderElm.scrollLeft = width
+      silderElm.style.scrollBehavior = 'smooth'
+    }
+    if (scrollLeft <= 0) {
+      silderElm.style.scrollBehavior = 'initial'
+      silderElm.scrollLeft = scrollWidth - 2 * width
+      silderElm.style.scrollBehavior = 'smooth'
+    }
   }
 
   const startSlideInterval = () => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
-
-    addSliderTransition()
     sliderInterval = setInterval(() => {
-      silderElm.style.transform = `translateX(${getTranslateX() - width}px)`
-      const transitionEndHandler = () => {
-        if ((images.length + 1) * width === Math.abs(getTranslateX())) {
-          clearSlideInterval()
-          silderElm.style.transform = `translateX(${width * -1}px)`
+      const silderElm = silderRef.current
+      if (!silderElm) return
 
-          silderElm.getBoundingClientRect()
-          startSlideInterval()
-        }
+      const { scrollLeft } = silderElm
 
-        if (Math.abs(getTranslateX()) === 0) {
-          clearSlideInterval()
-          silderElm.style.transform = `translateX(${width * -1 * images.length}px)`
-
-          silderElm.getBoundingClientRect()
-          startSlideInterval()
-        }
-
-        silderElm.removeEventListener('transitionend', transitionEndHandler)
-      }
-      silderElm.addEventListener('transitionend', transitionEndHandler)
-    }, 2000)
+      silderElm.style.scrollBehavior = 'smooth'
+      silderElm.scrollLeft = scrollLeft + width
+    }, SLIDER_INTERVAL_TIME)
   }
 
   const clearSlideInterval = () => {
-    removeSliderTransition()
     clearInterval(sliderInterval)
   }
 
-  const addSliderTransition = () => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
-
-    silderElm.style.transition = `transform 400ms ease`
-  }
-
-  const removeSliderTransition = () => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
-
-    silderElm.style.removeProperty('transition')
-  }
-
-  const sliderPointerDownHandler = (e: MouseEvent) => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
-
-    initialX = e.pageX
-    translateX = getTranslateX()
-
-    clearSlideInterval()
-    window.addEventListener('pointermove', sliderPointerMoveHandler)
-    window.addEventListener('pointerup', sliderPointerUpHandler)
-  }
-
-  const getTranslateX = (): number => {
-    const silderElm = silderRef.current
-    if (!silderElm) return 0
-
-    return parseFloat(silderElm.style.transform.replace(/[^-0-9\.]/g, '') || '0')
-  }
-
-  const getDestination = (): number => {
-    const translateX = getTranslateX()
-    const rest = (translateX - width) % width
-
-    if (Math.abs(rest) >= width / 2) return Math.ceil((translateX - width) / width) * width
-    else return (Math.ceil((translateX - width) / width) + 1) * width
-  }
-
-  const sliderPointerMoveHandler = (e: MouseEvent) => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
-
-    silderElm.style.transform = `translateX(${e.pageX - initialX + translateX}px)`
-  }
-
-  const sliderPointerUpHandler = () => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
-
-    addSliderTransition()
-
-    const transitionEndHandler = () => {
-      removeSliderTransition()
-      if ((images.length + 1) * width === Math.abs(getTranslateX())) {
-        clearSlideInterval()
-        silderElm.style.transform = `translateX(${width * -1}px)`
-
-        silderElm.getBoundingClientRect()
-        startSlideInterval()
-      }
-
-      if (Math.abs(getTranslateX()) === 0) {
-        clearSlideInterval()
-        silderElm.style.transform = `translateX(${width * -1 * images.length}px)`
-
-        silderElm.getBoundingClientRect()
-        startSlideInterval()
-      }
-
-      silderElm.removeEventListener('transitionend', transitionEndHandler)
-      startSlideInterval()
-    }
-
-    silderElm.addEventListener('transitionend', transitionEndHandler)
-    silderElm.style.transform = `translateX(${getDestination()}px)`
-
-    window.removeEventListener('pointermove', sliderPointerMoveHandler)
-    window.removeEventListener('pointerup', sliderPointerUpHandler)
-  }
+  const length = bannerList.length
+  const itemList = length > 1 ? [bannerList[length - 1], ...bannerList, bannerList[0]] : bannerList
 
   return (
     <StyledWrapper>
-      <div className="view" style={{ width }}>
-        <div
-          className="carousel-container"
-          ref={silderRef}
-          style={{ transform: `translateX(${width * -1}px)` }}
-        >
-          {[images[images.length - 1], ...images, images[0]].map((img, idx) => {
-            return (
-              <div
-                key={idx}
-                className="carousel-slide"
-                style={{ backgroundColor: img.backgroundColor, width }}
-              >
-                {img.order % images.length}
-              </div>
-            )
-          })}
-        </div>
-      </div>
+      <StyledCarousel>
+        <StyledContainer ref={silderRef}>
+          {itemList.map((item, idx) => (
+            <StyledSlider key={idx} className="carousel-slide">
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
+                <img src={item.src} alt="" />
+              </a>
+            </StyledSlider>
+          ))}
+        </StyledContainer>
+      </StyledCarousel>
     </StyledWrapper>
   )
 }

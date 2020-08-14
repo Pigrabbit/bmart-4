@@ -1,9 +1,8 @@
 import React from 'react'
-import { cleanup, render } from '@testing-library/react'
+import { cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import { shallow } from 'enzyme'
 import { expect } from 'chai'
-
 import { Header } from './Header'
 
 describe('<Header />', () => {

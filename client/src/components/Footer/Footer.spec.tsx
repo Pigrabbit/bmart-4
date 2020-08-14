@@ -1,5 +1,5 @@
 import React from 'react';
-import {cleanup } from '@testing-library/react';
+import { cleanup } from '@testing-library/react';
 import { Footer } from './Footer'
 import { CS_EMAIL, CS_PHONE } from '../../utils/constants'
 import { shallow } from 'enzyme'

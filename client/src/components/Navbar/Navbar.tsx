@@ -36,6 +36,7 @@ export const Navbar = (props: Props) => {
           src={`${process.env.PUBLIC_URL}/images/navbar-icon/${icon}.svg`}
           alt={`${icon}-icon`}
           className="navbar-item-icon"
+          id={`navbar-item-icon-${icon}`}
         />
       </StyledIcon>
       ))}

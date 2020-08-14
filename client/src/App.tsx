@@ -14,6 +14,9 @@ function App() {
             <Route path="/">
               <MainDashboard />
             </Route>
+            <Route path="/category">
+              <MainDashboard />
+            </Route>
           </Switch>
         </Router>
       </div>

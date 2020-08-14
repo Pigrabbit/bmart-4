@@ -8,7 +8,8 @@ type Props = {}
 export const CategoryListSection = (props: Props) => {
   const [hasMore, setHasMore] = useState<boolean>(true)
   const [categoryList, setCategoryList] = useState<string[]>([CATEGORIES[0]])
-  const lastCategoryListObserver = useRef<IntersectionObserver | null>(null)
+  const observer = useRef<IntersectionObserver | null>(null)
+  const [selectedCategory, selectCategory] = useState<string>(CATEGORIES[0])
 
   const addCategoryListHandler = () => {
     const length = categoryList.length
@@ -23,11 +24,11 @@ export const CategoryListSection = (props: Props) => {
 
   const lastCategoryListRef = useCallback(
     (el) => {
-      if (hasMore && lastCategoryListObserver.current) lastCategoryListObserver.current.disconnect()
+      if (hasMore && observer.current) observer.current.disconnect()
 
-      if (lastCategoryListObserver.current) lastCategoryListObserver.current.disconnect()
+      if (observer.current) observer.current.disconnect()
 
-      lastCategoryListObserver.current = new IntersectionObserver(
+      observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
             addCategoryListHandler()
@@ -35,19 +36,34 @@ export const CategoryListSection = (props: Props) => {
         },
         { threshold: LAZY_LOAD_THRESHOLD }
       )
-      if (el) lastCategoryListObserver.current.observe(el)
+      if (el) observer.current.observe(el)
     },
     [hasMore, categoryList]
   )
 
+  const changeFocus = (category: string, flag: 'in' | 'out') => {
+    if (flag === 'in' && selectedCategory !== category) {
+      selectCategory(category)
+    }
+
+    if (flag === 'out') {
+      const idx = CATEGORIES.indexOf(category)
+      if (idx > 0) selectCategory(CATEGORIES[idx - 1])
+    }
+  }
+
   return (
     <section className="category-list-section">
-      <CategoryListSectionHeader selectedCategory={CATEGORIES[0]} />
+      <CategoryListSectionHeader selectedCategory={selectedCategory} />
       {categoryList.map((category, idx) => {
         return idx + 1 === categoryList.length ? (
-          <CategoryList key={idx} ref={lastCategoryListRef} category={category} />
+          <div className="wrap" ref={lastCategoryListRef} key={idx}>
+            <CategoryList idx={idx} category={category} changeFocus={changeFocus} />
+          </div>
         ) : (
-          <CategoryList key={idx} category={category} />
+          <div className="wrap" ref={lastCategoryListRef} key={idx}>
+            <CategoryList idx={idx} category={category} changeFocus={changeFocus} />
+          </div>
         )
       })}
     </section>

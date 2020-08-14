@@ -1,7 +1,7 @@
 export const CS_PHONE: string = '1600-0025'
 export const CS_EMAIL: string = 'bmart_together@woowahan.com'
 export const SLIDER_INTERVAL_TIME = 2000
-export const GRAPHQL_URI = 'http://localhost:4000/graphql'
+export const GRAPHQL_URI = '/graphql'
 export const LAZY_LOAD_THRESHOLD = 0.1
 export const CATEGORIES = [
   '가루/조미료/오일',
@@ -16,3 +16,4 @@ export const CATEGORIES = [
   '과자/초콜릿/시리얼',
   '채소',
 ]
+export const NAV_ICON_LIST = ['home', 'search', 'favorite', 'history', 'cart']

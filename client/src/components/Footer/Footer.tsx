@@ -8,6 +8,7 @@ type Props = {}
 const StyledContainer = styled.footer`
   height: 160px;
   padding: ${STYLES.padding};
+  margin-bottom: 60px;
   display: flex;
   flex-direction: column;
 `

@@ -24,8 +24,7 @@ jobs:
     
     - name: Client test suites
       run: |
-        npm i --prefix client/
-        npm run build --prefix client/
+        npm ci --prefix client/
         npm run test --prefix client/
 
     # Runs a single command using the runners shell

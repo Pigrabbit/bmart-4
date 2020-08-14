@@ -1,18 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react'
 import { CategoryList } from './CategoryList'
 import { CATEGORIES, LAZY_LOAD_THRESHOLD } from '../../utils/constants'
-import styled from 'styled-components'
+import { CategoryListSectionHeader } from './CategoryListSectionHeader'
 
 type Props = {}
-
-const StyledHader = styled.div`
-  position: sticky;
-`
 
 export const CategoryListSection = (props: Props) => {
   const [hasMore, setHasMore] = useState<boolean>(true)
   const [categoryList, setCategoryList] = useState<string[]>([CATEGORIES[0]])
-  const observer = useRef<IntersectionObserver | null>(null)
+  const lastCategoryListObserver = useRef<IntersectionObserver | null>(null)
 
   const addCategoryListHandler = () => {
     const length = categoryList.length
@@ -21,17 +17,17 @@ export const CategoryListSection = (props: Props) => {
       setHasMore(false)
       return
     }
-    console.log(categoryList, [...categoryList, CATEGORIES[length]])
+
     setCategoryList([...categoryList, CATEGORIES[length]])
   }
 
   const lastCategoryListRef = useCallback(
     (el) => {
-      if (hasMore && observer.current) observer.current.disconnect()
+      if (hasMore && lastCategoryListObserver.current) lastCategoryListObserver.current.disconnect()
 
-      if (observer.current) observer.current.disconnect()
+      if (lastCategoryListObserver.current) lastCategoryListObserver.current.disconnect()
 
-      observer.current = new IntersectionObserver(
+      lastCategoryListObserver.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting) {
             addCategoryListHandler()
@@ -39,20 +35,20 @@ export const CategoryListSection = (props: Props) => {
         },
         { threshold: LAZY_LOAD_THRESHOLD }
       )
-      if (el) observer.current.observe(el)
+      if (el) lastCategoryListObserver.current.observe(el)
     },
     [hasMore, categoryList]
   )
 
   return (
     <section className="category-list-section">
-      <StyledHader>HEADER</StyledHader>
+      <CategoryListSectionHeader selectedCategory={CATEGORIES[0]} />
       {categoryList.map((category, idx) => {
         return idx + 1 === categoryList.length ? (
           <CategoryList key={idx} ref={lastCategoryListRef} category={category} />
         ) : (
           <CategoryList key={idx} category={category} />
-          )
+        )
       })}
     </section>
   )

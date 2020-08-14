@@ -10,6 +10,7 @@ import { Header } from '../../components/Header'
 import { useQuery } from '@apollo/client'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
 import { CategoryList } from '../../components/CategoryList'
+import { Navbar } from '../../components/Navbar'
 
 type Props = {}
 
@@ -32,6 +33,7 @@ export const MainDashboard = (props: Props) => {
   return (
     <StyledContainer className="dashboard">
       <Header />
+      <Navbar />
       <Carousel bannerList={bigBannerList} />
       <CategoryList />
       <HorizontalList

@@ -23,7 +23,7 @@ app.get('/graphql', graphqlHTTP({ schema, graphiql: true }))
 app.post('/graphql', graphqlHTTP({ schema, graphiql: true }))
 
 app.use('/', (req, res, next) => {
-  res.json({ message: 'hello world' })
+  res.sendFile('public/index.html', { root: __dirname })
 })
 
 app.use((err, req, res, next) => {

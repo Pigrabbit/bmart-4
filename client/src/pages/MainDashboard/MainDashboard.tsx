@@ -9,6 +9,7 @@ import { Footer } from '../../components/Footer'
 import { Header } from '../../components/Header'
 import { useQuery } from '@apollo/client'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
+import { CategoryList } from '../../components/CategoryList'
 
 type Props = {}
 
@@ -22,16 +23,17 @@ const StyledContainer = styled.main`
 `
 
 export const MainDashboard = (props: Props) => {
-  
-  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {variables: {category: '과일', offset: 10, limit: 10}})
+  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
+    variables: { category: '과일', offset: 10, limit: 10 },
+  })
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
-
 
   return (
     <StyledContainer className="dashboard">
       <Header />
       <Carousel bannerList={bigBannerList} />
+      <CategoryList />
       <HorizontalList
         title="성현님을 위해 준비한 상품"
         productList={productListByCategory}

@@ -6,6 +6,7 @@ import { CS_EMAIL, CS_PHONE } from '../../utils/constants'
 type Props = {}
 
 const StyledContainer = styled.footer`
+    margin-bottom: 60px;
     height: 160px;
     padding: 16px;
     display: flex;

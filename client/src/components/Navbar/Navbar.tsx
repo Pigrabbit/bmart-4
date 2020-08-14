@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
+import { NAV_ICON_LIST } from '../../utils/constants';
 
 type Props = {}
 
@@ -25,43 +26,19 @@ const StyledIcon = styled.a`
 `
 
 export const Navbar = (props: Props) => {
+  const iconList = NAV_ICON_LIST
+
   return (
     <StyledContainer className="navbar">
-      <StyledIcon href="" className="navbar-item" target="_blank" rel="noopener noreferrer">
+      {iconList.map((icon, idx) => (
+        <StyledIcon key={idx} href="" className="navbar-item" target="_blank" rel="noopener noreferrer">
         <img
-          src={`${process.env.PUBLIC_URL}/images/navbar-icon/home.svg`}
-          alt=""
+          src={`${process.env.PUBLIC_URL}/images/navbar-icon/${icon}.svg`}
+          alt={`${icon}-icon`}
           className="navbar-item-icon"
         />
       </StyledIcon>
-      <StyledIcon href="" className="navbar-item" target="_blank" rel="noopener noreferrer">
-        <img
-          src={`${process.env.PUBLIC_URL}/images/navbar-icon/search.svg`}
-          alt=""
-          className="navbar-item-icon"
-        />
-      </StyledIcon>
-      <StyledIcon href="" className="navbar-item" target="_blank" rel="noopener noreferrer">
-        <img
-          src={`${process.env.PUBLIC_URL}/images/navbar-icon/favorite.svg`}
-          alt=""
-          className="navbar-item-icon"
-        />
-      </StyledIcon>
-      <StyledIcon href="" className="navbar-item" target="_blank" rel="noopener noreferrer">
-        <img
-          src={`${process.env.PUBLIC_URL}/images/navbar-icon/history.svg`}
-          alt=""
-          className="navbar-item-icon"
-        />
-      </StyledIcon>
-      <StyledIcon href="" className="navbar-item" target="_blank" rel="noopener noreferrer">
-        <img
-          src={`${process.env.PUBLIC_URL}/images/navbar-icon/shopping_cart.svg`}
-          alt=""
-          className="navbar-item-icon"
-        />
-      </StyledIcon>
+      ))}
     </StyledContainer>
   )
 }

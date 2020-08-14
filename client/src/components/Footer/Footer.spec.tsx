@@ -1,27 +1,26 @@
-import React from 'react';
-import { cleanup } from '@testing-library/react';
+import React from 'react'
+import { cleanup } from '@testing-library/react'
 import { Footer } from './Footer'
 import { CS_EMAIL, CS_PHONE } from '../../utils/constants'
 import { shallow } from 'enzyme'
 import { expect } from 'chai'
 
-
 describe('<Footer />', () => {
-    afterEach(cleanup)
+  afterEach(cleanup)
 
-    it ('footer라는 클래스 이름으로 DOM에 포함된다', () => {
-        const wrapper = shallow(<Footer />)
-        expect(wrapper.is('.footer')).to.equal(true)
-    })
+  it('footer라는 클래스 이름으로 DOM에 포함된다', () => {
+    const wrapper = shallow(<Footer />)
+    expect(wrapper.is('.footer')).to.equal(true)
+  })
 
-    it ('반품·교환 버튼이 노출된다', () => {
-        const wrapper = shallow(<Footer />)
-        expect(wrapper.exists('.footer-return-button')).to.equal(true)
-    })
+  it('반품·교환 버튼이 노출된다', () => {
+    const wrapper = shallow(<Footer />)
+    expect(wrapper.exists('.footer-return-button')).to.equal(true)
+  })
 
-    it ('고객센터 연락처와 이메일 정보가 노출된다', () => {
-        const wrapper = shallow(<Footer />)
-        expect(wrapper.find('.footer-phone-value').text()).to.equal(CS_PHONE)
-        expect(wrapper.find('.footer-email-value').text()).to.equal(CS_EMAIL)
-    })
+  it('고객센터 연락처와 이메일 정보가 노출된다', () => {
+    const wrapper = shallow(<Footer />)
+    expect(wrapper.find('.footer-phone-value').text()).to.equal(CS_PHONE)
+    expect(wrapper.find('.footer-email-value').text()).to.equal(CS_EMAIL)
+  })
 })

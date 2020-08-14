@@ -14,12 +14,13 @@ import { CategoryListSection } from './CategoryListSection'
 type Props = {}
 
 const StyledContainer = styled.main`
-  position: fixed;
+  /* position: fixed;
   left: 0;
   top: 0;
   right: 0;
-  bottom: 0;
-  overflow-y: auto;
+  bottom: 0; */
+  /* position: relative;
+  overflow-y: auto; */
 `
 
 export const MainDashboard = (props: Props) => {

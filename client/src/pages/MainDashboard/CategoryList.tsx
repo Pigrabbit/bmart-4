@@ -8,7 +8,7 @@ type Props = {
   category: string
 }
 
-export const CategoryList = forwardRef((props: Props) => {
+export const CategoryList = forwardRef((props: Props, ref: React.Ref<HTMLDivElement>) => {
   const { category } = props
 
   const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
@@ -17,5 +17,9 @@ export const CategoryList = forwardRef((props: Props) => {
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
 
-  return <VerticalList title={category} productList={productListByCategory} />
+  return (
+    <div className="wrap" ref={ref}>
+      <VerticalList title={category} productList={productListByCategory} />
+    </div>
+  )
 })

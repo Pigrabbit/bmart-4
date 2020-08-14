@@ -1,21 +1,27 @@
 import React from 'react';
-import {cleanup, fireEvent, render, waitForElement} from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect'
+import {cleanup } from '@testing-library/react';
 import { Footer } from './Footer'
 import { CS_EMAIL, CS_PHONE } from '../../utils/constants'
+import { shallow } from 'enzyme'
+import { expect } from 'chai'
 
 
 describe('<Footer />', () => {
     afterEach(cleanup)
 
-    it ('DOM에 포함된다', () => {
-        const { getByTestId } = render( <Footer /> )
-        expect(getByTestId('footer')).toBeInTheDocument()
+    it ('footer라는 클래스 이름으로 DOM에 포함된다', () => {
+        const wrapper = shallow(<Footer />)
+        expect(wrapper.is('.footer')).to.equal(true)
+    })
+
+    it ('반품·교환 버튼이 노출된다', () => {
+        const wrapper = shallow(<Footer />)
+        expect(wrapper.exists('.footer-return-button')).to.equal(true)
     })
 
     it ('고객센터 연락처와 이메일 정보가 노출된다', () => {
-        const { queryByText } = render( <Footer /> )
-        expect(queryByText(CS_PHONE)).toBeInTheDocument()
-        expect(queryByText(CS_EMAIL)).toBeInTheDocument()
+        const wrapper = shallow(<Footer />)
+        expect(wrapper.find('.footer-phone-value').text()).to.equal(CS_PHONE)
+        expect(wrapper.find('.footer-email-value').text()).to.equal(CS_EMAIL)
     })
 })

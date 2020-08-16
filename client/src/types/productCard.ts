@@ -1,1 +1,1 @@
-export type ProductCardType = { price: number; name: string; thumbnailSrc: string }
+export type ProductCardType = { id: string; price: number; name: string; thumbnailSrc: string }

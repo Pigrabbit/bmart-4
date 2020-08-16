@@ -1,0 +1,65 @@
+name: CD
+
+on:
+  push:
+    branches: [ dev ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@dev
+    
+    - name: Install client npm packages
+      run: |
+        npm ci --prefix client/
+        
+    - name: Client test suites
+      run: |
+        npm run test --prefix client/
+        
+    - name: Install server npm packages
+      run: |
+        npm ci --prefix server/
+        
+    - name: Build client react-app and move to server public directory
+      env: 
+        REACT_APP_GRAPHQL_URI: ${{ secrets.REACT_APP_GRAPHQL_URI }}
+      run: |
+        npm run build --prefix client/
+        rm -r server/public
+        mkdir server/public
+        cp -r client/build/* server/public
+        
+    - name: stop server via ssh
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        command: pm2 kill;
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+        
+    - name: ssh delivery to aws ec2
+      uses: easingthemes/ssh-deploy@v2.1.4
+      env:
+        ARGS: '-rltgoDzvO'
+        SOURCE: '/'
+        REMOTE_HOST: ${{ secrets.HOST }}
+        REMOTE_USER: ${{ secrets.USERNAME }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        TARGET: './app/'
+    
+    - name: move proudction .env and restart server via ssh
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        command: cp ~/app/.env.prod app/bmart-4/server; cd ~/app/bmart-4/server; npm run start:prod;
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+    

@@ -21,7 +21,7 @@ export const ProductCardList = (props: Props) => {
   const { productList } = props
 
   return (
-    <StyledProductList>
+    <StyledProductList className="product-list">
       {productList.map((product, idx) => (
         <ProductCard key={idx} product={product} width="36%" style={{ marginRight: '10px' }} />
       ))}

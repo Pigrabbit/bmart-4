@@ -48,10 +48,10 @@ export const HorizontalList = (props: Props) => {
   }
 
   return (
-    <StyledWrapper>
+    <StyledWrapper className="horizontal-product-list">
       <StyledContainer>
         <StyledHeader>
-          <h2>{title}</h2>
+          <h2 className="title">{title}</h2>
         </StyledHeader>
         <StyledProductListWrap>{renderProductCardList()}</StyledProductListWrap>
       </StyledContainer>

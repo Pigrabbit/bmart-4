@@ -23,6 +23,10 @@ describe('<HorizontalList />', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
+  it('render: 제목이 올바르게 노출되는가', () => {
+    expect(wrapper.find('.title').text()).toBe(testProps.title)
+  })
+
   it('render: double prop에 따라 올바른 상품 리스트를 노출하는가', () => {
     // double: false 일 때 리스트 1개, 상품갯수는 props로 전달한 갯수만큼
     expect(wrapper.find('.product-list').hostNodes().length).toStrictEqual(1)

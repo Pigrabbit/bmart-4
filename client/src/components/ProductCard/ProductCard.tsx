@@ -4,7 +4,7 @@ import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
 import { StyledLink } from '../../styles/StyledLink'
 
-type Props = {
+export type Props = {
   product: ProductCardType
   width?: string
   style?: React.CSSProperties

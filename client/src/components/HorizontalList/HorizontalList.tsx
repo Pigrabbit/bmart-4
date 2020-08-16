@@ -5,7 +5,7 @@ import { STYLES } from '../../utils/styleConstants'
 import { StyledWrapper } from '../../styles/StyledWrapper'
 import { ProductCardType } from '../../types/productCard'
 
-type Props = {
+export type Props = {
   title: string
   productList: ProductCardType[]
   double?: boolean

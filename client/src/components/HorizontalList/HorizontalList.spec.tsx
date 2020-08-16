@@ -2,9 +2,11 @@ import React from 'react'
 import { HorizontalList } from './HorizontalList'
 import { mount } from 'enzyme'
 import { productList } from '../../utils/mockData'
-import { MemoryRouter, Link } from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 
-const testProps = {
+import { Props } from './HorizontalList'
+
+const testProps: Props = {
   title: '테스트',
   double: false,
   productList,

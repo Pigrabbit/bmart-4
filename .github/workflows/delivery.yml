@@ -38,12 +38,12 @@ jobs:
         cp -r client/build/* server/public
         
     - name: stop server via ssh
-      uses: garygrossgarten/github-action-ssh@release
+      uses: garygrossgarten/github-action-ssh@v0.5.0
       with:
         command: pm2 kill;
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
         
     - name: ssh delivery to aws ec2
       uses: easingthemes/ssh-deploy@v2.1.4
@@ -56,10 +56,10 @@ jobs:
         TARGET: './app/'
     
     - name: move proudction .env and restart server via ssh
-      uses: garygrossgarten/github-action-ssh@release
+      uses: garygrossgarten/github-action-ssh@v0.5.0
       with:
         command: cp ~/app/.env.prod app/bmart-4/server; cd ~/app/bmart-4/server; npm run start:prod;
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY}}
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
     

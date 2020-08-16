@@ -35,7 +35,7 @@ export const ProductCard = (props: Props) => {
 
   return (
     <StyledContainer width={width} style={style}>
-      <StyledLink to={`product/${id}`}>
+      <StyledLink to={`/product/${id}`}>
         <StyledThumbnail>
           <img className="thumbnail" src={`http://${thumbnailSrc}`} alt="" />
         </StyledThumbnail>

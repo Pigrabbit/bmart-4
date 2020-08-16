@@ -19,26 +19,20 @@ describe('<ProductCard />', () => {
     </MemoryRouter>
   )
 
-  const productCardComp = wrapper.find(ProductCard)
-
   it('match: snapshot', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('match: props', () => {
-    expect(productCardComp.props().product).toBe(product)
-  })
-
-  it('render: 썸네일, 링크, 상품이름, 가격', () => {
+  it('render: 썸네일, 링크, 상품이름, 가격이 올바르게 노출되는가', () => {
     expect(wrapper.find(Link).props().to).toBe(`/product/${product.id}`)
 
-    const productNameElm = wrapper.find('div.product-name')
+    const productNameElm = wrapper.find('.product-name')
     expect(productNameElm.contains('테스트 상품명')).toBe(true)
 
-    const priceElm = wrapper.find('div.price')
+    const priceElm = wrapper.find('.price')
     expect(priceElm.text()).toBe('1,000,000원')
 
-    const thumbnailElm = wrapper.find('img.thumbnail')
+    const thumbnailElm = wrapper.find('.thumbnail')
     expect(thumbnailElm.prop('src')).toBe(`http://${product.thumbnailSrc}`)
   })
 })

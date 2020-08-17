@@ -5,7 +5,10 @@ export const STYLES = {
   largeRadius: '20px',
   mediumRadius: '12px',
   smallRadius: '6px',
+  borderColor: '#ddd',
 }
+
+export const HEADER_HEIGHT = '50px'
 
 export const COLORS = {
   baemint: '#10b3ad',

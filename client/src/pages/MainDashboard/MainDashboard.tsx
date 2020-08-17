@@ -9,6 +9,7 @@ import { Footer } from '../../components/Footer'
 import { Header } from '../../components/Header'
 import { useQuery } from '@apollo/client'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
+import { CategoryList } from '../../components/CategoryList'
 import { CategoryListSection } from './CategoryListSection'
 import { Navbar } from '../../components/Navbar'
 
@@ -36,6 +37,7 @@ export const MainDashboard = (props: Props) => {
       <Header />
       <Navbar />
       <Carousel bannerList={bigBannerList} />
+      <CategoryList />
       <HorizontalList
         title="성현님을 위해 준비한 상품"
         productList={productListByCategory}

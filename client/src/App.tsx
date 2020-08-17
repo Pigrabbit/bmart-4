@@ -1,6 +1,8 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
 import { MainDashboard } from './pages/MainDashboard'
+import { CategoryDashboard } from './pages/CategoryDashboard'
 
 import { ApolloProvider } from '@apollo/client'
 import { client } from './utils/apolloClient'
@@ -11,11 +13,11 @@ function App() {
       <div className="App">
         <Router>
           <Switch>
-            <Route path="/">
+            <Route exact path="/">
               <MainDashboard />
             </Route>
-            <Route path="/category">
-              <MainDashboard />
+            <Route path="/category/:categoryName">
+              <CategoryDashboard />
             </Route>
           </Switch>
         </Router>

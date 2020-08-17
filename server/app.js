@@ -17,7 +17,7 @@ require('dotenv').config({
 })
 
 const router = require('./src/route')
-app.use("/", router)
+app.use('/', router)
 
 app.use('/', (req, res, next) => {
   res.sendFile('public/index.html', { root: __dirname })

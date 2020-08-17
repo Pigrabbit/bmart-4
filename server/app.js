@@ -20,23 +20,28 @@ const { graphqlHTTP } = require('express-graphql')
 const schema = require('./src/schema')
 
 app.get('/graphql', graphqlHTTP({ schema, graphiql: true }))
-app.post('/graphql', graphqlHTTP({ schema, graphiql: true }))
+app.post('/graphql', graphqlHTTP({ schema, graphiql: false }))
 
 const client = require('./config/elasticsearch-config')
-app.use('/es', async (req, res, next) => {
+const ProductSearchDTO = require('./src/product-search-dto')
+
+app.get('/search/:query', async (req, res, next) => {
   try {
     const result = await client.search({
       index: 'product',
       body: {
         query: {
           match: {
-            "name.nori": "라면"
+            "name.nori": req.params.query
           }
         }
       }
     })
-
-    res.json(result)
+    const hits = result.body.hits.hits.map((hit, idx) => {
+      return new ProductSearchDTO(hit._source)
+    })
+    
+    res.json(hits)
   } catch(error) {
     next(error)
   }

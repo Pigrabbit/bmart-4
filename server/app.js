@@ -22,6 +22,26 @@ const schema = require('./src/schema')
 app.get('/graphql', graphqlHTTP({ schema, graphiql: true }))
 app.post('/graphql', graphqlHTTP({ schema, graphiql: true }))
 
+const client = require('./config/elasticsearch-config')
+app.use('/es', async (req, res, next) => {
+  try {
+    const result = await client.search({
+      index: 'product',
+      body: {
+        query: {
+          match: {
+            "name.nori": "라면"
+          }
+        }
+      }
+    })
+
+    res.json(result)
+  } catch(error) {
+    next(error)
+  }
+})
+
 app.use('/', (req, res, next) => {
   res.sendFile('public/index.html', { root: __dirname })
 })

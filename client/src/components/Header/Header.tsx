@@ -2,6 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { STYLES, HEADER_HEIGHT } from '../../utils/styleConstants'
 
+type Props = {
+  title: string
+}
+
 const StyledContainer = styled.header`
   display: flex;
   justify-content: space-between;
@@ -39,17 +43,30 @@ const StyledButton = styled.button`
   margin: auto 0 auto 10px;
 `
 
-export const Header = () => {
+const StyledBackButton = styled.h1`
+  margin: auto;
+  width: 40px;
+  text-align: center;
+`
+
+export const Header = (props: Props) => {
   return (
     <StyledContainer className="header" data-testid="header">
-      <StyledLogo className="logo">
-        <StyledImage
-          className="header-title-logo"
-          src={`${process.env.PUBLIC_URL}/images/bmart-logo.png`}
-          alt=""
-        />
-        <StyledTitle className="header-title-text">마트</StyledTitle>
-      </StyledLogo>
+      {props.title === '' ? (
+        <StyledLogo className="logo">
+          <StyledImage
+            className="header-title-logo"
+            src={`${process.env.PUBLIC_URL}/images/bmart-logo.png`}
+            alt=""
+          />
+          <StyledTitle className="header-title-text">마트</StyledTitle>
+        </StyledLogo>
+      ) : (
+        <StyledLogo className="back">
+          <StyledBackButton>←</StyledBackButton>
+      <StyledTitle className="header-title-text">{`${props.title}`}</StyledTitle>
+        </StyledLogo>
+      )}
       <StyledOptions className="header-menu-list">
         <StyledButton className="header-menu">검색</StyledButton>
         <StyledButton className="header-menu">옵션</StyledButton>

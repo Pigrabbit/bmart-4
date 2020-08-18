@@ -23,6 +23,43 @@ const productListByCategoryResolver = async (parent, args) => {
   }
 }
 
+const productListInCartResolver = async (parent, args) => {
+  const conn = await pool.getConnection()
+  try {
+    const productInCartquery = 'SELECT * FROM order_product WHERE order_id = ?'
+
+    const [orderProducts] = await conn.query(productInCartquery, [args.orderId])
+    if (!orderProducts.length) return []
+
+    const result = []
+
+    for (const orderProduct of orderProducts) {
+      const query = `
+        SELECT
+          CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
+          THEN 'true' ELSE 'false' END as isLiked, 
+        p.id, p.name, p.coupang_product_id as coupangProductId, 
+        p.category, p.price, p.base_price as basePrice, p.discount_rate as discountRate, 
+        p.thumbnail_src as thumbnailSrc, p.stock_count as stockCount, 
+        p.sold_count as soldCount, p.description
+        FROM product p 
+        WHERE id = ?`
+
+      const [rows] = await conn.query(query, [args.userId, orderProduct.product_id])
+      result.push({
+        id: orderProduct.id,
+        quantity: orderProduct.quantity,
+        priceSum: orderProduct.price_sum,
+        product: new GetProductDTO(rows[0]),
+      })
+    }
+
+    return result
+  } finally {
+    conn.release()
+  }
+}
+
 const likeProductResolver = async (parent, args) => {
   const conn = await pool.getConnection()
 
@@ -141,6 +178,7 @@ module.exports = {
   likeProductResolver,
   dislikeProductResolver,
   productListByCategoryResolver,
+  productListInCartResolver,
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,

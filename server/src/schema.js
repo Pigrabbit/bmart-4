@@ -8,7 +8,7 @@ const {
   GraphQLNonNull,
 } = require('graphql')
 
-const { ProductType, changeStatusMessageType } = require('./type')
+const { ProductType, CartProductType, changeStatusMessageType } = require('./type')
 const {
   likeProductResolver,
   dislikeProductResolver,
@@ -16,6 +16,7 @@ const {
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,
+  productListInCartResolver,
 } = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
@@ -33,10 +34,15 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: productListByCategoryResolver,
     },
-    // TODO
-    // Add productList field
-    // Add wishlist field
-    // Add order field
+    productListInCart: {
+      type: new GraphQLList(CartProductType),
+      description: '장바구니 상품 리스트',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        orderId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: productListInCartResolver,
+    },
   }),
 })
 

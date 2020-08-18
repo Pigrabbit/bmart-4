@@ -8,7 +8,7 @@ class ProductSearchDTO {
     discount_rate,
     sold_count,
     stock_count,
-    coupang_product_id
+    coupang_product_id,
   }) {
     this.id = id
     this.name = name

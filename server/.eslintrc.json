@@ -9,6 +9,7 @@
     "ecmaVersion": 11
   },
   "rules": {
-    "comma-dangle": ["error", "only-multiline"]
+    "comma-dangle": ["error", "only-multiline"],
+    "camelcase": "off"
   }
 }

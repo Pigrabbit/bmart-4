@@ -56,7 +56,7 @@ export const CategoryList = (props: Props) => {
     previousRatio = currentRatio
   }
 
-  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
+  const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: { category, offset: 10, limit: 10 },
   })
   if (loading) return <p>Loading...</p>

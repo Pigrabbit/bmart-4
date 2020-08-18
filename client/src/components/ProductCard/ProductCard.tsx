@@ -2,8 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
+import { StyledLink } from '../../styles/StyledLink'
 
-type Props = {
+export type Props = {
   product: ProductCardType
   width?: string
   style?: React.CSSProperties
@@ -30,19 +31,19 @@ const StyledContent = styled.div`
 
 export const ProductCard = (props: Props) => {
   const { product, width = '50%', style } = props
-  const { price, name, thumbnailSrc } = product
+  const { id, price, name, thumbnailSrc } = product
 
   return (
-    <StyledContainer width={width} style={style}>
-      <>
+    <StyledContainer className="product-card" width={width} style={style}>
+      <StyledLink to={`/product/${id}`}>
         <StyledThumbnail>
-          <img src={`http://${thumbnailSrc}`} alt="" />
+          <img className="thumbnail" src={`http://${thumbnailSrc}`} alt="" />
         </StyledThumbnail>
         <StyledContent>
-          <div>{name}</div>
+          <div className="product-name">{name}</div>
           <div className="price">{parseToLocalMoneyString(price)}원</div>
         </StyledContent>
-      </>
+      </StyledLink>
     </StyledContainer>
   )
 }

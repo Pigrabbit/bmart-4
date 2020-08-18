@@ -35,7 +35,7 @@ export const MainDashboard = (props: Props) => {
         productList={productListByCategory}
         double={true}
       ></HorizontalList>
-      <Carousel bannerList={smallBannerList} isAutoSlide={false}/>
+      <Carousel bannerList={smallBannerList} isAutoSlide={true}/>
       <HorizontalList title="동혁님을 위해 준비한 상품" productList={productListByCategory} />
       <VerticalList title="성현님을 위해 준비한 상품" productList={productListByCategory} />
       <CategoryListSection />

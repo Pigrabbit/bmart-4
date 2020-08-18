@@ -16,16 +16,4 @@ export const CATEGORIES = [
   '과자/초콜릿/시리얼',
   '채소',
 ]
-export const CATEGORY_LIST = [
-  'salad',
-  'egg',
-  'mealkit',
-  'milk',
-  'bread',
-  'yasik',
-  'choco',
-  'ice',
-  'hair',
-  'more',
-]
 export const NAV_ICON_LIST = ['home', 'search', 'favorite', 'history', 'cart']

@@ -27,9 +27,9 @@ const ProductType = new GraphQLObjectType({
   }),
 })
 
-const DeleteMessageType = new GraphQLObjectType({
-  name: 'DeleteMessage',
-  description: '삭제 성공 여부 메시지',
+const changeStatusMessageType = new GraphQLObjectType({
+  name: 'changeStatusMessage',
+  description: '수정/삭제 성공 여부 메시지',
   fields: () => ({
     success: { type: GraphQLNonNull(GraphQLBoolean) },
   }),
@@ -43,5 +43,5 @@ const DeleteMessageType = new GraphQLObjectType({
 
 module.exports = {
   ProductType,
-  DeleteMessageType,
+  changeStatusMessageType,
 }

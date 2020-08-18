@@ -8,7 +8,7 @@ const {
   GraphQLNonNull,
 } = require('graphql')
 
-const { ProductType, DeleteMessageType } = require('./type')
+const { ProductType, changeStatusMessageType } = require('./type')
 const {
   likeProductResolver,
   dislikeProductResolver,
@@ -51,7 +51,7 @@ const RootMutationType = new GraphQLObjectType({
       resolve: likeProductResolver,
     },
     dislikeProduct: {
-      type: DeleteMessageType,
+      type: changeStatusMessageType,
       description: '유저 찜 취소 기능',
       args: {
         userId: { type: GraphQLNonNull(GraphQLID) },

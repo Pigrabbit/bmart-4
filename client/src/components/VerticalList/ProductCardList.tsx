@@ -1,20 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProductCard } from '../ProductCard'
 import { ProductCardType } from '../../types/productCard'
+import { ProductCard } from '../ProductCard'
 
 type Props = {
   productList: ProductCardType[]
 }
 
 const StyledProductList = styled.div`
+  justify-content: space-between;
   display: flex;
+  flex-wrap: wrap;
   margin-top: 10px;
-`
-
-const StyledSpacer = styled.div`
-  width: 3px;
-  flex: 0 0 auto;
+  -webkit-overflow-scrolling: touch;
 `
 
 export const ProductCardList = (props: Props) => {
@@ -23,9 +21,13 @@ export const ProductCardList = (props: Props) => {
   return (
     <StyledProductList className="product-list">
       {productList.map((product, idx) => (
-        <ProductCard key={idx} product={product} width="36%" style={{ marginRight: '10px' }} />
+        <ProductCard
+          key={idx}
+          product={product}
+          width="calc(50% - 5px)"
+          style={{ marginBottom: '10px' }}
+        />
       ))}
-      <StyledSpacer></StyledSpacer>
     </StyledProductList>
   )
 }

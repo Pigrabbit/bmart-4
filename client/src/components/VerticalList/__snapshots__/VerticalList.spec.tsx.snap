@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VerticalList /> match: snapshot 1`] = `ReactWrapper {}`;

@@ -5,7 +5,7 @@ import { STYLES } from '../../utils/styleConstants'
 import { StyledWrapper } from '../../styles/StyledWrapper'
 import { ProductCardType } from '../../types/productCard'
 
-type Props = {
+export type Props = {
   title: string
   productList: ProductCardType[]
   double?: boolean
@@ -48,10 +48,10 @@ export const HorizontalList = (props: Props) => {
   }
 
   return (
-    <StyledWrapper>
+    <StyledWrapper className="horizontal-product-list">
       <StyledContainer>
         <StyledHeader>
-          <h2>{title}</h2>
+          <h2 className="title">{title}</h2>
         </StyledHeader>
         <StyledProductListWrap>{renderProductCardList()}</StyledProductListWrap>
       </StyledContainer>

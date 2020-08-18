@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { Carousel } from '../../components/Carousel'
@@ -15,18 +15,10 @@ import { Navbar } from '../../components/Navbar'
 
 type Props = {}
 
-const StyledContainer = styled.main`
-  /* position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0; */
-  /* position: relative;
-  overflow-y: auto; */
-`
+const StyledContainer = styled.main``
 
 export const MainDashboard = (props: Props) => {
-  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
+  const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: { category: '과일', offset: 10, limit: 10 },
   })
   if (loading) return <p>Loading...</p>

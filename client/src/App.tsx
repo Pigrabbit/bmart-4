@@ -1,11 +1,13 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-
-import { MainDashboard } from './pages/MainDashboard'
-import { CategoryDashboard } from './pages/CategoryDashboard'
+import { BrowserRouter as Router, Switch, Route, RouteComponentProps } from 'react-router-dom'
 
 import { ApolloProvider } from '@apollo/client'
 import { client } from './utils/apolloClient'
+
+import { MainDashboard } from './pages/MainDashboard'
+import { ProductDetail } from './pages/ProductDetail'
+import { ProductDetailRouteProps } from './types/routeProps'
+import { CategoryDashboard } from './pages/CategoryDashboard'
 
 function App() {
   return (
@@ -13,7 +15,14 @@ function App() {
       <div className="App">
         <Router>
           <Switch>
-            <Route exact path="/">
+            <Route
+              path="/product/:productId"
+              component={(props: RouteComponentProps<ProductDetailRouteProps>) => (
+                <ProductDetail {...props} />
+              )}
+            />
+
+            <Route path="/">
               <MainDashboard />
             </Route>
             <Route path="/category/:categoryName">

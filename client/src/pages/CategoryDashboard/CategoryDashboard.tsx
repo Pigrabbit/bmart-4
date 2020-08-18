@@ -6,11 +6,11 @@ import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
 import { VerticalList } from '../../components/VerticalList'
 import { Filter } from '../../components/Filter'
 import { RouteComponentProps } from 'react-router-dom'
-import { CategoryNameRouteProps } from '../../types/routeProps'
+import { CategoryDashboardRouteProps } from '../../types/routeProps'
 import { replaceHyphensWithCommas, replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
 import { CATEGORIES } from '../../utils/constants'
 
-type Props = {} & RouteComponentProps<CategoryNameRouteProps>
+type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 
 export const CategoryDashboard = (props: Props) => {
   const { match } = props

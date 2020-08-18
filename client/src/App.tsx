@@ -6,7 +6,7 @@ import { client } from './utils/apolloClient'
 
 import { MainDashboard } from './pages/MainDashboard'
 import { ProductDetail } from './pages/ProductDetail'
-import { ProductDetailRouteProps, CategoryNameRouteProps } from './types/routeProps'
+import { ProductDetailRouteProps, CategoryDashboardRouteProps } from './types/routeProps'
 import { CategoryDashboard } from './pages/CategoryDashboard'
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
             />
             <Route
               path="/category/:categoryId"
-              component={(props: RouteComponentProps<CategoryNameRouteProps>) => (
+              component={(props: RouteComponentProps<CategoryDashboardRouteProps>) => (
                 <CategoryDashboard {...props} />
               )}
             />

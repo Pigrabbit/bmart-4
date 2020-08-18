@@ -14,7 +14,7 @@ function App() {
         <Router>
           <Switch>
             <Route
-              path="/product/:productId/:coupangProductId"
+              path="/product/:productId"
               component={(props: RouteComponentProps<ProductDetailRouteProps>) => (
                 <ProductDetail {...props} />
               )}

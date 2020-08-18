@@ -6,13 +6,18 @@ import { productBannerList } from '../../utils/mockData'
 
 type Props = {} & RouteComponentProps<ProductDetailRouteProps>
 
+type StateType = { coupangProductId: string } | any
+
 export const ProductDetail = (props: Props) => {
-  const { match } = props
-  
+  const { match, location } = props
+  const state: StateType = location.state ? location.state: null;
+  const { coupangProductId } = state
+
   return (
     <div className='product-detail'>
-      <Carousel bannerList={productBannerList} isAutoSlide={false}/>
+      <Carousel bannerList={productBannerList} autoSlide={false}/>
       {match.params.productId}번 상품 상세페이지 입니다.
+      coupang id: {coupangProductId}
     </div>
   )
 }

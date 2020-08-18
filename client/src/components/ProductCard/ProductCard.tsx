@@ -35,7 +35,12 @@ export const ProductCard = (props: Props) => {
 
   return (
     <StyledContainer className="product-card" width={width} style={style}>
-      <StyledLink to={`/product/${id}/${coupangProductId}`}>
+      <StyledLink to={{ 
+            pathname: `/product/${id}`,
+            state: {
+              coupangProductId
+            }
+          }}>
         <StyledThumbnail>
           <img className="thumbnail" src={`http://${thumbnailSrc}`} alt="" />
         </StyledThumbnail>

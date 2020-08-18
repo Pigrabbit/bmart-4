@@ -16,11 +16,8 @@ require('dotenv').config({
   path: (process.env.NODE_ENV === 'dev') ? FILE_PATH.env_dev : FILE_PATH.env_prod
 })
 
-const { graphqlHTTP } = require('express-graphql')
-const schema = require('./src/schema')
-
-app.get('/graphql', graphqlHTTP({ schema, graphiql: true }))
-app.post('/graphql', graphqlHTTP({ schema, graphiql: true }))
+const router = require('./src/route')
+app.use('/', router)
 
 app.use('/', (req, res, next) => {
   res.sendFile('public/index.html', { root: __dirname })

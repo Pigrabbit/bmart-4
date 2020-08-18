@@ -7,9 +7,9 @@ type Props = {}
 
 export const CategoryListSection = (props: Props) => {
   const [hasMore, setHasMore] = useState<boolean>(true)
-  const [categoryList, setCategoryList] = useState<string[]>([CATEGORIES[0]])
+  const [categoryList, setCategoryList] = useState<string[]>([CATEGORIES[0].name])
   const observer = useRef<IntersectionObserver | null>(null)
-  const [selectedCategory, selectCategory] = useState<string>(CATEGORIES[0])
+  const [selectedCategory, selectCategory] = useState<string>(CATEGORIES[0].name)
 
   const addCategoryListHandler = () => {
     const length = categoryList.length
@@ -19,7 +19,7 @@ export const CategoryListSection = (props: Props) => {
       return
     }
 
-    setCategoryList([...categoryList, CATEGORIES[length]])
+    setCategoryList([...categoryList, CATEGORIES[length].name])
   }
 
   const lastCategoryListRef = useCallback(
@@ -47,8 +47,8 @@ export const CategoryListSection = (props: Props) => {
     }
 
     if (flag === 'out') {
-      const idx = CATEGORIES.indexOf(category)
-      if (idx > 0) selectCategory(CATEGORIES[idx - 1])
+      const idx = CATEGORIES.findIndex(c => c.name===category)
+      if (idx > 0) selectCategory(CATEGORIES[idx].name)
     }
   }
 

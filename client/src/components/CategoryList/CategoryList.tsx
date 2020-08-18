@@ -23,10 +23,10 @@ export const CategoryList = () => {
       {categoryList.map((category, idx) => (
         <StyledCategory
           key={idx}
-          href={`/category/${replaceSlashesWithHyphens(category)}`}
+          href={`/category/${replaceSlashesWithHyphens(String(category.id))}`}
           className="category-list-item"
         >
-          <div>{`${category}`}</div>
+          <div>{`${category.name}`}</div>
         </StyledCategory>
       ))}
     </StyledCategoryList>

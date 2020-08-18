@@ -3,5 +3,5 @@ export type ProductDetailRouteProps = {
   productId: string
 }
 export type CategoryNameRouteProps = {
-  categoryName: string
+  categoryId: string
 }

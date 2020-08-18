@@ -22,7 +22,7 @@ function App() {
               )}
             />
             <Route
-              path="/category/:categoryName"
+              path="/category/:categoryId"
               component={(props: RouteComponentProps<CategoryNameRouteProps>) => (
                 <CategoryDashboard {...props} />
               )}

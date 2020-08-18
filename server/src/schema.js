@@ -23,6 +23,7 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(ProductType),
       description: 'List of products',
       args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
         category: { type: GraphQLString },
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt },

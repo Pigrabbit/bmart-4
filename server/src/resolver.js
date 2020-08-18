@@ -3,12 +3,17 @@ const pool = require('../db')
 const productListByCategoryResolver = async (parent, args) => {
   const conn = await pool.getConnection()
   try {
-    const query = `SELECT 
-        id, name, coupang_product_id as coupangProductId, category, price,
-        base_price as basePrice, discount_rate as discountRate, thumbnail_src as thumbnailSrc,
-        stock_count as stockCount, sold_count as soldCount, description
-        FROM product WHERE category = ? LIMIT ? OFFSET ?`
-    const [rows] = await conn.query(query, [args.category, args.limit, args.offset])
+    const query = `
+        SELECT
+          CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
+          THEN 'true' ELSE 'false' END as isLiked, 
+        p.id, p.name, p.coupang_product_id as coupangProductId, 
+        p.category, p.price, p.base_price as basePrice, p.discount_rate as discountRate, 
+        p.thumbnail_src as thumbnailSrc, p.stock_count as stockCount, 
+        p.sold_count as soldCount, p.description
+        FROM product p 
+        WHERE  category = ? LIMIT ? OFFSET ?`
+    const [rows] = await conn.query(query, [args.userId, args.category, args.limit, args.offset])
     return rows
   } finally {
     conn.release()

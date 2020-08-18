@@ -7,6 +7,7 @@ import { StyledWrapper } from '../../styles/StyledWrapper'
 type Props = {
   width?: number
   bannerList: BannerType[]
+  isAutoSlide: boolean
 }
 
 const StyledCarousel = styled.div`
@@ -43,12 +44,12 @@ const StyledSlider = styled.div`
 export const Carousel = (props: Props) => {
   let sliderInterval: any = null
 
-  const { width = window.innerWidth, bannerList } = props
+  const { width = window.innerWidth, bannerList, isAutoSlide } = props
   const silderRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     initSliderScrollEvent()
-    startSlideInterval()
+    if (isAutoSlide) startSlideInterval()
   }, [])
 
   const initSliderScrollEvent = () => {

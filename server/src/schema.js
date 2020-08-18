@@ -1,7 +1,19 @@
-const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = require('graphql')
+const {
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLID,
+  GraphQLInt,
+  GraphQLString,
+  GraphQLList,
+  GraphQLNonNull,
+} = require('graphql')
 
-const { ProductType } = require('./type')
-const { productListByCategoryResolver } = require('./resolver')
+const { ProductType, DeleteMessageType } = require('./type')
+const {
+  likeProductResolver,
+  dislikeProductResolver,
+  productListByCategoryResolver,
+} = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -13,19 +25,45 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         category: { type: GraphQLString },
         offset: { type: GraphQLInt },
-        limit: { type: GraphQLInt }
+        limit: { type: GraphQLInt },
       },
-      resolve: productListByCategoryResolver
-    }
+      resolve: productListByCategoryResolver,
+    },
     // TODO
     // Add productList field
     // Add wishlist field
     // Add order field
-  })
+  }),
+})
+
+const RootMutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Root Mutation',
+  fields: () => ({
+    likeProduct: {
+      type: GraphQLNonNull(GraphQLID),
+      description: '유저 찜하기 기능',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        productId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: likeProductResolver,
+    },
+    dislikeProduct: {
+      type: DeleteMessageType,
+      description: '유저 찜 취소 기능',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        productId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: dislikeProductResolver,
+    },
+  }),
 })
 
 const schema = new GraphQLSchema({
-  query: RootQueryType
+  query: RootQueryType,
+  mutation: RootMutationType,
 })
 
 module.exports = schema

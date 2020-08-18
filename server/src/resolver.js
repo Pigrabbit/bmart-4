@@ -15,6 +15,38 @@ const productListByCategoryResolver = async (parent, args) => {
   }
 }
 
+const likeProductResolver = async (parent, args) => {
+  const conn = await pool.getConnection()
+
+  try {
+    const query = 'INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)'
+
+    const [rows] = await conn.query(query, [args.userId, args.productId])
+
+    const { insertId } = rows
+
+    return insertId
+  } finally {
+    conn.release()
+  }
+}
+
+const dislikeProductResolver = async (parent, args) => {
+  const conn = await pool.getConnection()
+  try {
+    const query = 'DELETE FROM wishlist WHERE user_id = ? AND product_id = ?'
+
+    const [rows] = await conn.query(query, [args.userId, args.productId])
+    const { affectedRows } = rows
+
+    return { success: affectedRows === 1 }
+  } finally {
+    conn.release()
+  }
+}
+
 module.exports = {
-  productListByCategoryResolver
+  likeProductResolver,
+  dislikeProductResolver,
+  productListByCategoryResolver,
 }

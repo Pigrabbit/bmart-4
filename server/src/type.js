@@ -1,4 +1,11 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString, GraphQLInt } = require('graphql')
+const {
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLBoolean,
+} = require('graphql')
 
 const ProductType = new GraphQLObjectType({
   name: 'Product',
@@ -15,8 +22,16 @@ const ProductType = new GraphQLObjectType({
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     stockCount: { type: GraphQLNonNull(GraphQLInt) },
     soldCount: { type: GraphQLNonNull(GraphQLInt) },
-    description: { type: GraphQLString }
-  })
+    description: { type: GraphQLString },
+  }),
+})
+
+const DeleteMessageType = new GraphQLObjectType({
+  name: 'DeleteMessage',
+  description: '삭제 성공 여부 메시지',
+  fields: () => ({
+    success: { type: GraphQLNonNull(GraphQLBoolean) },
+  }),
 })
 
 // TODO
@@ -26,5 +41,6 @@ const ProductType = new GraphQLObjectType({
 // Add WishlistType
 
 module.exports = {
-  ProductType
+  ProductType,
+  DeleteMessageType,
 }

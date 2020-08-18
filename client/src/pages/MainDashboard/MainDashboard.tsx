@@ -26,7 +26,7 @@ export const MainDashboard = (props: Props) => {
 
   return (
     <StyledContainer className="dashboard">
-      <Header />
+      <Header title="" />
       <Navbar />
       <Carousel bannerList={bigBannerList} />
       <CategoryList />

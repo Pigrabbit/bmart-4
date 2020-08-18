@@ -13,6 +13,9 @@ const {
   likeProductResolver,
   dislikeProductResolver,
   productListByCategoryResolver,
+  addProductToCartResolver,
+  modifyProductQuantityResolver,
+  deleteProductFromCartResolver,
 } = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
@@ -58,6 +61,35 @@ const RootMutationType = new GraphQLObjectType({
         productId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve: dislikeProductResolver,
+    },
+    addProductToCart: {
+      type: GraphQLNonNull(GraphQLID),
+      description: '카트에 담기 기능',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        orderId: { type: GraphQLNonNull(GraphQLID) },
+        productId: { type: GraphQLNonNull(GraphQLID) },
+        quantity: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: addProductToCartResolver,
+    },
+    modifyProductQuantity: {
+      type: changeStatusMessageType,
+      description: '카트에 담긴 상품 수량 수정 기능',
+      args: {
+        productId: { type: GraphQLNonNull(GraphQLID) },
+        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+        quantity: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: modifyProductQuantityResolver,
+    },
+    deleteProductFromCart: {
+      type: changeStatusMessageType,
+      description: '카트에 담긴 상품 삭제 기능',
+      args: {
+        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: deleteProductFromCartResolver,
     },
   }),
 })

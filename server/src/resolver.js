@@ -53,8 +53,95 @@ const dislikeProductResolver = async (parent, args) => {
   }
 }
 
+const addProductToCartResolver = async (parent, args) => {
+  const conn = await pool.getConnection()
+  try {
+    const findProductQuery = 'SELECT * FROM product WHERE id = ?'
+    const [product] = await conn.query(findProductQuery, [args.productId])
+    if (!product.length) return 0
+
+    const totalPrice = product[0].price * args.quantity
+
+    const findProductInCart = 'SELECT * FROM order_product WHERE order_id = ? AND product_id = ?'
+    const [existProduct] = await conn.query(findProductInCart, [args.orderId, args.productId])
+
+    // 이미 장바구니에 있는 상품이라면
+    if (existProduct.length) {
+      const query = `UPDATE order_product SET quantity = ?, price_sum = ? 
+        WHERE id = ?`
+
+      const [rows] = await conn.query(query, [
+        existProduct[0].quantity + args.quantity,
+        existProduct[0].price_sum + totalPrice,
+        existProduct[0].id,
+      ])
+      const { affectedRows } = rows
+
+      return affectedRows === 1 ? existProduct[0].id : 0
+    } else {
+      const query =
+        'INSERT INTO order_product (order_id, product_id, quantity, price_sum) VALUES (?, ?, ?, ?);'
+
+      const [rows] = await conn.query(query, [
+        args.orderId,
+        args.productId,
+        args.quantity,
+        totalPrice,
+      ])
+      const { insertId } = rows
+
+      return insertId
+    }
+  } finally {
+    conn.release()
+  }
+}
+
+const modifyProductQuantityResolver = async (parent, args) => {
+  const conn = await pool.getConnection()
+  try {
+    const findProductQuery = 'SELECT * FROM product WHERE id = ?'
+    const [product] = await conn.query(findProductQuery, [args.productId])
+    if (!product.length) return 0
+
+    const totalPrice = product[0].price * args.quantity
+
+    const query = `UPDATE order_product SET quantity = ?, price_sum = ? 
+    WHERE id = ? AND product_id = ?`
+
+    const [rows] = await conn.query(query, [
+      args.quantity,
+      totalPrice,
+      args.orderProductId,
+      args.productId,
+    ])
+
+    const { affectedRows } = rows
+    return { success: affectedRows === 1 }
+  } finally {
+    conn.release()
+  }
+}
+
+const deleteProductFromCartResolver = async (parent, args) => {
+  const conn = await pool.getConnection()
+  try {
+    const query = 'DELETE FROM order_product WHERE id = ?'
+
+    const [rows] = await conn.query(query, [args.orderProductId])
+    const { affectedRows } = rows
+
+    return { success: affectedRows === 1 }
+  } finally {
+    conn.release()
+  }
+}
+
 module.exports = {
   likeProductResolver,
   dislikeProductResolver,
   productListByCategoryResolver,
+  addProductToCartResolver,
+  modifyProductQuantityResolver,
+  deleteProductFromCartResolver,
 }

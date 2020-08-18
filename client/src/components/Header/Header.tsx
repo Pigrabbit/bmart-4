@@ -43,11 +43,17 @@ const StyledButton = styled.button`
   margin: auto 0 auto 10px;
 `
 
-const StyledBackButton = styled.h1`
+const StyledBackButton = styled.button`
   margin: auto;
   width: 40px;
+  height: 40px;
+  font-size: 25px;
   text-align: center;
 `
+
+export const backButtonClickHandler = () => {
+  window.history.back()
+}
 
 export const Header = (props: Props) => {
   return (
@@ -63,8 +69,12 @@ export const Header = (props: Props) => {
         </StyledLogo>
       ) : (
         <StyledLogo className="back">
-          <StyledBackButton>←</StyledBackButton>
-      <StyledTitle className="header-title-text">{`${props.title}`}</StyledTitle>
+          <h1>
+            <StyledBackButton className="header-back-button" onClick={backButtonClickHandler}>
+              ←
+            </StyledBackButton>
+          </h1>
+          <StyledTitle className="header-title-text">{`${props.title}`}</StyledTitle>
         </StyledLogo>
       )}
       <StyledOptions className="header-menu-list">

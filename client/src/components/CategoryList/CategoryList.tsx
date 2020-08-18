@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CATEGORY_LIST } from '../../utils/constants'
+import { CATEGORIES } from '../../utils/constants'
+import { replaceSlashesWithHyphens } from '../../utils/parser'
 
 const StyledCategoryList = styled.div`
   display: grid;
@@ -9,26 +10,23 @@ const StyledCategoryList = styled.div`
   margin: 5px 0px;
   padding: 10px 0px;
 `
-
 const StyledCategory = styled.a``
-
 const StyledCategoryIcon = styled.img`
   max-width: 100%;
   margin: 5px 0px;
 `
 
 export const CategoryList = () => {
-  const categoryList = CATEGORY_LIST
+  const categoryList = CATEGORIES
   return (
     <StyledCategoryList className="category-list">
       {categoryList.map((category, idx) => (
-        <StyledCategory key={idx} href={`/category/${category}`} className="category-list-item">
-          <StyledCategoryIcon
-            src={`${process.env.PUBLIC_URL}/images/icons/${category}.png`}
-            alt={`${category}-icon`}
-            className="category-icon"
-            id={`${category}-icon`}
-          />
+        <StyledCategory
+          key={idx}
+          href={`/category/${replaceSlashesWithHyphens(category)}`}
+          className="category-list-item"
+        >
+          <div>{`${category}`}</div>
         </StyledCategory>
       ))}
     </StyledCategoryList>

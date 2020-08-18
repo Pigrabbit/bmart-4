@@ -1,4 +1,5 @@
 const pool = require('../db')
+const { GetProductDTO } = require('./get-product-dto')
 
 const productListByCategoryResolver = async (parent, args) => {
   const conn = await pool.getConnection()
@@ -14,7 +15,9 @@ const productListByCategoryResolver = async (parent, args) => {
         FROM product p 
         WHERE  category = ? LIMIT ? OFFSET ?`
     const [rows] = await conn.query(query, [args.userId, args.category, args.limit, args.offset])
-    return rows
+    const result = rows.map((row) => new GetProductDTO(row))
+
+    return result
   } finally {
     conn.release()
   }

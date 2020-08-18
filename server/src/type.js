@@ -23,7 +23,7 @@ const ProductType = new GraphQLObjectType({
     stockCount: { type: GraphQLNonNull(GraphQLInt) },
     soldCount: { type: GraphQLNonNull(GraphQLInt) },
     description: { type: GraphQLString },
-    isLiked: { type: GraphQLNonNull(GraphQLString) },
+    isLiked: { type: GraphQLNonNull(GraphQLBoolean) },
   }),
 })
 

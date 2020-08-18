@@ -7,11 +7,7 @@ const productListByCategoryResolver = async (parent, args) => {
     const query = `
         SELECT
           CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
-          THEN 'true' ELSE 'false' END as isLiked, 
-        p.id, p.name, p.coupang_product_id as coupangProductId, 
-        p.category, p.price, p.base_price as basePrice, p.discount_rate as discountRate, 
-        p.thumbnail_src as thumbnailSrc, p.stock_count as stockCount, 
-        p.sold_count as soldCount, p.description
+          THEN 'true' ELSE 'false' END as is_liked, p.*
         FROM product p 
         WHERE  category = ? LIMIT ? OFFSET ?`
     const [rows] = await conn.query(query, [args.userId, args.category, args.limit, args.offset])
@@ -37,11 +33,7 @@ const productListInCartResolver = async (parent, args) => {
       const query = `
         SELECT
           CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
-          THEN 'true' ELSE 'false' END as isLiked, 
-        p.id, p.name, p.coupang_product_id as coupangProductId, 
-        p.category, p.price, p.base_price as basePrice, p.discount_rate as discountRate, 
-        p.thumbnail_src as thumbnailSrc, p.stock_count as stockCount, 
-        p.sold_count as soldCount, p.description
+          THEN 'true' ELSE 'false' END as isLiked, p.*
         FROM product p 
         WHERE id = ?`
 

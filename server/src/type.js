@@ -34,9 +34,7 @@ const CartProductType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLID) },
     quantity: { type: GraphQLNonNull(GraphQLInt) },
     priceSum: { type: GraphQLNonNull(GraphQLInt) },
-    product: {
-      type: ProductType,
-    },
+    product: { type: ProductType },
   }),
 })
 
@@ -47,12 +45,6 @@ const changeStatusMessageType = new GraphQLObjectType({
     success: { type: GraphQLNonNull(GraphQLBoolean) },
   }),
 })
-
-// TODO
-// Add UserType
-// Add OrderType
-// Add OrderProductType
-// Add WishlistType
 
 module.exports = {
   ProductType,

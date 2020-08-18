@@ -7,6 +7,7 @@ query GetProductListByCategory($category: String!, $offset: Int!, $limit: Int!) 
     price
     name
     thumbnailSrc
+    coupangProductId
   }
 }
 `

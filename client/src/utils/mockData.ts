@@ -8,6 +8,7 @@ export const productList: ProductCardType[] = [
     price: 1390,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2449',
@@ -15,6 +16,7 @@ export const productList: ProductCardType[] = [
     price: 1290,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2459',
@@ -22,6 +24,7 @@ export const productList: ProductCardType[] = [
     price: 3090,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2469',
@@ -29,6 +32,7 @@ export const productList: ProductCardType[] = [
     price: 1390,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2479',
@@ -36,6 +40,7 @@ export const productList: ProductCardType[] = [
     price: 1290,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2839',
@@ -43,6 +48,7 @@ export const productList: ProductCardType[] = [
     price: 1390,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2489',
@@ -50,6 +56,7 @@ export const productList: ProductCardType[] = [
     price: 1290,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2939',
@@ -57,6 +64,7 @@ export const productList: ProductCardType[] = [
     price: 3090,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
   {
     id: '2239',
@@ -64,6 +72,7 @@ export const productList: ProductCardType[] = [
     price: 1390,
     thumbnailSrc:
       'https://thumbnail7.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2019/08/09/15/2/267a0947-5985-43d7-8e65-5c0520d892e0.jpg',
+    coupangProductId: '1676813901'
   },
 ]
 

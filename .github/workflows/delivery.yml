@@ -73,6 +73,6 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          command: cp ~/app/.env.prod ~/app/bmart-4/server/
+          cp ~/app/.env.prod ~/app/bmart-4/server/
           cd ~/app/bmart-4/server
           npm run start:prod

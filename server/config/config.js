@@ -4,7 +4,7 @@ const FILE_PATH = {
 }
 
 const logFormat =
-  ':remote-addr [:date[clf]] ":method :url" :status :res[content-length] - :response-time ms ":user-agent"';
+  ':remote-addr [:date[clf]] ":method :url" :status :res[content-length] - :response-time ms ":user-agent"'
 
 module.exports = {
   FILE_PATH,

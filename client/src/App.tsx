@@ -27,9 +27,10 @@ function App() {
                 <CategoryDashboard {...props} />
               )}
             />
-            <Route path="/">
-              <MainDashboard />
-            </Route>
+            <Route
+              path="/"
+              component={(props: RouteComponentProps) => <MainDashboard {...props} />}
+            />
           </Switch>
         </Router>
       </div>

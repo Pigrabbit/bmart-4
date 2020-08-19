@@ -90,7 +90,7 @@ export const CarouselBasic = (props: Props) => {
   }, [])
 
   return (
-    <StyledWrapper>
+    <StyledWrapper className="carousel-wrapper">
       <StyledCarousel className="carousel">
         <StyledContainer className="carousel-slide-container" ref={silderRef}>
           {bannerList.map((item, idx) => (

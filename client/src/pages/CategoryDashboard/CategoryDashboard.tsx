@@ -1,6 +1,4 @@
 import React from 'react'
-import { Header } from '../../components/Header'
-import { Footer } from '../../components/Footer'
 import { useQuery } from '@apollo/client'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
 import { VerticalList } from '../../components/VerticalList'
@@ -16,7 +14,7 @@ type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 export const CategoryDashboard = (props: Props) => {
   const { match } = props
   const category = CATEGORIES.filter((c) => String(c.id) === match.params.categoryId)[0]
-  const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
+  const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: {
       userId: 1,
       category: replaceHyphensWithSlashes(category.name),

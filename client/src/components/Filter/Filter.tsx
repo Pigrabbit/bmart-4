@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { FilterContext } from './FilterContext'
 
 type Props = {}
 
@@ -11,13 +12,16 @@ const StyledSelect = styled.select`
   float: right;
 `
 
+export const toggleFilter = () => {}
+
 export const Filter = (props: Props) => {
+  const filters = useContext(FilterContext)
   return (
     <StyledFilter>
       <StyledSelect>
-        <option>가격 높은 순</option>
-        <option>가격 낮은 순</option>
-        <option>판매량 높은 순</option>
+        {filters.map((filter, idx) => (
+          <option key={idx}>{filter.name}</option>
+        ))}
       </StyledSelect>
     </StyledFilter>
   )

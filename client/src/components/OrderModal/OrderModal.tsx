@@ -1,4 +1,11 @@
-import React, { useRef, MouseEvent, useState, useEffect } from 'react'
+import React, {
+  useRef,
+  MouseEvent,
+  useState,
+  useEffect,
+  useReducer,
+  ReducerWithoutAction,
+} from 'react'
 import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 
@@ -97,45 +104,66 @@ const StyledController = styled.div`
   }
 `
 
+type State = {
+  count: number
+  error: string
+  isErrorVisible: boolean
+}
+
+const initialState: State = {
+  count: 1,
+  error: '',
+  isErrorVisible: false,
+}
+
+type Action = {
+  type: string
+}
+
+const modalReducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case 'increment': {
+      return state.count >= MAX_PRODUCT_PURCHASE_LIMIT
+        ? {
+            ...state,
+            error: `최대 ${MAX_PRODUCT_PURCHASE_LIMIT}개 까지 구매 가능합니다`,
+            isErrorVisible: true,
+          }
+        : {
+            ...state,
+            isErrorVisible: false,
+            count: state.count + 1,
+          }
+    }
+    case 'decrement': {
+      return state.count <= MIN_PRODUCT_PURCHASE_LIMIT
+        ? {
+            ...state,
+            error: '최소 구매 수량입니다',
+            isErrorVisible: true,
+          }
+        : {
+            ...state,
+            isErrorVisible: false,
+            count: state.count - 1,
+          }
+    }
+    default:
+      break
+  }
+  return state
+}
+
 export const OrderModal = (props: Props) => {
   const { name, price, thumbnailSrc } = props
   const { setIsModalVisible } = props
 
-  const [count, setCount] = useState(1)
-  const [isErrorVisible, setIsErrorVisible] = useState(false)
-  const [error, setError] = useState('')
-
+  const [state, dispatch] = useReducer(modalReducer, initialState)
   const modalOverlayRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (count >= MIN_PRODUCT_PURCHASE_LIMIT && count <= MAX_PRODUCT_PURCHASE_LIMIT) {
-      setIsErrorVisible(false)
-      setError('')
-    }
-  }, [count])
 
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     if (e.target === modalOverlayRef.current) setIsModalVisible(false)
-  }
-
-  const clickDecrementBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
-    if (count <= MIN_PRODUCT_PURCHASE_LIMIT) {
-      setError('최소 구매 수량입니다')
-      setIsErrorVisible(true)
-      return
-    }
-    setCount(count - 1)
-  }
-
-  const clickIncrementBtnHandler = (e: MouseEvent<HTMLButtonElement>) => {
-    // 비즈니스 로직으로 최대 구매수량 제한 (B마트: 10개)
-    if (count >= MAX_PRODUCT_PURCHASE_LIMIT) {
-      setError(`최대 ${MAX_PRODUCT_PURCHASE_LIMIT}개 까지 구매 가능합니다`)
-      setIsErrorVisible(true)
-      return
-    }
-    setCount(count + 1)
   }
 
   return (
@@ -150,19 +178,19 @@ export const OrderModal = (props: Props) => {
         <StyledController className="order-modal-controller">
           <button
             className="order-modal-controller-decrement-btn"
-            onClick={clickDecrementBtnHandler}
+            onClick={() => dispatch({ type: 'decrement' })}
           >
             -
           </button>
-          <p className="order-modal-controller-quantity">{count}</p>
+          <p className="order-modal-controller-quantity">{state.count}</p>
           <button
             className="order-modal-controller-increment-btn"
-            onClick={clickIncrementBtnHandler}
+            onClick={() => dispatch({ type: 'increment' })}
           >
             +
           </button>
         </StyledController>
-        {isErrorVisible ? <StyledModalError>{error}</StyledModalError> : ''}
+        {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
         <StyledModalOrderButton className="order-modal-content-order-btn">
           주문하기
         </StyledModalOrderButton>

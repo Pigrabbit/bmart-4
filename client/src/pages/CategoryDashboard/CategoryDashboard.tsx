@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
 import { useQuery } from '@apollo/client'
@@ -14,7 +14,9 @@ type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 
 export const CategoryDashboard = (props: Props) => {
   const { match } = props
+  const [filter, setFilter] = useState(0)
   const category = CATEGORIES.filter((c) => String(c.id) === match.params.categoryId)[0]
+
   const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: {
       category: replaceHyphensWithSlashes(category.name),
@@ -22,13 +24,21 @@ export const CategoryDashboard = (props: Props) => {
       limit: 100,
     },
   })
+
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
+
+  const changeFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilter(parseInt(event.target.value))
+    console.log('new filter is', event.target.value)
+  }
+
   return (
     <div>
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />
-      <Filter />
-      <VerticalList title="" productList={productListByCategory} />
+      <Filter fn={changeFilter} />
+      <div>current filter is {filter}</div>
+      <VerticalList title="" filter={filter} productList={productListByCategory} />
       <Footer />
     </div>
   )

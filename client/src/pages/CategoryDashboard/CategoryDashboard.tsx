@@ -7,14 +7,14 @@ import { VerticalList } from '../../components/VerticalList'
 import { Filter } from '../../components/Filter'
 import { RouteComponentProps } from 'react-router-dom'
 import { CategoryDashboardRouteProps } from '../../types/routeProps'
-import { replaceHyphensWithCommas, replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
+import { replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
 import { CATEGORIES } from '../../utils/constants'
 
 type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 
 export const CategoryDashboard = (props: Props) => {
   const { match } = props
-  const category = CATEGORIES.filter(c => String(c.id) === match.params.categoryId)[0]
+  const category = CATEGORIES.filter((c) => String(c.id) === match.params.categoryId)[0]
   const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: {
       category: replaceHyphensWithSlashes(category.name),
@@ -24,7 +24,6 @@ export const CategoryDashboard = (props: Props) => {
   })
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
-  console.log(productListByCategory)
   return (
     <div>
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />

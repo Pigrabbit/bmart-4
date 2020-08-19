@@ -22,29 +22,21 @@ const productListByCategoryResolver = async (parent, args) => {
 const productListInCartResolver = async (parent, args) => {
   const conn = await pool.getConnection()
   try {
-    const productInCartquery = 'SELECT * FROM order_product WHERE order_id = ?'
+    const query = `
+      SELECT o.id, o.quantity, o. price_sum, p.* 
+      FROM order_product o
+      JOIN product p
+      ON o.product_id = p.id
+      WHERE o.order_id = ?
+    `
 
-    const [orderProducts] = await conn.query(productInCartquery, [args.orderId])
-    if (!orderProducts.length) return []
-
-    const result = []
-
-    for (const orderProduct of orderProducts) {
-      const query = `
-        SELECT
-          CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
-          THEN 'true' ELSE 'false' END as isLiked, p.*
-        FROM product p 
-        WHERE id = ?`
-
-      const [rows] = await conn.query(query, [args.userId, orderProduct.product_id])
-      result.push({
-        id: orderProduct.id,
-        quantity: orderProduct.quantity,
-        priceSum: orderProduct.price_sum,
-        product: new GetProductDTO(rows[0]),
-      })
-    }
+    const [rows] = await conn.query(query, [args.userId, args.orderId])
+    const result = rows.map((row) => ({
+      id: row.id,
+      quantity: row.quantity,
+      priceSum: row.price_sum,
+      product: new GetProductDTO(row),
+    }))
 
     return result
   } finally {

@@ -8,7 +8,7 @@ type Props = {
   setIsModalVisible: (flag: boolean) => void
 }
 
-const StyledOrderModal = styled.div`
+const StyledContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -47,7 +47,7 @@ const StyledModalContent = styled.div`
   grid-template-columns: 3fr 6fr 3fr;
   justify-items: stretch;
   align-items: center;
-  
+
   .order-modal-content-thumbnail {
     width: 100%;
   }
@@ -110,7 +110,7 @@ export const OrderModal = (props: Props) => {
   }
 
   return (
-    <StyledOrderModal className="order-modal" onClick={clickOutsideModalHandler}>
+    <StyledContainer className="order-modal" onClick={clickOutsideModalHandler}>
       <div className="order-modal-overlay" ref={modalOverlayRef} />
       <StyledModalContent className="order-modal-content">
         <img className="order-modal-content-thumbnail" src={thumbnailSrc} />
@@ -127,6 +127,6 @@ export const OrderModal = (props: Props) => {
           주문하기
         </StyledModalOrderButton>
       </StyledModalContent>
-    </StyledOrderModal>
+    </StyledContainer>
   )
 }

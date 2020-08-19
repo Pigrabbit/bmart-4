@@ -1,4 +1,4 @@
-import React, { useState, useRef, MouseEvent } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
@@ -53,17 +53,11 @@ const mockProductData = {
 export const ProductDetail = (props: Props) => {
   const { match, location } = props
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const modalOverlayRef = useRef<HTMLDivElement>(null)
 
   const state: StateType = location.state ? location.state : null
   const { coupangProductId } = state
 
   const { name, price } = mockProductData
-
-  const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    if (e.target === modalOverlayRef.current) setIsModalVisible(!isModalVisible)
-  }
 
   return (
     <StyledContainer className="product-detail">

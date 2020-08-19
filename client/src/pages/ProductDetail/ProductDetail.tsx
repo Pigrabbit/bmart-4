@@ -53,6 +53,7 @@ const mockProductData = {
 export const ProductDetail = (props: Props) => {
   const { match, location } = props
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [savedCount, setSavedCount] = useState(1)
 
   const state: StateType = location.state ? location.state : null
   const { coupangProductId } = state
@@ -74,6 +75,8 @@ export const ProductDetail = (props: Props) => {
           name={name}
           price={price}
           thumbnailSrc={productBannerList[0].src}
+          savedCount={savedCount}
+          setSavedCount={setSavedCount}
           setIsModalVisible={setIsModalVisible}
         />
       ) : (

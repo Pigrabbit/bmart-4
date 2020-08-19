@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { FilterContext } from './FilterContext'
+import { SorterContext } from './SorterContext'
 
 type Props = {
   fn: (event: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
-const StyledFilter = styled.div`
+const StyledSorter = styled.div`
   width: 100%;
 `
 
@@ -14,17 +14,17 @@ const StyledSelect = styled.select`
   float: right;
 `
 
-export const Filter = (props: Props) => {
-  const filters = useContext(FilterContext)
+export const Sorter = (props: Props) => {
+  const sorters = useContext(SorterContext)
   return (
-    <StyledFilter>
+    <StyledSorter>
       <StyledSelect onChange={props.fn}>
-        {filters.map((filter, idx) => (
-          <option value={filter.id} key={idx}>
-            {filter.name}
+        {sorters.map((sorter, idx) => (
+          <option value={sorter.id} key={idx}>
+            {sorter.name}
           </option>
         ))}
       </StyledSelect>
-    </StyledFilter>
+    </StyledSorter>
   )
 }

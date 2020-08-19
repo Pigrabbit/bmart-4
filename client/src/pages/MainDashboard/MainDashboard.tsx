@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { RouteComponentProps } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
 import { CategoryList } from '../../components/CategoryList'
 import { HorizontalList } from '../../components/HorizontalList'
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { CategoryListSection } from './CategoryListSection'
 
 import { bigBannerList, smallBannerList } from '../../utils/mockData'
@@ -21,7 +22,8 @@ export const MainDashboard = (props: Props) => {
   const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: { userId: 1, category: '과일', offset: 10, limit: 10 },
   })
-  if (loading) return <p>Loading...</p>
+
+  if (loading) return <LoadingIndicator />
   const { productListByCategory } = data
 
   return (

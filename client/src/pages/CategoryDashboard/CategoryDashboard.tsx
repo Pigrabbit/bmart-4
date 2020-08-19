@@ -1,13 +1,16 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
-import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
-import { VerticalList } from '../../components/VerticalList'
-import { Filter } from '../../components/Filter'
 import { RouteComponentProps } from 'react-router-dom'
-import { CategoryDashboardRouteProps } from '../../types/routeProps'
-import { replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
-import { CATEGORIES } from '../../utils/constants'
+
+import { Filter } from '../../components/Filter'
 import { Dashboard } from '../../components/Dashboard'
+import { VerticalList } from '../../components/VerticalList'
+import { LoadingIndicator } from '../../components/LoadingIndicator'
+
+import { CATEGORIES } from '../../utils/constants'
+import { CategoryDashboardRouteProps } from '../../types/routeProps'
+import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
+import { replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
 
 type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 
@@ -22,7 +25,8 @@ export const CategoryDashboard = (props: Props) => {
       limit: 100,
     },
   })
-  if (loading) return <p>Loading...</p>
+
+  if (loading) return <LoadingIndicator />
   const { productListByCategory } = data
 
   return (

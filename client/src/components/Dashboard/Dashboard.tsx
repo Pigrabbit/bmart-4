@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Header } from '../Header'
 import { Footer } from '../Footer'
@@ -12,9 +12,11 @@ type Props = {
 const StyledContainer = styled.div``
 
 export const Dashboard = (props: Props) => {
+  const { title } = props
+
   return (
     <StyledContainer>
-      <Header title={props.title}></Header>
+      <Header title={title}></Header>
       {props.children}
       <Footer></Footer>
       <Navbar />

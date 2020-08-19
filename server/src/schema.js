@@ -39,7 +39,6 @@ const RootQueryType = new GraphQLObjectType({
       description: '장바구니 상품 리스트',
       args: {
         userId: { type: GraphQLNonNull(GraphQLID) },
-        orderId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve: productListInCartResolver,
     },
@@ -73,7 +72,6 @@ const RootMutationType = new GraphQLObjectType({
       description: '카트에 담기 기능',
       args: {
         userId: { type: GraphQLNonNull(GraphQLID) },
-        orderId: { type: GraphQLNonNull(GraphQLID) },
         productId: { type: GraphQLNonNull(GraphQLID) },
         quantity: { type: GraphQLNonNull(GraphQLInt) },
       },

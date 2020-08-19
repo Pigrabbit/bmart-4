@@ -23,14 +23,14 @@ const productListInCartResolver = async (parent, args) => {
   const conn = await pool.getConnection()
   try {
     const query = `
-      SELECT o.id, o.quantity, o. price_sum, p.* 
-      FROM order_product o
-      JOIN product p
-      ON o.product_id = p.id
-      WHERE o.order_id = ?
+      SELECT op.id, op.quantity, op.price_sum, p.* 
+      FROM order_product op
+      JOIN product p ON op.product_id = p.id
+      JOIN \`order\` o ON o.id = op.order_id
+      WHERE o.user_id = ?;
     `
 
-    const [rows] = await conn.query(query, [args.userId, args.orderId])
+    const [rows] = await conn.query(query, [args.userId])
     const result = rows.map((row) => ({
       id: row.id,
       quantity: row.quantity,
@@ -83,8 +83,14 @@ const addProductToCartResolver = async (parent, args) => {
 
     const totalPrice = product[0].price * args.quantity
 
+    const findOrderQuery = 'SELECT * FROM `order` WHERE user_id = ?'
+    const [order] = await conn.query(findOrderQuery, [args.userId])
+    if (!order.length) return 0
+
+    const orderId = order[0].id
+
     const findProductInCart = 'SELECT * FROM order_product WHERE order_id = ? AND product_id = ?'
-    const [existProduct] = await conn.query(findProductInCart, [args.orderId, args.productId])
+    const [existProduct] = await conn.query(findProductInCart, [orderId, args.productId])
 
     // 이미 장바구니에 있는 상품이라면
     if (existProduct.length) {
@@ -103,12 +109,7 @@ const addProductToCartResolver = async (parent, args) => {
       const query =
         'INSERT INTO order_product (order_id, product_id, quantity, price_sum) VALUES (?, ?, ?, ?);'
 
-      const [rows] = await conn.query(query, [
-        args.orderId,
-        args.productId,
-        args.quantity,
-        totalPrice,
-      ])
+      const [rows] = await conn.query(query, [orderId, args.productId, args.quantity, totalPrice])
       const { insertId } = rows
 
       return insertId

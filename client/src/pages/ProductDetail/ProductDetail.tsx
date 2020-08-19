@@ -31,7 +31,7 @@ const StyledDetailInfo = styled.div`
   flex-direction: column;
   align-content: flex-start;
   justify-items: center;
-  height: 300px;
+  height: 250px;
 
   .product-detail-name {
     font-size: 36px;
@@ -45,7 +45,7 @@ const StyledDetailInfo = styled.div`
 `
 const StyledOrderPanel = styled.div`
   img.order-modal-content-thumbnail {
-    width: 50px;
+    width: 100%;
   }
 `
 const StyledOrderModal = styled.div`
@@ -81,6 +81,51 @@ const StyledOrderModal = styled.div`
     background-color: white;
     border-radius: 20px 20px 0 0;
     animation: 0.3s ease-in slideUpModal;
+  }
+
+  .order-modal-content-row {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: 3fr 6fr 3fr;
+    justify-items: stretch;
+    align-items: center;
+  }
+
+  .order-modal-content-row-data {
+    margin: 0 15px;
+    p {
+      font-size: 16px;
+    }
+    .order-modal-content-row-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .order-modal-content-row-price {
+      font-weight: 300;
+    }
+  }
+
+  .order-modal-controller {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50%;
+    border-radius: 20px;
+    background-color: #bbb;
+    font-size: 12px;
+
+    button {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .order-modal-content-order-btn {
+    grid-column: 1/13;
+    margin-top: 30px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    padding: 15px 0;
   }
 `
 
@@ -121,10 +166,19 @@ export const ProductDetail = (props: Props) => {
         <StyledOrderModal className="order-modal" onClick={clickOutsideModalHandler}>
           <div className="order-modal-overlay" ref={modalOverlayRef} />
           <StyledOrderPanel className="order-modal-content">
-            <img className="order-modal-content-thumbnail" src={productBannerList[0].src} />
-            <p className="order-modal-content-name">{name}</p>
-            <p className="order-modal-content-price">{price}</p>
-            {/* <button className= */}
+            <div className="order-modal-content-row">
+              <img className="order-modal-content-thumbnail" src={productBannerList[0].src} />
+              <div className="order-modal-content-row-data">
+                <p className="order-modal-content-row-name">{name}</p>
+                <p className="order-modal-content-row-price">{price}원</p>
+              </div>
+              <div className="order-modal-controller">
+                <button className="order-modal-controller-decrement-btn">-</button>
+                <p className="order-modal-controller-quantity">1</p>
+                <button className="order-modal-controller-increment-btn">+</button>
+              </div>
+              <button className="order-modal-content-order-btn">주문하기</button>
+            </div>
           </StyledOrderPanel>
         </StyledOrderModal>
       ) : (

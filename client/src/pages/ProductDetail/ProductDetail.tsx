@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
 import { productBannerList } from '../../utils/mockData'
+import { OrderModal } from '../../components/OrderModal'
 
 type Props = {} & RouteComponentProps<ProductDetailRouteProps>
 
@@ -43,95 +44,10 @@ const StyledDetailInfo = styled.div`
     font-size: 18px;
   }
 `
-const StyledOrderPanel = styled.div`
-  img.order-modal-content-thumbnail {
-    width: 100%;
-  }
-`
-const StyledOrderModal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  .order-modal-overlay {
-    background: rgba(0, 0, 0, 0.4);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-  }
-
-  @keyframes slideUpModal {
-    0% {
-      transform: translateY(400px);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-
-  .order-modal-content {
-    position: absolute;
-    bottom: 0;
-    padding: 16px;
-
-    width: 100%;
-    height: 40%;
-    background-color: white;
-    border-radius: 20px 20px 0 0;
-    animation: 0.3s ease-in slideUpModal;
-  }
-
-  .order-modal-content-row {
-    margin-top: 15px;
-    display: grid;
-    grid-template-columns: 3fr 6fr 3fr;
-    justify-items: stretch;
-    align-items: center;
-  }
-
-  .order-modal-content-row-data {
-    margin: 0 15px;
-    p {
-      font-size: 16px;
-    }
-    .order-modal-content-row-name {
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-    .order-modal-content-row-price {
-      font-weight: 300;
-    }
-  }
-
-  .order-modal-controller {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 50%;
-    border-radius: 20px;
-    background-color: #bbb;
-    font-size: 12px;
-
-    button {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .order-modal-content-order-btn {
-    grid-column: 1/13;
-    margin-top: 30px;
-    border: 1px solid #bbb;
-    border-radius: 5px;
-    padding: 15px 0;
-  }
-`
 
 const mockProductData = {
   name: '건강 샐러드',
-  price: '3,500',
+  price: 3500,
 }
 
 export const ProductDetail = (props: Props) => {
@@ -156,31 +72,16 @@ export const ProductDetail = (props: Props) => {
         <p className="product-detail-name">{name}</p>
         <p className="product-detail-price">{price}원</p>
       </StyledDetailInfo>
-      <button
-        className="product-detail-order-btn"
-        onClick={() => setIsModalVisible(!isModalVisible)}
-      >
+      <button className="product-detail-order-btn" onClick={() => setIsModalVisible(true)}>
         주문하기
       </button>
       {isModalVisible ? (
-        <StyledOrderModal className="order-modal" onClick={clickOutsideModalHandler}>
-          <div className="order-modal-overlay" ref={modalOverlayRef} />
-          <StyledOrderPanel className="order-modal-content">
-            <div className="order-modal-content-row">
-              <img className="order-modal-content-thumbnail" src={productBannerList[0].src} />
-              <div className="order-modal-content-row-data">
-                <p className="order-modal-content-row-name">{name}</p>
-                <p className="order-modal-content-row-price">{price}원</p>
-              </div>
-              <div className="order-modal-controller">
-                <button className="order-modal-controller-decrement-btn">-</button>
-                <p className="order-modal-controller-quantity">1</p>
-                <button className="order-modal-controller-increment-btn">+</button>
-              </div>
-              <button className="order-modal-content-order-btn">주문하기</button>
-            </div>
-          </StyledOrderPanel>
-        </StyledOrderModal>
+        <OrderModal
+          name={name}
+          price={price}
+          thumbnailSrc={productBannerList[0].src}
+          setIsModalVisible={setIsModalVisible}
+        />
       ) : (
         ''
       )}

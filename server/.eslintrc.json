@@ -10,6 +10,7 @@
   },
   "rules": {
     "comma-dangle": ["error", "only-multiline"],
-    "camelcase": "off"
+    "camelcase": "off",
+    "space-before-function-paren": "off"
   }
 }

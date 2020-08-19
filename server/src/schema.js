@@ -8,11 +8,15 @@ const {
   GraphQLNonNull,
 } = require('graphql')
 
-const { ProductType, DeleteMessageType } = require('./type')
+const { ProductType, CartProductType, changeStatusMessageType } = require('./type')
 const {
   likeProductResolver,
   dislikeProductResolver,
   productListByCategoryResolver,
+  addProductToCartResolver,
+  modifyProductQuantityResolver,
+  deleteProductFromCartResolver,
+  productListInCartResolver,
 } = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
@@ -30,10 +34,14 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: productListByCategoryResolver,
     },
-    // TODO
-    // Add productList field
-    // Add wishlist field
-    // Add order field
+    productListInCart: {
+      type: new GraphQLList(CartProductType),
+      description: '장바구니 상품 리스트',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: productListInCartResolver,
+    },
   }),
 })
 
@@ -51,13 +59,41 @@ const RootMutationType = new GraphQLObjectType({
       resolve: likeProductResolver,
     },
     dislikeProduct: {
-      type: DeleteMessageType,
+      type: changeStatusMessageType,
       description: '유저 찜 취소 기능',
       args: {
         userId: { type: GraphQLNonNull(GraphQLID) },
         productId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve: dislikeProductResolver,
+    },
+    addProductToCart: {
+      type: GraphQLNonNull(GraphQLID),
+      description: '카트에 담기 기능',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        productId: { type: GraphQLNonNull(GraphQLID) },
+        quantity: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: addProductToCartResolver,
+    },
+    modifyProductQuantity: {
+      type: changeStatusMessageType,
+      description: '카트에 담긴 상품 수량 수정 기능',
+      args: {
+        productId: { type: GraphQLNonNull(GraphQLID) },
+        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+        quantity: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: modifyProductQuantityResolver,
+    },
+    deleteProductFromCart: {
+      type: changeStatusMessageType,
+      description: '카트에 담긴 상품 삭제 기능',
+      args: {
+        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: deleteProductFromCartResolver,
     },
   }),
 })

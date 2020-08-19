@@ -27,21 +27,27 @@ const ProductType = new GraphQLObjectType({
   }),
 })
 
-const DeleteMessageType = new GraphQLObjectType({
-  name: 'DeleteMessage',
-  description: '삭제 성공 여부 메시지',
+const CartProductType = new GraphQLObjectType({
+  name: 'CartProduct',
+  description: 'This represents product in cart',
+  fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLID) },
+    quantity: { type: GraphQLNonNull(GraphQLInt) },
+    priceSum: { type: GraphQLNonNull(GraphQLInt) },
+    product: { type: ProductType },
+  }),
+})
+
+const changeStatusMessageType = new GraphQLObjectType({
+  name: 'changeStatusMessage',
+  description: '수정/삭제 성공 여부 메시지',
   fields: () => ({
     success: { type: GraphQLNonNull(GraphQLBoolean) },
   }),
 })
 
-// TODO
-// Add UserType
-// Add OrderType
-// Add OrderProductType
-// Add WishlistType
-
 module.exports = {
   ProductType,
-  DeleteMessageType,
+  CartProductType,
+  changeStatusMessageType,
 }

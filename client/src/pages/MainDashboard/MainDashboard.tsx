@@ -28,14 +28,14 @@ export const MainDashboard = (props: Props) => {
     <StyledContainer className="dashboard">
       <Header />
       <Navbar />
-      <Carousel bannerList={bigBannerList} autoSlide={true}/>
+      <Carousel bannerList={bigBannerList} />
       <CategoryList />
       <HorizontalList
         title="성현님을 위해 준비한 상품"
         productList={productListByCategory}
         double={true}
       ></HorizontalList>
-      <Carousel bannerList={smallBannerList} autoSlide={true}/>
+      <Carousel bannerList={smallBannerList} />
       <HorizontalList title="동혁님을 위해 준비한 상품" productList={productListByCategory} />
       <VerticalList title="성현님을 위해 준비한 상품" productList={productListByCategory} />
       <CategoryListSection />

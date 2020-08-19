@@ -31,6 +31,7 @@ const RootQueryType = new GraphQLObjectType({
         category: { type: GraphQLString },
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt },
+        sorter: { type: GraphQLInt },
       },
       resolve: productListByCategoryResolver,
     },

@@ -19,7 +19,7 @@ const StyledContainer = styled.main``
 
 export const MainDashboard = (props: Props) => {
   const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
-    variables: { category: '과일', offset: 10, limit: 10 },
+    variables: { category: '과일', offset: 10, limit: 10, sorter: 0 },
   })
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data
@@ -37,7 +37,11 @@ export const MainDashboard = (props: Props) => {
       ></HorizontalList>
       <Carousel bannerList={smallBannerList} />
       <HorizontalList title="동혁님을 위해 준비한 상품" productList={productListByCategory} />
-      <VerticalList title="성현님을 위해 준비한 상품" productList={productListByCategory} />
+      <VerticalList
+        sorter={0}
+        title="성현님을 위해 준비한 상품"
+        productList={productListByCategory}
+      />
       <CategoryListSection />
       <Footer />
     </StyledContainer>

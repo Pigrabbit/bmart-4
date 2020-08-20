@@ -81,7 +81,7 @@ export const ProductDetail = (props: Props) => {
           id={id}
           name={name}
           price={price}
-          thumbnailSrc={productBannerList[0].src}
+          thumbnailSrc={productDetailImgList[0].src}
           savedCount={savedCount}
           setSavedCount={setSavedCount}
           setIsModalVisible={setIsModalVisible}

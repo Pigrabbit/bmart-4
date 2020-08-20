@@ -120,10 +120,6 @@ type Action = {
   type: string
 }
 
-type Payload = {
-  setSavedCount: (count: number) => void
-}
-
 const modalReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'increment': {

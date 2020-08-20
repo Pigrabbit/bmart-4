@@ -18,7 +18,7 @@ export const CategoryDashboard = (props: Props) => {
 
   // useState를 활용해서 sorter 상태 관리
   const [sorter, setSorter] = useState(0)
-  const changeSorter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSorter(parseInt(event.target.value))
   }
 
@@ -35,7 +35,7 @@ export const CategoryDashboard = (props: Props) => {
     return (
       <div>
         <Header title={`${replaceSlashesWithCommas(category.name)}`} />
-        <Sorter fn={changeSorter} />
+        <Sorter sorterChangeHandler={sorterChangeHandler} />
         <div>Loading...</div>
         <Footer />
       </div>
@@ -45,7 +45,7 @@ export const CategoryDashboard = (props: Props) => {
   return (
     <div>
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />
-      <Sorter fn={changeSorter} />
+      <Sorter sorterChangeHandler={sorterChangeHandler} />
       <div>current sorter is {sorter}</div>
       <VerticalList title="" sorter={sorter} productList={productListByCategory} />
       <Footer />

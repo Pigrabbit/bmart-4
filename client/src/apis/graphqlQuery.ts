@@ -73,12 +73,12 @@ export const MODIFY_PRODUCT_QUANTITY = gql`
 `
 
 export type DeleteProductFromCartVars = {
-  orderProductId: string
+  orderProductIds: string[]
 }
 
 export const DELETE_PRODUCT_FROM_CART = gql`
-  mutation DeleteProductFromCart($orderProductId: ID!) {
-    deleteProductFromCart(orderProductId: $orderProductId) {
+  mutation DeleteProductFromCart($orderProductIds: [ID]!) {
+    deleteProductFromCart(orderProductIds: $orderProductIds) {
       success
     }
   }

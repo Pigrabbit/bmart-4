@@ -148,7 +148,7 @@ export const OrderCard = (props: Props) => {
         </label>
         <button
           className="remove-btn"
-          onClick={() => props.deleteProductFromCartHandler({ orderProductId: id })}
+          onClick={() => props.deleteProductFromCartHandler({ orderProductIds: [id] })}
         >
           삭제
         </button>

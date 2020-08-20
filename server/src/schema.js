@@ -92,7 +92,7 @@ const RootMutationType = new GraphQLObjectType({
       type: changeStatusMessageType,
       description: '카트에 담긴 상품 삭제 기능',
       args: {
-        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+        orderProductIds: { type: GraphQLNonNull(GraphQLList(GraphQLID)) },
       },
       resolve: deleteProductFromCartResolver,
     },

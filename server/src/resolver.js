@@ -180,16 +180,20 @@ const modifyProductQuantityResolver = async (parent, args) => {
 }
 
 const deleteProductFromCartResolver = async (parent, args) => {
-  const { orderProductId } = args
+  const { orderProductIds } = args
   const conn = await pool.getConnection()
 
   try {
     const query = 'DELETE FROM order_product WHERE id = ?'
+    let deletedRows = 0
 
-    const [rows] = await conn.query(query, [orderProductId])
-    const { affectedRows } = rows
+    for (const orderProductId of orderProductIds) {
+      const [rows] = await conn.query(query, [orderProductId])
+      const { affectedRows } = rows
+      deletedRows += affectedRows
+    }
 
-    return { success: affectedRows === 1 }
+    return { success: deletedRows === orderProductIds.length }
   } catch (err) {
     throw new Error(errorName.INTERNAL_SERVER_ERROR)
   } finally {

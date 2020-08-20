@@ -1,6 +1,8 @@
 import React, { useRef, MouseEvent, useReducer, useEffect } from 'react'
 import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
+import { useMutation } from '@apollo/client'
+import { ADD_PRODUCT_TO_CART } from '../../apis/graphqlQuery'
 
 type Props = {
   id: number
@@ -171,9 +173,19 @@ export const OrderModal = (props: Props) => {
     props.setSavedCount(state.count)
   }, [state.count])
 
+  const [addProductToCart, { data }] = useMutation(ADD_PRODUCT_TO_CART)
+
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     if (e.target === modalOverlayRef.current) props.setIsModalVisible(false)
+  }
+
+  const clickOrderButtonHandler = () => {
+    addProductToCart({
+      variables: { productId: id, quantity: state.count },
+    })
+    props.setIsModalVisible(false)
+    props.setSavedCount(1)
   }
 
   return (
@@ -205,7 +217,10 @@ export const OrderModal = (props: Props) => {
           </button>
         </StyledController>
         {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
-        <StyledModalOrderButton className="order-modal-content-order-btn">
+        <StyledModalOrderButton
+          className="order-modal-content-order-btn"
+          onClick={clickOrderButtonHandler}
+        >
           주문하기
         </StyledModalOrderButton>
       </StyledModalContent>

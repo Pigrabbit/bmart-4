@@ -34,6 +34,7 @@ const productListInCartResolver = async (parent, args) => {
 const addProductToCartResolver = async (parent, args) => {
   const { userId, productId, quantity } = args
   if (quantity <= 0) {
+    console.log('less quantity')
     throw new Error(errorName.BAD_REQUEST)
   }
 

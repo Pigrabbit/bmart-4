@@ -27,3 +27,9 @@ export const GET_PRODUCT_DETAIL_IMG_SRC_LIST = gql`
     }
   }
 `
+
+export const ADD_PRODUCT_TO_CART = gql`
+  mutation AddProductToCart($productId: ID!, $quantity: Int!) {
+    addProductToCart(userId: 1, productId: $productId, quantity: $quantity)
+  }
+`

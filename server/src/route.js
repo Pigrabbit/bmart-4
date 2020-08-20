@@ -10,7 +10,7 @@ router.get(
   graphqlHTTP({
     schema,
     graphiql: true,
-    formatError: (err) => {
+    customFormatErrorFn: (err) => {
       const error = getErrorCode(err.message)
       return { message: error.message, statusCode: error.statusCode }
     },

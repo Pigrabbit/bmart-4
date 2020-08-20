@@ -8,7 +8,7 @@ class GetProductDTO {
     discount_rate,
     sold_count,
     stock_count,
-    coupang_productId,
+    coupang_product_id,
     thumbnail_src,
     is_liked,
   }) {
@@ -20,7 +20,7 @@ class GetProductDTO {
     this.discountRate = discount_rate
     this.soldCount = sold_count
     this.stockCount = stock_count
-    this.coupangProductId = coupang_productId
+    this.coupangProductId = coupang_product_id
     this.thumbnailSrc = thumbnail_src
     this.isLiked = is_liked === 'true'
   }

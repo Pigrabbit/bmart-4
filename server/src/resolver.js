@@ -1,5 +1,6 @@
 const pool = require('../db')
 const { GetProductDTO } = require('./get-product-dto')
+const { GetProductDetailDTO } = require('./get-product-detail-dto')
 const { errorName } = require('./errors/error-type')
 
 const productListByCategoryResolver = async (parent, args) => {
@@ -197,6 +198,23 @@ const deleteProductFromCartResolver = async (parent, args) => {
   }
 }
 
+const productDetailImgResolver = async (parent, args) => {
+  const { coupangProductId } = args
+  const conn = await pool.getConnection()
+  try {
+    const query = 'SELECT * FROM product_detail_image WHERE coupang_product_id=?'
+    const [rows] = await conn.query(query, [coupangProductId])
+
+    const result = rows.map((row) => new GetProductDetailDTO(row))
+
+    return result
+  } catch {
+    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+  } finally {
+    conn.release()
+  }
+}
+
 module.exports = {
   likeProductResolver,
   dislikeProductResolver,
@@ -205,4 +223,5 @@ module.exports = {
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,
+  productDetailImgResolver,
 }

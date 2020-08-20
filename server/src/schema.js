@@ -22,6 +22,7 @@ const {
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,
   productListInCartResolver,
+  productDetalImgResolver
 } = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
@@ -54,6 +55,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         coupangProductId: { type: GraphQLNonNull(GraphQLInt) },
       },
+      resolve: productDetalImgResolver,
     },
   }),
 })

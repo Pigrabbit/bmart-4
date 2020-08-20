@@ -20,10 +20,8 @@ export const CategoryDashboard = (props: Props) => {
   const [sorter, setSorter] = useState(0)
   const changeSorter = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSorter(parseInt(event.target.value))
-    console.log('new sorter is', event.target.value)
   }
 
-  console.log(sorter)
   const { loading, error, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: {
       category: replaceHyphensWithSlashes(category.name),
@@ -33,7 +31,15 @@ export const CategoryDashboard = (props: Props) => {
     },
   })
 
-  if (loading) return <p>Loading...</p>
+  if (loading)
+    return (
+      <div>
+        <Header title={`${replaceSlashesWithCommas(category.name)}`} />
+        <Sorter fn={changeSorter} />
+        <div>Loading...</div>
+        <Footer />
+      </div>
+    )
   const { productListByCategory } = data
 
   return (

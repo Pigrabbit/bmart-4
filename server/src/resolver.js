@@ -20,7 +20,6 @@ const productListByCategoryResolver = async (parent, args) => {
           sorter === 0 ? '' : sorter === 1 ? 'ORDER BY p.price ASC' : 'ORDER BY p.price DESC'
         } LIMIT ? OFFSET ?
         `
-    console.log(query)
     const [rows] = await conn.query(query, [userId, category, limit, offset])
     const result = rows.map((row) => new GetProductDTO(row))
 

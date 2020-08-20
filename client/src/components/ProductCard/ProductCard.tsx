@@ -45,7 +45,7 @@ export const ProductCard = (props: Props) => {
             }
           }}>
         <StyledThumbnail>
-          <img className="thumbnail" src={`http://${thumbnailSrc}`} alt="" />
+          <img className="thumbnail" src={thumbnailSrc} alt="" />
         </StyledThumbnail>
         <StyledContent>
           <div className="product-name">{name}</div>

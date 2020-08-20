@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
@@ -57,7 +57,7 @@ export const ProductDetail = (props: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
 
-  const { loading, error, data } = useQuery(GET_PRODUCT_DETAIL_IMG_SRC_LIST, {
+  const { loading, data } = useQuery(GET_PRODUCT_DETAIL_IMG_SRC_LIST, {
     variables: { coupangProductId: parseInt(coupangProductId) },
   })
   if (loading) return <LoadingIndicator />
@@ -78,6 +78,7 @@ export const ProductDetail = (props: Props) => {
       </StyledOrderButton>
       {isModalVisible ? (
         <OrderModal
+          id={id}
           name={name}
           price={price}
           thumbnailSrc={productBannerList[0].src}

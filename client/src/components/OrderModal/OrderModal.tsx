@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 
 type Props = {
+  id: number
   name: string
   price: number
   thumbnailSrc: string
@@ -161,7 +162,7 @@ const modalReducer = (state: State, action: Action) => {
 }
 
 export const OrderModal = (props: Props) => {
-  const { name, price, thumbnailSrc, savedCount } = props
+  const { id, name, price, thumbnailSrc, savedCount } = props
 
   const initialState: State = {
     count: savedCount,
@@ -180,7 +181,7 @@ export const OrderModal = (props: Props) => {
     <StyledContainer className="order-modal" onClick={clickOutsideModalHandler}>
       <div className="order-modal-overlay" ref={modalOverlayRef} />
       <StyledModalContent className="order-modal-content">
-        <img className="order-modal-content-thumbnail" src={thumbnailSrc} />
+        <img className="order-modal-content-thumbnail" src={thumbnailSrc} alt={`order-modal-thumbnail-${id}`} />
         <div className="order-modal-content-data">
           <p className="order-modal-content-name">{name}</p>
           <p className="order-modal-content-price">{price}원</p>

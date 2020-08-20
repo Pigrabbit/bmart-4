@@ -1,13 +1,6 @@
-const {
-  GraphQLObjectType,
-  GraphQLID,
-  GraphQLInt,
-  GraphQLNonNull,
-} = require('graphql')
+const { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = require('graphql')
 
-const {
-  changeStatusMessageType,
-} = require('../type')
+const { changeStatusMessageType } = require('../type')
 
 const { likeProductResolver, dislikeProductResolver } = require('../resolver/like-resolver')
 const {

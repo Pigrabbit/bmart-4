@@ -155,7 +155,7 @@ export const OrderCard = (props: Props) => {
       </StyledTitle>
       <StyledProductCard>
         <div className="thumbnail">
-          <img src={`http://${product.thumbnailSrc}`} alt="" />
+          <img src={product.thumbnailSrc} alt="" />
         </div>
         <div className="content">
           <div className="description">

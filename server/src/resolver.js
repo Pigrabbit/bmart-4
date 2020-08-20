@@ -3,11 +3,11 @@ const { GetProductDTO } = require('./get-product-dto')
 const { errorName } = require('./errors/error-type')
 
 const productListByCategoryResolver = async (parent, args) => {
-  const { userId, category, offset = 0, limit = 10, sorter = 0 } = args
+  const { userId, category, offset = 0, limit = 10, sorter } = args
   if (offset < 0 || limit < 0) {
     throw new Error(errorName.BAD_REQUEST)
   }
-
+  console.log(args)
   const conn = await pool.getConnection()
 
   try {
@@ -17,9 +17,14 @@ const productListByCategoryResolver = async (parent, args) => {
           THEN 'true' ELSE 'false' END as is_liked, p.*
         FROM product p 
         WHERE category = ? ${
-          sorter === 0 ? '' : sorter === 1 ? 'ORDER BY p.price ASC' : 'ORDER BY p.price DESC'
+          sorter === 'sellCountDesc'
+            ? ''
+            : sorter === 'priceDesc'
+            ? 'ORDER BY p.price Desc'
+            : 'ORDER BY p.price ASC'
         } LIMIT ? OFFSET ?
         `
+    console.log(query, [userId, category, limit, offset, sorter])
     const [rows] = await conn.query(query, [userId, category, limit, offset])
     const result = rows.map((row) => new GetProductDTO(row))
 

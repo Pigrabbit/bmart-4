@@ -17,9 +17,9 @@ export const CategoryDashboard = (props: Props) => {
   const category = CATEGORIES.filter((c) => String(c.id) === match.params.categoryId)[0]
 
   // useState를 활용해서 sorter 상태 관리
-  const [sorter, setSorter] = useState(0)
+  const [sorter, setSorter] = useState('sellCountDesc')
   const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSorter(parseInt(event.target.value))
+    setSorter(event.target.value)
   }
 
   const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
@@ -27,7 +27,7 @@ export const CategoryDashboard = (props: Props) => {
       category: replaceHyphensWithSlashes(category.name),
       offset: 100,
       limit: 100,
-      sorter: Number(sorter),
+      sorter: sorter,
     },
   })
 
@@ -40,6 +40,7 @@ export const CategoryDashboard = (props: Props) => {
         <Footer />
       </div>
     )
+
   const { productListByCategory } = data
 
   return (
@@ -47,7 +48,7 @@ export const CategoryDashboard = (props: Props) => {
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />
       <Sorter sorterChangeHandler={sorterChangeHandler} />
       <div>current sorter is {sorter}</div>
-      <VerticalList title="" sorter={sorter} productList={productListByCategory} />
+      <VerticalList title="" productList={productListByCategory} />
       <Footer />
     </div>
   )

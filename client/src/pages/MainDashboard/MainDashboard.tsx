@@ -20,7 +20,7 @@ const StyledContainer = styled.main``
 
 export const MainDashboard = (props: Props) => {
   const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
-    variables: { category: '과일', offset: 10, limit: 10, sorter: 0 },
+    variables: { category: '과일', offset: 10, limit: 10, sorter: 'sellCountDesc' },
   })
 
   if (loading) return <LoadingIndicator />

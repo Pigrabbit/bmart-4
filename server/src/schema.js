@@ -43,6 +43,9 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: productListInCartResolver,
     },
+    productDetailImg: {
+      
+    }
   }),
 })
 

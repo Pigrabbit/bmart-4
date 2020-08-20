@@ -23,7 +23,7 @@ const StyledContainer = styled.div`
   padding: 0 ${STYLES.padding};
 `
 
-export const CartDashboardBody = (props: Props) => {
+export const CartDashboardOrderList = (props: Props) => {
   const { orderList, checkedProductList } = props
 
   const toggleCheckboxHandler = (productOrderId: string) => {

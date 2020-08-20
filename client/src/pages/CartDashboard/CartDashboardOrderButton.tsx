@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { STYLES, COLORS } from '../../utils/styleConstants'
+import { BAEDAL_TIP } from '../../utils/constants'
 
 type Props = {
   summary: { totalPrice: number; totalCount: number }
@@ -32,10 +33,18 @@ const StyledOrderButton = styled.button`
   border-radius: ${STYLES.smallRadius};
   color: white;
   background-color: ${COLORS.baemint};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 
-  & .order-count {
+  &:disabled {
+    background-color: #ccc;
+
+    .order-count {
+      display: none;
+    }
+  }
+
+  .order-count {
     border-radius: 50%;
     background-color: white;
     width: 19px;
@@ -48,14 +57,18 @@ const StyledOrderButton = styled.button`
 `
 
 export const CartDashboardOrderButton = (props: Props) => {
-  const { summary } = props
+  const { totalCount, totalPrice } = props.summary
+
+  const hurdle = totalCount === 0 || totalPrice < 5000
 
   return (
     <StyledContainer className="cart-dashboard-submit">
       <StyledButtonWrap>
-        <StyledOrderButton>
-          <div className="order-count">{summary.totalCount}</div>
-          {`${parseToLocalMoneyString(summary.totalPrice)}원 배달 주문하기`}
+        <StyledOrderButton disabled={hurdle}>
+          <div className="order-count">{totalCount}</div>
+          {!hurdle
+            ? `${parseToLocalMoneyString(totalPrice + BAEDAL_TIP)}원 배달 주문하기`
+            : '최소주문금액을 채워주세요'}
         </StyledOrderButton>
       </StyledButtonWrap>
     </StyledContainer>

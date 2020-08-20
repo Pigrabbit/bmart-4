@@ -13,10 +13,11 @@ import {
   ProductInCartVars,
 } from '../../apis/graphqlQuery'
 import { CartDashboardHeader } from './CartDashboardHeader'
-import { CartDashboardBody } from './CartDashboardBody'
+import { CartDashboardOrderList } from './CartDashboardOrderList'
 import { CartDashboardOrderButton } from './CartDashboardOrderButton'
 import { NotFound } from './NotFound'
 import { CartDashboardFooter } from './CartDashboardFooter'
+import { CartDashboardBill } from './CartDashboardBill'
 
 type Props = {} & RouteComponentProps
 
@@ -52,12 +53,14 @@ export const CartDashboard = (props: Props) => {
   const getSummary = useCallback(
     () => ({
       totalPrice:
-        data?.productListInCart.reduce((acc, cur) => {
-          return acc + cur.priceSum
+        data?.productListInCart.reduce((acc, cur, idx) => {
+          return checkedProductList.length && checkedProductList[idx].checked
+            ? acc + cur.priceSum
+            : acc
         }, 0) || 0,
-      totalCount: data?.productListInCart.length || 0,
+      totalCount: checkedProductList.filter((c) => c.checked).length || 0,
     }),
-    [data]
+    [data, checkedProductList]
   )
 
   const modifyProductQuantityHandler = (variables: ModifyProductQuantityVars) => {
@@ -76,13 +79,14 @@ export const CartDashboard = (props: Props) => {
             checkedProductList={checkedProductList}
             setCheckedProductList={setCheckedProductList}
           />
-          <CartDashboardBody
+          <CartDashboardOrderList
             orderList={data.productListInCart}
             checkedProductList={checkedProductList}
             setCheckedProductList={setCheckedProductList}
             modifyProductQuantityHandler={modifyProductQuantityHandler}
             deleteProductFromCartHandler={deleteProductFromCartHandler}
           />
+          <CartDashboardBill summary={getSummary()} />
           <CartDashboardFooter />
           <CartDashboardOrderButton summary={getSummary()} />
         </StyledContainer>

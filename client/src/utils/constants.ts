@@ -18,3 +18,5 @@ export const CATEGORIES = [
 ]
 
 export const NAV_ICON_LIST = ['home', 'search', 'favorite', 'history', 'cart']
+export const MAX_PRODUCT_PURCHASE_LIMIT = 10
+export const MIN_PRODUCT_PURCHASE_LIMIT = 1

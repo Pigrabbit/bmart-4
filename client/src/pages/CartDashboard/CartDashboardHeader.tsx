@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useMemo, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { STYLES } from '../../utils/styleConstants'
+import { CheckedProduct } from './CartDashboard'
 
-type Props = {}
+type Props = {
+  checkedProductList: CheckedProduct[]
+  setCheckedProductList: (checkedProductList: CheckedProduct[]) => void
+}
 
 const StyledContainer = styled.div`
   position: sticky;
@@ -33,10 +37,27 @@ const StyledCheckbox = styled.label`
 const StyledVacateButton = styled.button``
 
 export const CartDashboardHeader = (props: Props) => {
+  const { checkedProductList } = props
+
+  const allOrdersChecked = useMemo(() => {
+    return checkedProductList.reduce((acc, cur) => {
+      return acc && cur.checked
+    }, true)
+  }, [checkedProductList])
+
+  const clickToggleCheckButtonHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.target
+    props.setCheckedProductList(checkedProductList.map((p) => ({ ...p, checked })))
+  }
+
   return (
     <StyledContainer className="cart-dashboard-header">
       <StyledCheckbox>
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          checked={allOrdersChecked}
+          onChange={clickToggleCheckButtonHandler}
+        />
         선택해제
       </StyledCheckbox>
       <StyledVacateButton>선택 비우기</StyledVacateButton>

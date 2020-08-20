@@ -10,6 +10,8 @@ import {
 
 type Props = {
   order: ProductInCart
+  checked: boolean
+  toggleCheckboxHandler: () => void
   modifyProductQuantityHandler: (variables: ModifyProductQuantityVars) => void
   deleteProductFromCartHandler: (variables: DeleteProductFromCartVars) => void
 }
@@ -118,7 +120,8 @@ const StyledController = styled.div`
 `
 
 export const OrderCard = (props: Props) => {
-  const { id, quantity, priceSum, product } = props.order
+  const { order, checked } = props
+  const { id, quantity, priceSum, product } = order
 
   const modifyProductQuantity = (quantity: number) => {
     props.modifyProductQuantityHandler({
@@ -135,7 +138,12 @@ export const OrderCard = (props: Props) => {
     <StyledContainer className="order-card">
       <StyledTitle>
         <label className="check">
-          <input type="checkbox" className="checkbox" />
+          <input
+            type="checkbox"
+            className="checkbox"
+            checked={checked}
+            onChange={props.toggleCheckboxHandler}
+          />
           <h3 className="product-name">{product.name}</h3>
         </label>
         <button

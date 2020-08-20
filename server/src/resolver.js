@@ -37,7 +37,7 @@ const productListInCartResolver = async (parent, args) => {
 
   try {
     const query = `
-      SELECT op.id, op.quantity, op.price_sum, p.* 
+      SELECT op.id orderProductId, op.quantity, op.price_sum, p.* 
       FROM order_product op
       JOIN product p ON op.product_id = p.id
       JOIN \`order\` o ON o.id = op.order_id
@@ -46,7 +46,7 @@ const productListInCartResolver = async (parent, args) => {
 
     const [rows] = await conn.query(query, [userId])
     const result = rows.map((row) => ({
-      id: row.id,
+      id: row.orderProductId,
       quantity: row.quantity,
       priceSum: row.price_sum,
       product: new GetProductDTO(row),

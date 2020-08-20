@@ -65,7 +65,7 @@ export const CategoryList = (props: Props) => {
   return (
     <div className={`category-${idx}`} ref={rootRef}>
       <StyledDetector ref={categoryListRef}></StyledDetector>
-      <VerticalList sorter={0} title={category} productList={productListByCategory} />
+      <VerticalList title={category} productList={productListByCategory} />
     </div>
   )
 }

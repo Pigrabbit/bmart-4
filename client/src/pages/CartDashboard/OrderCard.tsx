@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { ProductInCart } from './CartDashboard'
 import { parseToLocalMoneyString } from '../../utils/parser'
-import { STYLES } from '../../utils/styleConstants'
+import { STYLES, COLORS } from '../../utils/styleConstants'
 import { useMutation } from '@apollo/client'
-import { MODIFY_PRODUCT_QUANTITY } from '../../apis/graphqlQuery'
+import { MODIFY_PRODUCT_QUANTITY, DELETE_PRODUCT_FROM_CART } from '../../apis/graphqlQuery'
 
 type Props = {
   order: ProductInCart
@@ -34,21 +34,40 @@ const StyledContainer = styled.div`
     right: 10px;
   }
 `
-const StyledTitle = styled.label`
+const StyledTitle = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  & .checkbox {
-    margin-right: 8px;
-    width: 19px;
-    height: 19px;
+  .check {
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+    padding-right: 8px;
+
+    .checkbox {
+      margin-right: 8px;
+      width: 19px;
+      height: 19px;
+    }
+
+    .product-name {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
+  .remove-btn {
+    width: 40px;
+    flex: 0 0 auto;
+    font-size: 14px;
+    color: ${COLORS.baemint};
   }
 `
 const StyledProductCard = styled.div`
   display: flex;
-  /* justify-content: space-between; */
   padding: ${STYLES.padding} 0;
-  /* align-items: center; */
 
   .thumbnail {
     margin-right: 10px;
@@ -103,15 +122,28 @@ export const OrderCard = (props: Props) => {
     onCompleted: props.refetch,
   })
 
+  const [deleteProductFromCart] = useMutation(DELETE_PRODUCT_FROM_CART, {
+    onCompleted: props.refetch,
+  })
+
   const modifyProductQuantityHandler = (quantity: number) => {
     modifyProductQuantity({ variables: { productId: product.id, orderProductId: id, quantity } })
+  }
+
+  const deleteProductFromCartHandler = (orderProductId: string) => {
+    deleteProductFromCart({ variables: { orderProductId } })
   }
 
   return (
     <StyledContainer className="order-card">
       <StyledTitle>
-        <input type="checkbox" className="checkbox" />
-        <h3>{product.name}</h3>
+        <label className="check">
+          <input type="checkbox" className="checkbox" />
+          <h3 className="product-name">{product.name}</h3>
+        </label>
+        <button className="remove-btn" onClick={() => deleteProductFromCartHandler(id)}>
+          삭제
+        </button>
       </StyledTitle>
       <StyledProductCard>
         <div className="thumbnail">

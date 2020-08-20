@@ -16,10 +16,8 @@ const StyledContainer = styled.div`
   position: relative;
 
   &:last-child {
-    padding-bottom: 10px;
-
     &::after {
-      bottom: 10px;
+      display: none;
     }
   }
 
@@ -30,8 +28,8 @@ const StyledContainer = styled.div`
     background-color: #ddd;
     position: absolute;
     bottom: 0;
-    left: 10px;
-    right: 10px;
+    left: 0;
+    right: 0;
   }
 `
 const StyledTitle = styled.div`

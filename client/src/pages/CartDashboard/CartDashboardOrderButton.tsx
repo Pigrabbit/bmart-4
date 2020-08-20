@@ -10,7 +10,7 @@ type Props = {
 const StyledContainer = styled.div`
   height: 50px;
   width: 100%;
-  background-color: white;
+  background-color: transparent;
 `
 const StyledButtonWrap = styled.div`
   height: 50px;

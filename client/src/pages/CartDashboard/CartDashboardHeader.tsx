@@ -6,6 +6,7 @@ type Props = {}
 
 const StyledContainer = styled.div`
   position: sticky;
+  margin-top: -1px;
   top: 49px;
   width: 100%;
   height: 40px;

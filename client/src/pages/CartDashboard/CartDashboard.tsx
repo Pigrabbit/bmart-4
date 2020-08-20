@@ -7,6 +7,7 @@ import { GET_PRODUCTLIST_IN_CART } from '../../apis/graphqlQuery'
 import { CartDashboardHeader } from './CartDashboardHeader'
 import { CartDashboardBody } from './CartDashboardBody'
 import { CartDashboardOrderButton } from './CartDashboardOrderButton'
+import { NotFound } from './NotFound'
 
 export type ProductInCart = {
   id: string
@@ -53,14 +54,14 @@ export const CartDashboard = (props: Props) => {
 
   return (
     <Dashboard title="장바구니" footer={false} navbar={false}>
-      {data ? (
+      {data && data.productListInCart.length > 0 ? (
         <StyledContainer className="cart-dashboard">
           <CartDashboardHeader />
           <CartDashboardBody orderList={data.productListInCart} refetch={() => refetch()} />
           <CartDashboardOrderButton summary={getSummary()} />
         </StyledContainer>
       ) : (
-        <></>
+        <NotFound />
       )}
     </Dashboard>
   )

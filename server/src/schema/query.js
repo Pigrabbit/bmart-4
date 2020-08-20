@@ -10,7 +10,7 @@ const {
 const {
   ProductType,
   CartProductType,
-  ProdcutDetailImgType,
+  ProductDetailImgType,
 } = require('../type')
 
 const { productListByCategoryResolver, productDetailImgResolver } = require('../resolver/product-resolver')
@@ -43,7 +43,7 @@ const RootQueryType = new GraphQLObjectType({
       resolve: productListInCartResolver,
     },
     productDetailImgList: {
-      type: new GraphQLList(ProdcutDetailImgType),
+      type: new GraphQLList(ProductDetailImgType),
       description: '상품 상세 이미지 src',
       args: {
         coupangProductId: { type: GraphQLNonNull(GraphQLInt) },

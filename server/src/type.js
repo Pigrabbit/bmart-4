@@ -38,7 +38,7 @@ const CartProductType = new GraphQLObjectType({
   }),
 })
 
-const ProdcutDetailImgType = new GraphQLObjectType({
+const ProductDetailImgType = new GraphQLObjectType({
   name: 'ProductDetailImg',
   description: 'This represents detail img data of product',
   fields: () => ({
@@ -59,6 +59,6 @@ const changeStatusMessageType = new GraphQLObjectType({
 module.exports = {
   ProductType,
   CartProductType,
-  ProdcutDetailImgType,
+  ProductDetailImgType,
   changeStatusMessageType,
 }

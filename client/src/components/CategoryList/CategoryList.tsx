@@ -11,10 +11,6 @@ const StyledCategoryList = styled.div`
   padding: 10px 0px;
 `
 const StyledCategory = styled.a``
-const StyledCategoryIcon = styled.img`
-  max-width: 100%;
-  margin: 5px 0px;
-`
 
 export const CategoryList = () => {
   const categoryList = CATEGORIES

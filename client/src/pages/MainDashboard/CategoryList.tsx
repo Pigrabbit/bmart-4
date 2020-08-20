@@ -57,7 +57,7 @@ export const CategoryList = (props: Props) => {
   }
 
   const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
-    variables: { category, offset: 10, limit: 10 },
+    variables: { userId: 1, category, offset: 10, limit: 10 },
   })
   if (loading) return <p>Loading...</p>
   const { productListByCategory } = data

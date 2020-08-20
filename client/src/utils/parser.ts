@@ -7,11 +7,11 @@ export const replaceSlashesWithHyphens = (str: String) => {
 }
 
 export const replaceHyphensWithSlashes = (str: String) => {
-  return str.replace(/\-/g, '/')
+  return str.replace(/-/g, '/')
 }
 
 export const replaceHyphensWithCommas = (str: String) => {
-  return str.replace(/\-/g, ', ')
+  return str.replace(/-/g, ', ')
 }
 
 export const replaceSlashesWithCommas = (str: String) => {

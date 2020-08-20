@@ -42,7 +42,7 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: productListInCartResolver,
     },
-    productDetailImg: {
+    productDetailImgList: {
       type: new GraphQLList(ProdcutDetailImgType),
       description: '상품 상세 이미지 src',
       args: {

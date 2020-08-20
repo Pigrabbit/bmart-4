@@ -32,7 +32,7 @@ const StyledContent = styled.div`
 export const ProductCard = (props: Props) => {
   const { product, width = '50%', style } = props
   const { id, price, name, thumbnailSrc, coupangProductId } = product
-
+  
   return (
     <StyledContainer className="product-card" width={width} style={style}>
       <StyledLink to={{ 

@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
 import { productBannerList } from '../../utils/mockData'
 import { OrderModal } from '../../components/OrderModal'
+import { GET_PRODUCT_DETAIL_IMG_SRC_LIST } from '../../apis/graphqlQuery'
+import { useQuery } from '@apollo/client'
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 
 type Props = {} & RouteComponentProps<ProductDetailRouteProps>
 
@@ -46,28 +49,23 @@ const StyledDetailInfo = styled.div`
   }
 `
 
-const mockProductData = {
-  name: '건강 샐러드',
-  price: 3500,
-}
-
 export const ProductDetail = (props: Props) => {
-  const { match, location } = props
+  const { location } = props
+  const state: StateType = location.state || null
+  const { id, price, name, coupangProductId } = state
+
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
 
-  const state: StateType = location.state || null
-  const { coupangProductId } = state
-
-  // TODO
-  // match.params.productId, coupangProductId
-  // 정보를 이용해 상품 상세 데이터 fetch
-
-  const { name, price } = mockProductData
+  const { loading, data } = useQuery(GET_PRODUCT_DETAIL_IMG_SRC_LIST, {
+    variables: { coupangProductId: parseInt(coupangProductId) },
+  })
+  if (loading) return <LoadingIndicator />
+  const { productDetailImgList } = data
 
   return (
     <StyledContainer className="product-detail">
-      <CarouselBasic bannerList={productBannerList} />
+      <CarouselBasic bannerList={productDetailImgList} />
       <StyledDetailInfo className="product-detail-info">
         <p className="product-detail-name">{name}</p>
         <p className="product-detail-price">{price}원</p>
@@ -80,6 +78,7 @@ export const ProductDetail = (props: Props) => {
       </StyledOrderButton>
       {isModalVisible ? (
         <OrderModal
+          id={id}
           name={name}
           price={price}
           thumbnailSrc={productBannerList[0].src}
@@ -90,7 +89,6 @@ export const ProductDetail = (props: Props) => {
       ) : (
         ''
       )}
-      {/* state && state.coupangProductId && */}
     </StyledContainer>
   )
 }

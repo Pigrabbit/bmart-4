@@ -13,6 +13,17 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
       price
       name
       thumbnailSrc
+      coupangProductId
+    }
+  }
+`
+
+export const GET_PRODUCT_DETAIL_IMG_SRC_LIST = gql`
+  query GetProductDetailImg($coupangProductId: Int!) {
+    productDetailImgList(coupangProductId: $coupangProductId) {
+      id
+      coupangProductId
+      src
     }
   }
 `

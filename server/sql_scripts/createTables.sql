@@ -63,3 +63,9 @@ CREATE TABLE IF NOT EXISTS product_detail_image (
     coupang_product_id int(20),
     img_src varchar(255) NOT NULL
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS product_detail_image_copy (
+    id bigint PRIMARY KEY AUTO_INCREMENT,
+    coupang_product_id int(20),
+    img_src varchar(255) NOT NULL
+) ENGINE=InnoDB;

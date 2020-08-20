@@ -1,5 +1,5 @@
 export const STYLES = {
-  padding: '13px',
+  padding: '17px',
   margin: '10px',
   shadow: '0 1px 5px rgba(0, 0, 0, 0.2)',
   largeRadius: '20px',

@@ -1,4 +1,4 @@
-import React, { useRef, MouseEvent, useReducer } from 'react'
+import React, { useRef, MouseEvent, useReducer, useEffect } from 'react'
 import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 
@@ -116,7 +116,6 @@ type State = {
 
 type Action = {
   type: string
-  payload: Payload
 }
 
 type Payload = {
@@ -126,34 +125,30 @@ type Payload = {
 const modalReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'increment': {
-      if (state.count >= MAX_PRODUCT_PURCHASE_LIMIT) {
-        return {
-          ...state,
-          error: `최대 ${MAX_PRODUCT_PURCHASE_LIMIT}개 까지 구매 가능합니다`,
-          isErrorVisible: true,
-        }
-      }
-      action.payload.setSavedCount(state.count + 1)
-      return {
-        ...state,
-        isErrorVisible: false,
-        count: state.count + 1,
-      }
+      return state.count >= MAX_PRODUCT_PURCHASE_LIMIT
+        ? {
+            ...state,
+            error: `최대 ${MAX_PRODUCT_PURCHASE_LIMIT}개 까지 구매 가능합니다`,
+            isErrorVisible: true,
+          }
+        : {
+            ...state,
+            isErrorVisible: false,
+            count: state.count + 1,
+          }
     }
     case 'decrement': {
-      if (state.count <= MIN_PRODUCT_PURCHASE_LIMIT) {
-        return {
-          ...state,
-          error: '최소 구매 수량입니다',
-          isErrorVisible: true,
-        }
-      }
-      action.payload.setSavedCount(state.count - 1)
-      return {
-        ...state,
-        isErrorVisible: false,
-        count: state.count - 1,
-      }
+      return state.count <= MIN_PRODUCT_PURCHASE_LIMIT
+        ? {
+            ...state,
+            error: '최소 구매 수량입니다',
+            isErrorVisible: true,
+          }
+        : {
+            ...state,
+            isErrorVisible: false,
+            count: state.count - 1,
+          }
     }
     default:
       break
@@ -172,6 +167,10 @@ export const OrderModal = (props: Props) => {
   const [state, dispatch] = useReducer(modalReducer, initialState)
   const modalOverlayRef = useRef<HTMLDivElement>(null)
 
+  useEffect(() => {
+    props.setSavedCount(state.count)
+  }, [state.count])
+
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     if (e.target === modalOverlayRef.current) props.setIsModalVisible(false)
@@ -181,7 +180,11 @@ export const OrderModal = (props: Props) => {
     <StyledContainer className="order-modal" onClick={clickOutsideModalHandler}>
       <div className="order-modal-overlay" ref={modalOverlayRef} />
       <StyledModalContent className="order-modal-content">
-        <img className="order-modal-content-thumbnail" src={thumbnailSrc} alt={`order-modal-thumbnail-${id}`} />
+        <img
+          className="order-modal-content-thumbnail"
+          src={thumbnailSrc}
+          alt={`order-modal-thumbnail-${id}`}
+        />
         <div className="order-modal-content-data">
           <p className="order-modal-content-name">{name}</p>
           <p className="order-modal-content-price">{price}원</p>
@@ -189,18 +192,14 @@ export const OrderModal = (props: Props) => {
         <StyledController className="order-modal-controller">
           <button
             className="order-modal-controller-decrement-btn"
-            onClick={() =>
-              dispatch({ type: 'decrement', payload: { setSavedCount: props.setSavedCount } })
-            }
+            onClick={() => dispatch({ type: 'decrement' })}
           >
             -
           </button>
           <p className="order-modal-controller-quantity">{state.count}</p>
           <button
             className="order-modal-controller-increment-btn"
-            onClick={() =>
-              dispatch({ type: 'increment', payload: { setSavedCount: props.setSavedCount } })
-            }
+            onClick={() => dispatch({ type: 'increment' })}
           >
             +
           </button>

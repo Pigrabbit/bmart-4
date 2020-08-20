@@ -47,7 +47,7 @@ export const CategoryListSection = (props: Props) => {
     }
 
     if (flag === 'out') {
-      const idx = CATEGORIES.findIndex(c => c.name===category)
+      const idx = CATEGORIES.findIndex((c) => c.name === category)
       if (idx > 0) selectCategory(CATEGORIES[idx].name)
     }
   }

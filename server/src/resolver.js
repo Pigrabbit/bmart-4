@@ -3,7 +3,7 @@ const { GetProductDTO } = require('./get-product-dto')
 const { errorName } = require('./errors/error-type')
 
 const productListByCategoryResolver = async (parent, args) => {
-  const { userId, category, offset = 0, limit = 10 } = args
+  const { userId, category, offset = 0, limit = 10, sorter = 0 } = args
   if (offset < 0 || limit < 0) {
     throw new Error(errorName.BAD_REQUEST)
   }
@@ -16,7 +16,10 @@ const productListByCategoryResolver = async (parent, args) => {
           CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
           THEN 'true' ELSE 'false' END as is_liked, p.*
         FROM product p 
-        WHERE  category = ? LIMIT ? OFFSET ?`
+        WHERE category = ? ${
+          sorter === 0 ? '' : sorter === 1 ? 'ORDER BY p.price ASC' : 'ORDER BY p.price DESC'
+        } LIMIT ? OFFSET ?
+        `
     const [rows] = await conn.query(query, [userId, category, limit, offset])
     const result = rows.map((row) => new GetProductDTO(row))
 

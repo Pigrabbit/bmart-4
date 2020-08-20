@@ -78,6 +78,7 @@ export const CartDashboard = (props: Props) => {
           <CartDashboardHeader
             checkedProductList={checkedProductList}
             setCheckedProductList={setCheckedProductList}
+            deleteProductFromCartHandler={deleteProductFromCartHandler}
           />
           <CartDashboardOrderList
             orderList={data.productListInCart}

@@ -1,11 +1,14 @@
-import React, { useMemo, ChangeEvent } from 'react'
+import React, { useMemo, ChangeEvent, useState } from 'react'
 import styled from 'styled-components'
 import { STYLES } from '../../utils/styleConstants'
 import { CheckedProduct } from './CartDashboard'
+import { DeleteProductFromCartVars } from '../../apis/graphqlQuery'
+import { Confirm } from '../../components/Confirm'
 
 type Props = {
   checkedProductList: CheckedProduct[]
   setCheckedProductList: (checkedProductList: CheckedProduct[]) => void
+  deleteProductFromCartHandler: (variables: DeleteProductFromCartVars) => void
 }
 
 const StyledContainer = styled.div`
@@ -37,6 +40,7 @@ const StyledCheckbox = styled.label`
 const StyledVacateButton = styled.button``
 
 export const CartDashboardHeader = (props: Props) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
   const { checkedProductList } = props
 
   const allOrdersChecked = useMemo(() => {
@@ -50,8 +54,25 @@ export const CartDashboardHeader = (props: Props) => {
     props.setCheckedProductList(checkedProductList.map((p) => ({ ...p, checked })))
   }
 
+  const clickRemoveAllProductInCartHandler = () => {
+    props.deleteProductFromCartHandler({
+      orderProductIds: checkedProductList.filter((p) => p.checked).map((p) => p.productOrderId),
+    })
+  }
+
   return (
     <StyledContainer className="cart-dashboard-header">
+      {isConfirmOpen && (
+        <Confirm
+          content="선택 항목을 모두 삭제하시겠습니까?"
+          getResult={(result: boolean) => {
+            if (result) {
+              clickRemoveAllProductInCartHandler()
+            }
+            setIsConfirmOpen(false)
+          }}
+        />
+      )}
       <StyledCheckbox>
         <input
           type="checkbox"
@@ -60,7 +81,7 @@ export const CartDashboardHeader = (props: Props) => {
         />
         선택해제
       </StyledCheckbox>
-      <StyledVacateButton>선택 비우기</StyledVacateButton>
+      <StyledVacateButton onClick={() => setIsConfirmOpen(true)}>선택 비우기</StyledVacateButton>
     </StyledContainer>
   )
 }

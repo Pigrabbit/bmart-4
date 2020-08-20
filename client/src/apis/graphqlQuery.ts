@@ -11,6 +11,8 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
     ) {
       id
       price
+      basePrice
+      discountRate
       name
       thumbnailSrc
       coupangProductId

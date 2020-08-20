@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 import { useMutation } from '@apollo/client'
 import { ADD_PRODUCT_TO_CART } from '../../apis/graphqlQuery'
+import { parseToLocalMoneyString } from '../../utils/parser'
 
 type Props = {
   id: number
@@ -63,7 +64,7 @@ const StyledModalContent = styled.div`
   .order-modal-content-data {
     margin: 0 15px;
     p {
-      font-size: 16px;
+      font-size: 12px;
     }
     .order-modal-content-name {
       font-weight: 600;
@@ -78,7 +79,7 @@ const StyledModalError = styled.p`
   grid-column: 1/13;
   align-self: start;
   color: red;
-  font-size: 16px;
+  font-size: 12px;
   text-align: center;
 `
 
@@ -195,7 +196,7 @@ export const OrderModal = (props: Props) => {
         />
         <div className="order-modal-content-data">
           <p className="order-modal-content-name">{name}</p>
-          <p className="order-modal-content-price">{price}원</p>
+          <p className="order-modal-content-price">{parseToLocalMoneyString(price)}원</p>
         </div>
         <StyledController className="order-modal-controller">
           <button

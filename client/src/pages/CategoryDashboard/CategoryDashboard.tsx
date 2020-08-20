@@ -9,6 +9,7 @@ import { CATEGORIES } from '../../utils/constants'
 import { CategoryDashboardRouteProps } from '../../types/routeProps'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
 import { replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
+import { scrolledToBottom } from '../../utils/scrolledToBottom'
 
 type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 
@@ -25,8 +26,8 @@ export const CategoryDashboard = (props: Props) => {
   const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: {
       category: replaceHyphensWithSlashes(category.name),
-      offset: 100,
-      limit: 100,
+      offset: 0,
+      limit: 10,
       sorter: sorter,
     },
   })
@@ -42,6 +43,14 @@ export const CategoryDashboard = (props: Props) => {
     )
 
   const { productListByCategory } = data
+
+  const scrollEventHandler = () => {
+    if (scrolledToBottom()) {
+      console.log('바닥이야!~~~')
+    }
+  }
+
+  window.addEventListener('scroll', scrollEventHandler)
 
   return (
     <div>

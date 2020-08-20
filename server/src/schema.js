@@ -8,7 +8,12 @@ const {
   GraphQLNonNull,
 } = require('graphql')
 
-const { ProductType, CartProductType, changeStatusMessageType } = require('./type')
+const {
+  ProductType,
+  CartProductType,
+  ProdcutDetailImgType,
+  changeStatusMessageType,
+} = require('./type')
 const {
   likeProductResolver,
   dislikeProductResolver,
@@ -44,8 +49,12 @@ const RootQueryType = new GraphQLObjectType({
       resolve: productListInCartResolver,
     },
     productDetailImg: {
-      
-    }
+      type: new GraphQLList(ProdcutDetailImgType),
+      description: '상품 상세 이미지 src',
+      args: {
+        coupangProductId: { type: GraphQLNonNull(GraphQLInt) },
+      },
+    },
   }),
 })
 

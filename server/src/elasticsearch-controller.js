@@ -1,5 +1,5 @@
 const client = require('../config/elasticsearch-config')
-const ProductSearchDTO = require('./product-search-dto')
+const ProductSearchDTO = require('./dto/product-search-dto')
 
 const searchInIndex = async (req, res, next) => {
   try {

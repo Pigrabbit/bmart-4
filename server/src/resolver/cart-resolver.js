@@ -1,36 +1,6 @@
-const pool = require('../db')
-const { GetProductDTO } = require('./get-product-dto')
-const { GetProductDetailDTO } = require('./get-product-detail-dto')
-const { errorName } = require('./errors/error-type')
-
-const productListByCategoryResolver = async (parent, args) => {
-  const { userId, category, offset = 0, limit = 10, sorter = 0 } = args
-  if (offset < 0 || limit < 0) {
-    throw new Error(errorName.BAD_REQUEST)
-  }
-
-  const conn = await pool.getConnection()
-
-  try {
-    const query = `
-        SELECT
-          CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
-          THEN 'true' ELSE 'false' END as is_liked, p.*
-        FROM product p 
-        WHERE category = ? ${
-          sorter === 0 ? '' : sorter === 1 ? 'ORDER BY p.price ASC' : 'ORDER BY p.price DESC'
-        } LIMIT ? OFFSET ?
-        `
-    const [rows] = await conn.query(query, [userId, category, limit, offset])
-    const result = rows.map((row) => new GetProductDTO(row))
-
-    return result
-  } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
-  } finally {
-    conn.release()
-  }
-}
+const pool = require('../../db')
+const { GetProductDTO } = require('../dto/get-product-dto')
+const { errorName } = require('../errors/error-type')
 
 const productListInCartResolver = async (parent, args) => {
   const { userId } = args
@@ -54,43 +24,6 @@ const productListInCartResolver = async (parent, args) => {
     }))
 
     return result
-  } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
-  } finally {
-    conn.release()
-  }
-}
-
-const likeProductResolver = async (parent, args) => {
-  const { userId, productId } = args
-  const conn = await pool.getConnection()
-
-  try {
-    const query = 'INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)'
-
-    const [rows] = await conn.query(query, [userId, productId])
-
-    const { insertId } = rows
-
-    return insertId
-  } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
-  } finally {
-    conn.release()
-  }
-}
-
-const dislikeProductResolver = async (parent, args) => {
-  const { userId, productId } = args
-  const conn = await pool.getConnection()
-
-  try {
-    const query = 'DELETE FROM wishlist WHERE user_id = ? AND product_id = ?'
-
-    const [rows] = await conn.query(query, [userId, productId])
-    const { affectedRows } = rows
-
-    return { success: affectedRows === 1 }
   } catch (err) {
     throw new Error(errorName.INTERNAL_SERVER_ERROR)
   } finally {
@@ -198,30 +131,9 @@ const deleteProductFromCartResolver = async (parent, args) => {
   }
 }
 
-const productDetailImgResolver = async (parent, args) => {
-  const { coupangProductId } = args
-  const conn = await pool.getConnection()
-  try {
-    const query = 'SELECT * FROM product_detail_image WHERE coupang_product_id=?'
-    const [rows] = await conn.query(query, [coupangProductId])
-
-    const result = rows.map((row) => new GetProductDetailDTO(row))
-
-    return result
-  } catch {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
-  } finally {
-    conn.release()
-  }
-}
-
 module.exports = {
-  likeProductResolver,
-  dislikeProductResolver,
-  productListByCategoryResolver,
   productListInCartResolver,
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,
-  productDetailImgResolver,
 }

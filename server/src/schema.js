@@ -1,7 +1,23 @@
-const { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = require('graphql')
+const {
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLID,
+  GraphQLInt,
+  GraphQLString,
+  GraphQLList,
+  GraphQLNonNull,
+} = require('graphql')
 
-const { ProductType } = require('./type')
-const { productListByCategoryResolver } = require('./resolver')
+const { ProductType, CartProductType, changeStatusMessageType } = require('./type')
+const {
+  likeProductResolver,
+  dislikeProductResolver,
+  productListByCategoryResolver,
+  addProductToCartResolver,
+  modifyProductQuantityResolver,
+  deleteProductFromCartResolver,
+  productListInCartResolver,
+} = require('./resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -11,21 +27,80 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(ProductType),
       description: 'List of products',
       args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
         category: { type: GraphQLString },
         offset: { type: GraphQLInt },
-        limit: { type: GraphQLInt }
+        limit: { type: GraphQLInt },
       },
-      resolve: productListByCategoryResolver
-    }
-    // TODO
-    // Add productList field
-    // Add wishlist field
-    // Add order field
-  })
+      resolve: productListByCategoryResolver,
+    },
+    productListInCart: {
+      type: new GraphQLList(CartProductType),
+      description: '장바구니 상품 리스트',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: productListInCartResolver,
+    },
+  }),
+})
+
+const RootMutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Root Mutation',
+  fields: () => ({
+    likeProduct: {
+      type: GraphQLNonNull(GraphQLID),
+      description: '유저 찜하기 기능',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        productId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: likeProductResolver,
+    },
+    dislikeProduct: {
+      type: changeStatusMessageType,
+      description: '유저 찜 취소 기능',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        productId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: dislikeProductResolver,
+    },
+    addProductToCart: {
+      type: GraphQLNonNull(GraphQLID),
+      description: '카트에 담기 기능',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        productId: { type: GraphQLNonNull(GraphQLID) },
+        quantity: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: addProductToCartResolver,
+    },
+    modifyProductQuantity: {
+      type: changeStatusMessageType,
+      description: '카트에 담긴 상품 수량 수정 기능',
+      args: {
+        productId: { type: GraphQLNonNull(GraphQLID) },
+        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+        quantity: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: modifyProductQuantityResolver,
+    },
+    deleteProductFromCart: {
+      type: changeStatusMessageType,
+      description: '카트에 담긴 상품 삭제 기능',
+      args: {
+        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: deleteProductFromCartResolver,
+    },
+  }),
 })
 
 const schema = new GraphQLSchema({
-  query: RootQueryType
+  query: RootQueryType,
+  mutation: RootMutationType,
 })
 
 module.exports = schema

@@ -1,5 +1,5 @@
-class ProductSearchDTO {
-  constructor ({
+class GetProductDTO {
+  constructor({
     id,
     name,
     category,
@@ -8,7 +8,9 @@ class ProductSearchDTO {
     discount_rate,
     sold_count,
     stock_count,
-    coupang_product_id,
+    coupang_productId,
+    thumbnail_src,
+    is_liked,
   }) {
     this.id = id
     this.name = name
@@ -18,8 +20,10 @@ class ProductSearchDTO {
     this.discountRate = discount_rate
     this.soldCount = sold_count
     this.stockCount = stock_count
-    this.coupangProductId = coupang_product_id
+    this.coupangProductId = coupang_productId
+    this.thumbnailSrc = thumbnail_src
+    this.isLiked = is_liked === 'true'
   }
 }
 
-module.exports = ProductSearchDTO
+module.exports = { GetProductDTO }

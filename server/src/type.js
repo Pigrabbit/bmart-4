@@ -1,4 +1,11 @@
-const { GraphQLObjectType, GraphQLNonNull, GraphQLID, GraphQLString, GraphQLInt } = require('graphql')
+const {
+  GraphQLObjectType,
+  GraphQLNonNull,
+  GraphQLID,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLBoolean,
+} = require('graphql')
 
 const ProductType = new GraphQLObjectType({
   name: 'Product',
@@ -15,16 +22,32 @@ const ProductType = new GraphQLObjectType({
     createdAt: { type: GraphQLNonNull(GraphQLString) },
     stockCount: { type: GraphQLNonNull(GraphQLInt) },
     soldCount: { type: GraphQLNonNull(GraphQLInt) },
-    description: { type: GraphQLString }
-  })
+    description: { type: GraphQLString },
+    isLiked: { type: GraphQLNonNull(GraphQLBoolean) },
+  }),
 })
 
-// TODO
-// Add UserType
-// Add OrderType
-// Add OrderProductType
-// Add WishlistType
+const CartProductType = new GraphQLObjectType({
+  name: 'CartProduct',
+  description: 'This represents product in cart',
+  fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLID) },
+    quantity: { type: GraphQLNonNull(GraphQLInt) },
+    priceSum: { type: GraphQLNonNull(GraphQLInt) },
+    product: { type: ProductType },
+  }),
+})
+
+const changeStatusMessageType = new GraphQLObjectType({
+  name: 'changeStatusMessage',
+  description: '수정/삭제 성공 여부 메시지',
+  fields: () => ({
+    success: { type: GraphQLNonNull(GraphQLBoolean) },
+  }),
+})
 
 module.exports = {
-  ProductType
+  ProductType,
+  CartProductType,
+  changeStatusMessageType,
 }

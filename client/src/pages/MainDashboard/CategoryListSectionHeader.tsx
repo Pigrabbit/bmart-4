@@ -59,12 +59,12 @@ export const CategoryListSectionHeader = (props: Props) => {
   return (
     <StyledHeader ref={headerRef}>
       {CATEGORIES.map((category, idx) => {
-        return selectedCategory === category ? (
+        return selectedCategory === category.name ? (
           <div key={idx} ref={headerItemRef} className="selected">
-            {category}
+            {category.name}
           </div>
         ) : (
-          <div key={idx}>{category}</div>
+          <div key={idx}>{category.name}</div>
         )
       })}
     </StyledHeader>

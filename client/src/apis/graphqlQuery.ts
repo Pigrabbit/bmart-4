@@ -17,6 +17,26 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
   }
 `
 
+export type ProductInCart = {
+  id: string
+  quantity: number
+  priceSum: number
+  product: {
+    id: string
+    name: string
+    price: number
+    basePrice: number
+    discountRate: number
+    thumbnailSrc: string
+  }
+}
+
+export type ProductInCartData = {
+  productListInCart: ProductInCart[]
+}
+
+export type ProductInCartVars = { userId: number }
+
 export const GET_PRODUCTLIST_IN_CART = gql`
   query GetProductListInCart {
     productListInCart(userId: 1) {
@@ -34,6 +54,11 @@ export const GET_PRODUCTLIST_IN_CART = gql`
     }
   }
 `
+export type ModifyProductQuantityVars = {
+  productId: string
+  orderProductId: string
+  quantity: number
+}
 
 export const MODIFY_PRODUCT_QUANTITY = gql`
   mutation ModifyProductQuantity($productId: ID!, $orderProductId: ID!, $quantity: Int!) {
@@ -46,6 +71,10 @@ export const MODIFY_PRODUCT_QUANTITY = gql`
     }
   }
 `
+
+export type DeleteProductFromCartVars = {
+  orderProductId: string
+}
 
 export const DELETE_PRODUCT_FROM_CART = gql`
   mutation DeleteProductFromCart($orderProductId: ID!) {

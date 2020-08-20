@@ -1,14 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProductInCart } from './CartDashboard'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { STYLES, COLORS } from '../../utils/styleConstants'
-import { useMutation } from '@apollo/client'
-import { MODIFY_PRODUCT_QUANTITY, DELETE_PRODUCT_FROM_CART } from '../../apis/graphqlQuery'
+import {
+  ModifyProductQuantityVars,
+  DeleteProductFromCartVars,
+  ProductInCart,
+} from '../../apis/graphqlQuery'
 
 type Props = {
   order: ProductInCart
-  refetch: () => void
+  modifyProductQuantityHandler: (variables: ModifyProductQuantityVars) => void
+  deleteProductFromCartHandler: (variables: DeleteProductFromCartVars) => void
 }
 
 const StyledContainer = styled.div`
@@ -116,21 +119,17 @@ const StyledController = styled.div`
 
 export const OrderCard = (props: Props) => {
   const { id, quantity, priceSum, product } = props.order
-  const [modifyProductQuantity] = useMutation(MODIFY_PRODUCT_QUANTITY, {
-    onCompleted: props.refetch,
-  })
 
-  const [deleteProductFromCart] = useMutation(DELETE_PRODUCT_FROM_CART, {
-    onCompleted: props.refetch,
-  })
-
-  const modifyProductQuantityHandler = (quantity: number) => {
-    modifyProductQuantity({ variables: { productId: product.id, orderProductId: id, quantity } })
+  const modifyProductQuantity = (quantity: number) => {
+    props.modifyProductQuantityHandler({
+      productId: product.id,
+      orderProductId: id,
+      quantity,
+    })
   }
 
-  const deleteProductFromCartHandler = (orderProductId: string) => {
-    deleteProductFromCart({ variables: { orderProductId } })
-  }
+  const price = `(${parseToLocalMoneyString(product.price)}원)`
+  const totalPrice = `${parseToLocalMoneyString(priceSum)}원`
 
   return (
     <StyledContainer className="order-card">
@@ -139,7 +138,10 @@ export const OrderCard = (props: Props) => {
           <input type="checkbox" className="checkbox" />
           <h3 className="product-name">{product.name}</h3>
         </label>
-        <button className="remove-btn" onClick={() => deleteProductFromCartHandler(id)}>
+        <button
+          className="remove-btn"
+          onClick={() => props.deleteProductFromCartHandler({ orderProductId: id })}
+        >
           삭제
         </button>
       </StyledTitle>
@@ -149,20 +151,20 @@ export const OrderCard = (props: Props) => {
         </div>
         <div className="content">
           <div className="description">
-            <div className="price">{`(${parseToLocalMoneyString(product.price)}원)`}</div>
-            <div className="total-price">{parseToLocalMoneyString(product.price * quantity)}원</div>
+            <div className="price">{price}</div>
+            <div className="total-price">{totalPrice}</div>
           </div>
           <StyledController className="quantity">
             <button
               className="decrement control-btn"
-              onClick={() => modifyProductQuantityHandler(quantity - 1)}
+              onClick={() => modifyProductQuantity(quantity - 1)}
             >
               -
             </button>
             <div className="count">{quantity}</div>
             <button
               className="increment control-btn"
-              onClick={() => modifyProductQuantityHandler(quantity + 1)}
+              onClick={() => modifyProductQuantity(quantity + 1)}
             >
               +
             </button>

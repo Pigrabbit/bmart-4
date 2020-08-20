@@ -1,12 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProductInCart } from './CartDashboard'
 import { OrderCard } from './OrderCard'
 import { STYLES } from '../../utils/styleConstants'
+import {
+  ModifyProductQuantityVars,
+  DeleteProductFromCartVars,
+  ProductInCart,
+} from '../../apis/graphqlQuery'
 
 type Props = {
   orderList: ProductInCart[]
-  refetch: () => void
+  modifyProductQuantityHandler: (variables: ModifyProductQuantityVars) => void
+  deleteProductFromCartHandler: (variables: DeleteProductFromCartVars) => void
 }
 
 const StyledContainer = styled.div`
@@ -20,7 +25,12 @@ export const CartDashboardBody = (props: Props) => {
   return (
     <StyledContainer className="cart-dashboard-body">
       {orderList.map((order, idx) => (
-        <OrderCard key={idx} order={order} refetch={props.refetch} />
+        <OrderCard
+          key={idx}
+          order={order}
+          modifyProductQuantityHandler={props.modifyProductQuantityHandler}
+          deleteProductFromCartHandler={props.deleteProductFromCartHandler}
+        />
       ))}
     </StyledContainer>
   )

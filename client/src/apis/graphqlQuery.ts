@@ -16,3 +16,33 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
     }
   }
 `
+
+export const GET_PRODUCTLIST_IN_CART = gql`
+  query GetProductListInCart {
+    productListInCart(userId: 1) {
+      id
+      quantity
+      priceSum
+      product {
+        id
+        name
+        price
+        basePrice
+        discountRate
+        thumbnailSrc
+      }
+    }
+  }
+`
+
+export const MODIFY_PRODUCT_QUANTITY = gql`
+  mutation ModifyProductQuantity($productId: ID!, $orderProductId: ID!, $quantity: Int!) {
+    modifyProductQuantity(
+      productId: $productId
+      orderProductId: $orderProductId
+      quantity: $quantity
+    ) {
+      success
+    }
+  }
+`

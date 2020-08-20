@@ -44,7 +44,7 @@ export const Carousel = (props: Props) => {
   let sliderInterval: any = null
 
   const { width = window.innerWidth, bannerList } = props
-  const silderRef = useRef<HTMLDivElement>(null)
+  const sliderRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     initSliderScrollEvent()
@@ -52,43 +52,43 @@ export const Carousel = (props: Props) => {
   }, [])
 
   const initSliderScrollEvent = () => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
+    const sliderElm = sliderRef.current
+    if (!sliderElm) return
 
-    silderElm.scrollLeft = width
+    sliderElm.scrollLeft = width
 
-    silderElm.addEventListener('scroll', sliderScrollHandler)
-    silderElm.addEventListener('touchstart', clearSlideInterval)
-    silderElm.addEventListener('touchend', startSlideInterval)
+    sliderElm.addEventListener('scroll', sliderScrollHandler)
+    sliderElm.addEventListener('touchstart', clearSlideInterval)
+    sliderElm.addEventListener('touchend', startSlideInterval)
   }
 
   const sliderScrollHandler = () => {
-    const silderElm = silderRef.current
-    if (!silderElm) return
+    const sliderElm = sliderRef.current
+    if (!sliderElm) return
 
-    const { scrollWidth, scrollLeft } = silderElm
+    const { scrollWidth, scrollLeft } = sliderElm
 
     if (scrollWidth - width - scrollLeft <= 0) {
-      silderElm.style.scrollBehavior = 'initial'
-      silderElm.scrollLeft = width
-      silderElm.style.scrollBehavior = 'smooth'
+      sliderElm.style.scrollBehavior = 'initial'
+      sliderElm.scrollLeft = width
+      sliderElm.style.scrollBehavior = 'smooth'
     }
     if (scrollLeft <= 0) {
-      silderElm.style.scrollBehavior = 'initial'
-      silderElm.scrollLeft = scrollWidth - 2 * width
-      silderElm.style.scrollBehavior = 'smooth'
+      sliderElm.style.scrollBehavior = 'initial'
+      sliderElm.scrollLeft = scrollWidth - 2 * width
+      sliderElm.style.scrollBehavior = 'smooth'
     }
   }
 
   const startSlideInterval = () => {
     sliderInterval = setInterval(() => {
-      const silderElm = silderRef.current
-      if (!silderElm) return
+      const sliderElm = sliderRef.current
+      if (!sliderElm) return
 
-      const { scrollLeft } = silderElm
+      const { scrollLeft } = sliderElm
 
-      silderElm.style.scrollBehavior = 'smooth'
-      silderElm.scrollLeft = scrollLeft + width
+      sliderElm.style.scrollBehavior = 'smooth'
+      sliderElm.scrollLeft = scrollLeft + width
     }, SLIDER_INTERVAL_TIME)
   }
 
@@ -102,7 +102,7 @@ export const Carousel = (props: Props) => {
   return (
     <StyledWrapper>
       <StyledCarousel>
-        <StyledContainer ref={silderRef}>
+        <StyledContainer ref={sliderRef}>
           {itemList.map((item, idx) => (
             <StyledSlider key={idx} className="carousel-slide">
               <a href={item.href} target="_blank" rel="noopener noreferrer">

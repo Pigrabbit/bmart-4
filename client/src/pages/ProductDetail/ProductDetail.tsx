@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
@@ -12,18 +12,19 @@ type StateType = { coupangProductId: string } | any
 
 const StyledContainer = styled.div`
   height: 100%;
-  position: relative;
+`
 
-  .product-detail-order-btn {
-    position: absolute;
-    bottom: 0;
-    left: 10%;
-    padding: 15px 0;
-    width: 80%;
-    font-size: 1rem;
-    border: 1px solid black;
-    border-radius: 5px;
-  }
+const StyledOrderButton = styled.button`
+  position: fixed;
+  bottom: 15px;
+  left: 10%;
+  z-index: 2;
+  padding: 15px 0;
+  width: 80%;
+  font-size: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #eef1f3;
 `
 
 const StyledDetailInfo = styled.div`
@@ -32,7 +33,7 @@ const StyledDetailInfo = styled.div`
   flex-direction: column;
   align-content: flex-start;
   justify-items: center;
-  height: 250px;
+  height: 100%;
 
   .product-detail-name {
     font-size: 36px;
@@ -55,8 +56,12 @@ export const ProductDetail = (props: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
 
-  const state: StateType = location.state ? location.state : null
+  const state: StateType = location.state || null
   const { coupangProductId } = state
+
+  // TODO
+  // match.params.productId, coupangProductId
+  // 정보를 이용해 상품 상세 데이터 fetch
 
   const { name, price } = mockProductData
 
@@ -67,9 +72,12 @@ export const ProductDetail = (props: Props) => {
         <p className="product-detail-name">{name}</p>
         <p className="product-detail-price">{price}원</p>
       </StyledDetailInfo>
-      <button className="product-detail-order-btn" onClick={() => setIsModalVisible(true)}>
+      <StyledOrderButton
+        className="product-detail-order-btn"
+        onClick={() => setIsModalVisible(true)}
+      >
         주문하기
-      </button>
+      </StyledOrderButton>
       {isModalVisible ? (
         <OrderModal
           name={name}
@@ -82,8 +90,7 @@ export const ProductDetail = (props: Props) => {
       ) : (
         ''
       )}
-      {/* {match.params.productId}번 상품 상세페이지 입니다.
-      coupang id: {coupangProductId} */}
+      {/* state && state.coupangProductId && */}
     </StyledContainer>
   )
 }

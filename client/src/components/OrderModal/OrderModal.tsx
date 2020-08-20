@@ -15,6 +15,7 @@ const StyledContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 5;
   width: 100%;
   height: 100%;
 
@@ -48,6 +49,7 @@ const StyledModalContent = styled.div`
 
   display: grid;
   grid-template-columns: 3fr 6fr 3fr;
+  grid-template-rows: 40% 40%;
   justify-items: stretch;
   align-items: center;
 
@@ -71,16 +73,22 @@ const StyledModalContent = styled.div`
 `
 const StyledModalError = styled.p`
   grid-column: 1/13;
+  align-self: start;
   color: red;
   font-size: 16px;
   text-align: center;
 `
 
 const StyledModalOrderButton = styled.button`
-  grid-column: 1/13;
+  position: fixed;
+  bottom: 15px;
+  left: 5%;
+  z-index: 10;
+  width: 90%;
   border: 1px solid #bbb;
   border-radius: 5px;
   padding: 15px 0;
+  background-color: #fff;
 `
 
 const StyledController = styled.div`

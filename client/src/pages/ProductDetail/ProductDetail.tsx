@@ -46,24 +46,17 @@ const StyledDetailInfo = styled.div`
   }
 `
 
-const mockProductData = {
-  name: '건강 샐러드',
-  price: 3500,
-}
-
 export const ProductDetail = (props: Props) => {
   const { match, location } = props
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
 
   const state: StateType = location.state || null
-  const { coupangProductId } = state
+  const { id, price, name, coupangProductId } = state
 
   // TODO
   // match.params.productId, coupangProductId
   // 정보를 이용해 상품 상세 데이터 fetch
-
-  const { name, price } = mockProductData
 
   return (
     <StyledContainer className="product-detail">

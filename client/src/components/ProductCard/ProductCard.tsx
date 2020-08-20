@@ -38,6 +38,9 @@ export const ProductCard = (props: Props) => {
       <StyledLink to={{ 
             pathname: `/product/${id}`,
             state: {
+              id,
+              price,
+              name,
               coupangProductId
             }
           }}>

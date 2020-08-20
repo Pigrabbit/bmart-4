@@ -3,14 +3,14 @@ const router = express.Router()
 const { getErrorCode } = require('./errors')
 
 const { graphqlHTTP } = require('express-graphql')
-const schema = require('./schema')
+const schema = require('./schema/schema')
 
 router.get(
   '/graphql',
   graphqlHTTP({
     schema,
     graphiql: true,
-    formatError: (err) => {
+    customFormatErrorFn: (err) => {
       const error = getErrorCode(err.message)
       return { message: error.message, statusCode: error.statusCode }
     },

@@ -3,7 +3,6 @@ import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
-import { productBannerList } from '../../utils/mockData'
 import { OrderModal } from '../../components/OrderModal'
 import { GET_PRODUCT_DETAIL_IMG_SRC_LIST } from '../../apis/graphqlQuery'
 import { useQuery } from '@apollo/client'
@@ -52,7 +51,7 @@ const StyledDetailInfo = styled.div`
     margin-top: 15px;
     display: flex;
     justify-content: flex-start;
-    align-items: center
+    align-items: center;
   }
   .product-detail-base-price {
     font-size: 16px;
@@ -84,10 +83,14 @@ export const ProductDetail = (props: Props) => {
       <CarouselBasic bannerList={productDetailImgList} />
       <StyledDetailInfo className="product-detail-info">
         <p className="product-detail-name">{name}</p>
-        <div className="product-detail-discount">
-          <p className="product-detail-base-price">{parseToLocalMoneyString(basePrice)}원</p>
-          <p className="product-detail-discount-rate">{discountRate}% ↓</p>
-        </div>
+        {discountRate > 0 ? (
+          <div className="product-detail-discount">
+            <p className="product-detail-base-price">{parseToLocalMoneyString(basePrice)}원</p>
+            <p className="product-detail-discount-rate">{discountRate}% ↓</p>
+          </div>
+        ) : (
+          ''
+        )}
         <p className="product-detail-price">{parseToLocalMoneyString(price)}원</p>
       </StyledDetailInfo>
       <StyledOrderButton

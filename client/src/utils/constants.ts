@@ -17,6 +17,12 @@ export const CATEGORIES = [
   { id: 10, name: '과자/초콜릿/시리얼' },
 ]
 
-export const NAV_ICON_LIST = ['home', 'search', 'favorite', 'history', 'cart']
+export const NAVIGATIONS = [
+  { name: 'home', path: '/' },
+  { name: 'search', path: '/search' },
+  { name: 'favorite', path: '/favorite' },
+  { name: 'history', path: '/history' },
+  { name: 'cart', path: '/cart' },
+]
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1

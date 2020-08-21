@@ -220,7 +220,7 @@ export const OrderModal = (props: Props) => {
           className="order-modal-content-order-btn"
           onClick={clickOrderButtonHandler}
         >
-          주문하기
+          장바구니에 담기
         </StyledModalOrderButton>
       </StyledModalContent>
     </StyledContainer>

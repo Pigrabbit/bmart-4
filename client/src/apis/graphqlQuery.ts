@@ -63,6 +63,7 @@ export const GET_PRODUCTLIST_IN_CART = gql`
         basePrice
         discountRate
         thumbnailSrc
+        coupangProductId
       }
     }
   }

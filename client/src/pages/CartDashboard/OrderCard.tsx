@@ -8,6 +8,7 @@ import {
   ProductInCart,
 } from '../../apis/graphqlQuery'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
+import { StyledLink } from '../../styles/StyledLink'
 
 type Props = {
   order: ProductInCart
@@ -158,34 +159,49 @@ export const OrderCard = (props: Props) => {
           삭제
         </button>
       </StyledTitle>
-      <StyledProductCard>
-        <div className="thumbnail">
-          <img src={product.thumbnailSrc} alt="" />
-        </div>
-        <div className="content">
-          <div className="description">
-            <div className="price">{price}</div>
-            <div className="total-price">{totalPrice}</div>
+      <StyledLink
+        to={{
+          pathname: `/product/${product.id}`,
+          state: {
+            ...product,
+          },
+        }}
+      >
+        <StyledProductCard>
+          <div className="thumbnail">
+            <img src={product.thumbnailSrc} alt="" />
           </div>
-          <StyledController className="quantity">
-            <button
-              className="decrement control-btn"
-              disabled={quantity <= MIN_PRODUCT_PURCHASE_LIMIT}
-              onClick={() => modifyProductQuantity(quantity - 1)}
-            >
-              -
-            </button>
-            <div className="count">{quantity}</div>
-            <button
-              className="increment control-btn"
-              disabled={quantity >= MAX_PRODUCT_PURCHASE_LIMIT}
-              onClick={() => modifyProductQuantity(quantity + 1)}
-            >
-              +
-            </button>
-          </StyledController>
-        </div>
-      </StyledProductCard>
+          <div className="content">
+            <div className="description">
+              <div className="price">{price}</div>
+              <div className="total-price">{totalPrice}</div>
+            </div>
+            <StyledController className="quantity">
+              <button
+                className="decrement control-btn"
+                disabled={quantity <= MIN_PRODUCT_PURCHASE_LIMIT}
+                onClick={(e) => {
+                  e.preventDefault()
+                  modifyProductQuantity(quantity - 1)
+                }}
+              >
+                -
+              </button>
+              <div className="count">{quantity}</div>
+              <button
+                className="increment control-btn"
+                disabled={quantity >= MAX_PRODUCT_PURCHASE_LIMIT}
+                onClick={(e) => {
+                  e.preventDefault()
+                  modifyProductQuantity(quantity + 1)
+                }}
+              >
+                +
+              </button>
+            </StyledController>
+          </div>
+        </StyledProductCard>
+      </StyledLink>
     </StyledContainer>
   )
 }

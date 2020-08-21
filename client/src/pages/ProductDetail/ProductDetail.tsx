@@ -8,6 +8,7 @@ import { GET_PRODUCT_DETAIL_IMG_SRC_LIST } from '../../apis/graphqlQuery'
 import { useQuery } from '@apollo/client'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { parseToLocalMoneyString } from '../../utils/parser'
+import { STYLES, COLORS } from '../../utils/styleConstants'
 
 type Props = {} & RouteComponentProps<ProductDetailRouteProps>
 
@@ -15,6 +16,61 @@ type StateType = { coupangProductId: string } | any
 
 const StyledContainer = styled.div`
   height: 100%;
+
+  .confirm-slider[data-is-order-placed=\'true\'] {
+    animation: 1s ease-in-out slideUp;
+  }
+  @keyframes slideUp {
+    1% {
+      transform: translateY(0);
+    }
+    99% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+`
+
+const StyledSlider = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(100%);
+
+  .confirm-slider-content {
+    width: 70%;
+    text-align: center;
+    background-color: ${COLORS.gray};
+    color: #fff;
+    font-size: 16px;
+    padding: 5px 0;
+    border-radius: ${STYLES.smallRadius};
+    opacity: 0;
+  }
+  .confirm-slider-content[data-is-order-placed=\'true\'] {
+    animation: 1s ease-in-out showContent;
+  }
+
+  @keyframes showContent {
+    1% {
+      opacity: 1;
+    }
+    99% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
 `
 
 const StyledOrderButton = styled.button`
@@ -26,7 +82,7 @@ const StyledOrderButton = styled.button`
   width: 80%;
   font-size: 1rem;
   border: 1px solid black;
-  border-radius: 5px;
+  border-radius: ${STYLES.smallRadius};
   background-color: #eef1f3;
 `
 
@@ -71,6 +127,7 @@ export const ProductDetail = (props: Props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
+  const [isOrderPlaced, setIsOrderPlaced] = useState(false)
 
   const { loading, data } = useQuery(GET_PRODUCT_DETAIL_IMG_SRC_LIST, {
     variables: { coupangProductId: parseInt(coupangProductId) },
@@ -80,6 +137,11 @@ export const ProductDetail = (props: Props) => {
 
   return (
     <StyledContainer className="product-detail">
+      <StyledSlider className="confirm-slider" data-is-order-placed={isOrderPlaced} onAnimationEnd={() => setIsOrderPlaced(false)}>
+        <div className="confirm-slider-content" data-is-order-placed={isOrderPlaced} onAnimationEnd={() => setIsOrderPlaced(false)}>
+          장바구니에 상품이 담겼습니다
+        </div>
+      </StyledSlider>
       <CarouselBasic bannerList={productDetailImgList} />
       <StyledDetailInfo className="product-detail-info">
         <p className="product-detail-name">{name}</p>
@@ -95,7 +157,9 @@ export const ProductDetail = (props: Props) => {
       </StyledDetailInfo>
       <StyledOrderButton
         className="product-detail-order-btn"
-        onClick={() => setIsModalVisible(true)}
+        onClick={() => {
+          setIsModalVisible(true)
+        }}
       >
         주문하기
       </StyledOrderButton>
@@ -108,6 +172,7 @@ export const ProductDetail = (props: Props) => {
           savedCount={savedCount}
           setSavedCount={setSavedCount}
           setIsModalVisible={setIsModalVisible}
+          setIsOrderPlaced={setIsOrderPlaced}
         />
       ) : (
         ''

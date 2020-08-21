@@ -75,14 +75,14 @@ export const CarouselBasic = (props: Props) => {
   useEffect(() => {
     const bannerObserveHandler = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.9) {
           setBannerIndex(bannerRefList.current.indexOf(entry.target as HTMLDivElement))
         }
       })
     }
     const observer = new IntersectionObserver(bannerObserveHandler, {
       root: silderRef.current,
-      threshold: 0.5,
+      threshold: 0.9,
     })
     bannerRefList.current.forEach((banner) => {
       observer.observe(banner!)

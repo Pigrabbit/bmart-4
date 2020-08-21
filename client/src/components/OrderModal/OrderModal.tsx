@@ -13,6 +13,7 @@ type Props = {
   savedCount: number
   setSavedCount: (count: number) => void
   setIsModalVisible: (flag: boolean) => void
+  setIsOrderPlaced: (flag: boolean) => void
 }
 
 const StyledContainer = styled.div`
@@ -182,6 +183,7 @@ export const OrderModal = (props: Props) => {
       variables: { productId: id, quantity: state.count },
     })
     props.setIsModalVisible(false)
+    props.setIsOrderPlaced(true)
     props.setSavedCount(1)
   }
 

@@ -46,8 +46,9 @@ export const CategoryDashboard = (props: Props) => {
     <div>
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />
       <Sorter sorterChangeHandler={sorterChangeHandler} />
-      <div>current sorter is {sorter}</div>
-      <VerticalList title="" sorter={sorter} productList={productListByCategory} />
+      <div>
+        <VerticalList title="" productList={productListByCategory} />
+      </div>
       <Footer />
     </div>
   )

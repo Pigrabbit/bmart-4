@@ -7,6 +7,7 @@ import {
   DeleteProductFromCartVars,
   ProductInCart,
 } from '../../apis/graphqlQuery'
+import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 
 type Props = {
   order: ProductInCart
@@ -124,6 +125,9 @@ export const OrderCard = (props: Props) => {
   const { id, quantity, priceSum, product } = order
 
   const modifyProductQuantity = (quantity: number) => {
+    if (quantity <= MIN_PRODUCT_PURCHASE_LIMIT - 1 || quantity >= MAX_PRODUCT_PURCHASE_LIMIT + 1)
+      return
+
     props.modifyProductQuantityHandler({
       productId: product.id,
       orderProductId: id,
@@ -165,6 +169,7 @@ export const OrderCard = (props: Props) => {
           <StyledController className="quantity">
             <button
               className="decrement control-btn"
+              disabled={quantity <= MIN_PRODUCT_PURCHASE_LIMIT}
               onClick={() => modifyProductQuantity(quantity - 1)}
             >
               -
@@ -172,6 +177,7 @@ export const OrderCard = (props: Props) => {
             <div className="count">{quantity}</div>
             <button
               className="increment control-btn"
+              disabled={quantity >= MAX_PRODUCT_PURCHASE_LIMIT}
               onClick={() => modifyProductQuantity(quantity + 1)}
             >
               +

@@ -4,4 +4,6 @@ export type ProductCardType = {
   name: string
   thumbnailSrc: string
   coupangProductId: string
+  basePrice: number
+  discountRate: number
 }

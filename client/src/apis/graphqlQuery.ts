@@ -11,6 +11,8 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
     ) {
       id
       price
+      basePrice
+      discountRate
       name
       thumbnailSrc
       coupangProductId
@@ -92,5 +94,10 @@ export const DELETE_PRODUCT_FROM_CART = gql`
     deleteProductFromCart(orderProductIds: $orderProductIds) {
       success
     }
+`
+
+export const ADD_PRODUCT_TO_CART = gql`
+  mutation AddProductToCart($productId: ID!, $quantity: Int!) {
+    addProductToCart(userId: 1, productId: $productId, quantity: $quantity)
   }
 `

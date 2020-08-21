@@ -38,11 +38,7 @@ export const MainDashboard = (props: Props) => {
         ></HorizontalList>
         <Carousel bannerList={smallBannerList} />
         <HorizontalList title="동혁님을 위해 준비한 상품" productList={productListByCategory} />
-        <VerticalList
-          sorter={0}
-          title="성현님을 위해 준비한 상품"
-          productList={productListByCategory}
-        />
+        <VerticalList title="성현님을 위해 준비한 상품" productList={productListByCategory} />
         <CategoryListSection />
       </StyledContainer>
     </Dashboard>

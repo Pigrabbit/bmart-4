@@ -8,10 +8,12 @@ type Props = {
 
 const StyledSorter = styled.div`
   width: 100%;
+  display: block;
+  position: relative;
 `
 
 const StyledSelect = styled.select`
-  float: right;
+  margin: 10px;
 `
 
 export const Sorter = (props: Props) => {

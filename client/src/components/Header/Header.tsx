@@ -13,7 +13,6 @@ const StyledContainer = styled.header`
   padding: 8px ${STYLES.padding};
   position: sticky;
   top: 0;
-  margin-bottom: 6px;
   background: white;
   height: ${HEADER_HEIGHT};
   z-index: 10;

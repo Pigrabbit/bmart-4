@@ -3,6 +3,7 @@ export const CS_EMAIL: string = 'bmart_together@woowahan.com'
 export const SLIDER_INTERVAL_TIME = 2000
 export const GRAPHQL_URI = process.env.REACT_APP_GRAPHQL_URI
 export const LAZY_LOAD_THRESHOLD = 0.1
+export const BAEDAL_TIP = 1000
 export const CATEGORIES = [
   { id: 0, name: '채소' },
   { id: 1, name: '가루/조미료/오일' },
@@ -17,6 +18,12 @@ export const CATEGORIES = [
   { id: 10, name: '과자/초콜릿/시리얼' },
 ]
 
-export const NAV_ICON_LIST = ['home', 'search', 'favorite', 'history', 'cart']
+export const NAVIGATIONS = [
+  { name: 'home', path: '/' },
+  { name: 'search', path: '/search' },
+  { name: 'favorite', path: '/favorite' },
+  { name: 'history', path: '/history' },
+  { name: 'cart', path: '/cart' },
+]
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1

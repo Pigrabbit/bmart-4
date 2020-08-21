@@ -8,7 +8,7 @@ const productListInCartResolver = async (parent, args) => {
 
   try {
     const query = `
-      SELECT op.id, op.quantity, op.price_sum, p.* 
+      SELECT op.id orderProductId, op.quantity, op.price_sum, p.* 
       FROM order_product op
       JOIN product p ON op.product_id = p.id
       JOIN \`order\` o ON o.id = op.order_id
@@ -17,7 +17,7 @@ const productListInCartResolver = async (parent, args) => {
 
     const [rows] = await conn.query(query, [userId])
     const result = rows.map((row) => ({
-      id: row.id,
+      id: row.orderProductId,
       quantity: row.quantity,
       priceSum: row.price_sum,
       product: new GetProductDTO(row),
@@ -114,16 +114,20 @@ const modifyProductQuantityResolver = async (parent, args) => {
 }
 
 const deleteProductFromCartResolver = async (parent, args) => {
-  const { orderProductId } = args
+  const { orderProductIds } = args
   const conn = await pool.getConnection()
 
   try {
     const query = 'DELETE FROM order_product WHERE id = ?'
+    let deletedRows = 0
 
-    const [rows] = await conn.query(query, [orderProductId])
-    const { affectedRows } = rows
+    for (const orderProductId of orderProductIds) {
+      const [rows] = await conn.query(query, [orderProductId])
+      const { affectedRows } = rows
+      deletedRows += affectedRows
+    }
 
-    return { success: affectedRows === 1 }
+    return { success: deletedRows === orderProductIds.length }
   } catch (err) {
     throw new Error(errorName.INTERNAL_SERVER_ERROR)
   } finally {

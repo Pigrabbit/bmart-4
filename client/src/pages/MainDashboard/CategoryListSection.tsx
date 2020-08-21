@@ -48,7 +48,7 @@ export const CategoryListSection = (props: Props) => {
 
     if (flag === 'out') {
       const idx = CATEGORIES.findIndex((c) => c.name === category)
-      if (idx > 0) selectCategory(CATEGORIES[idx].name)
+      if (idx > 0) selectCategory(CATEGORIES[idx - 1].name)
     }
   }
 
@@ -61,7 +61,7 @@ export const CategoryListSection = (props: Props) => {
             <CategoryList idx={idx} category={category} changeFocus={changeFocus} />
           </div>
         ) : (
-          <div className="wrap" ref={lastCategoryListRef} key={idx}>
+          <div className="wrap" key={idx}>
             <CategoryList idx={idx} category={category} changeFocus={changeFocus} />
           </div>
         )

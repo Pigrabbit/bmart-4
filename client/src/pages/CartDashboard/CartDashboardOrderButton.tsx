@@ -37,7 +37,7 @@ const StyledOrderButton = styled.button`
   font-weight: 700;
 
   &:disabled {
-    background-color: #ccc;
+    background-color: ${COLORS.disabled};
 
     .order-count {
       display: none;

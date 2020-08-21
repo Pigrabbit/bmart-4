@@ -15,6 +15,7 @@ export const COLORS = {
   lightBlue: '#eff1f3',
   superLightBlue: '#f5f5f7',
   red: '#f64646',
+  disabled: '#aaa',
 
   orange: '#f72269',
   orangeBack: 'rgba(247, 35, 105, 0.1)',

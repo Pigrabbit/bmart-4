@@ -1,6 +1,6 @@
 import React, { useMemo, ChangeEvent, useState } from 'react'
 import styled from 'styled-components'
-import { STYLES } from '../../utils/styleConstants'
+import { STYLES, COLORS } from '../../utils/styleConstants'
 import { CheckedProduct } from './CartDashboard'
 import { DeleteProductFromCartVars } from '../../apis/graphqlQuery'
 import { Confirm } from '../../components/Confirm'
@@ -37,7 +37,11 @@ const StyledCheckbox = styled.label`
     height: 19px;
   }
 `
-const StyledVacateButton = styled.button``
+const StyledVacateButton = styled.button`
+  &:disabled {
+    color: ${COLORS.disabled};
+  }
+`
 
 export const CartDashboardHeader = (props: Props) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false)
@@ -45,8 +49,8 @@ export const CartDashboardHeader = (props: Props) => {
 
   const allOrdersChecked = useMemo(() => {
     return checkedProductList.reduce((acc, cur) => {
-      return acc && cur.checked
-    }, true)
+      return acc + (cur.checked ? 1 : 0)
+    }, 0)
   }, [checkedProductList])
 
   const clickToggleCheckButtonHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,12 +80,14 @@ export const CartDashboardHeader = (props: Props) => {
       <StyledCheckbox>
         <input
           type="checkbox"
-          checked={allOrdersChecked}
+          checked={allOrdersChecked === checkedProductList.length}
           onChange={clickToggleCheckButtonHandler}
         />
         선택해제
       </StyledCheckbox>
-      <StyledVacateButton onClick={() => setIsConfirmOpen(true)}>선택 비우기</StyledVacateButton>
+      <StyledVacateButton disabled={allOrdersChecked === 0} onClick={() => setIsConfirmOpen(true)}>
+        선택 비우기
+      </StyledVacateButton>
     </StyledContainer>
   )
 }

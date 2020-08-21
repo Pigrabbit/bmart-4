@@ -108,9 +108,10 @@ const StyledController = styled.div`
     line-height: 30px;
     text-align: center;
     font-size: 20px;
-  }
-  .decrement {
-    color: #888;
+
+    &:disabled {
+      color: ${COLORS.disabled};
+    }
   }
   .count {
     font-weight: 600;

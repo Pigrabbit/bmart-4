@@ -11,6 +11,8 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
     ) {
       id
       price
+      basePrice
+      discountRate
       name
       thumbnailSrc
       coupangProductId
@@ -25,5 +27,11 @@ export const GET_PRODUCT_DETAIL_IMG_SRC_LIST = gql`
       coupangProductId
       src
     }
+  }
+`
+
+export const ADD_PRODUCT_TO_CART = gql`
+  mutation AddProductToCart($productId: ID!, $quantity: Int!) {
+    addProductToCart(userId: 1, productId: $productId, quantity: $quantity)
   }
 `

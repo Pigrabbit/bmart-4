@@ -94,6 +94,7 @@ export const DELETE_PRODUCT_FROM_CART = gql`
     deleteProductFromCart(orderProductIds: $orderProductIds) {
       success
     }
+  }
 `
 
 export const ADD_PRODUCT_TO_CART = gql`

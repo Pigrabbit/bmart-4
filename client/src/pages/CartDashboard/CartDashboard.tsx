@@ -9,6 +9,7 @@ import {
   MODIFY_PRODUCT_QUANTITY,
   ModifyProductQuantityVars,
   DeleteProductFromCartVars,
+  ProductInCart,
   ProductInCartData,
   ProductInCartVars,
 } from '../../apis/graphqlQuery'
@@ -30,13 +31,10 @@ export const CartDashboard = (props: Props) => {
     GET_PRODUCTLIST_IN_CART,
     { variables: { userId: 1 } }
   )
-  const [modifyProductQuantity] = useMutation(MODIFY_PRODUCT_QUANTITY, {
-    onCompleted: refetch,
-  })
-  const [deleteProductFromCart] = useMutation(DELETE_PRODUCT_FROM_CART, {
-    onCompleted: refetch,
-  })
+  const [modifyProductQuantity] = useMutation(MODIFY_PRODUCT_QUANTITY)
+  const [deleteProductFromCart] = useMutation(DELETE_PRODUCT_FROM_CART)
 
+  const [orderList, setOrderList] = useState<ProductInCart[]>([])
   const [checkedProductList, setCheckedProductList] = useState<CheckedProduct[]>([])
 
   useEffect(() => {
@@ -48,32 +46,54 @@ export const CartDashboard = (props: Props) => {
         checked: true,
       }))
     )
+    setOrderList(data.productListInCart)
   }, [loading])
 
   const getSummary = useCallback(
     () => ({
       totalPrice:
-        data?.productListInCart.reduce((acc, cur, idx) => {
+        orderList.reduce((acc, cur, idx) => {
           return checkedProductList.length && checkedProductList[idx].checked
             ? acc + cur.priceSum
             : acc
         }, 0) || 0,
       totalCount: checkedProductList.filter((c) => c.checked).length || 0,
     }),
-    [data, checkedProductList]
+    [orderList, checkedProductList]
   )
 
-  const modifyProductQuantityHandler = (variables: ModifyProductQuantityVars) => {
-    modifyProductQuantity({ variables })
+  const modifyProductQuantityHandler = async (variables: ModifyProductQuantityVars) => {
+    await modifyProductQuantity({ variables })
+
+    setOrderList(
+      orderList.map((order) =>
+        order.id === variables.orderProductId
+          ? { ...order, quantity: variables.quantity }
+          : { ...order }
+      )
+    )
   }
 
-  const deleteProductFromCartHandler = (variables: DeleteProductFromCartVars) => {
-    deleteProductFromCart({ variables })
+  const deleteProductFromCartHandler = async (variables: DeleteProductFromCartVars) => {
+    await deleteProductFromCart({ variables })
+
+    let newOrderList: ProductInCart[] = []
+    let newCheckedProductList: CheckedProduct[] = []
+    orderList.map((order, idx) => {
+      const existIdx = variables.orderProductIds.indexOf(order.id)
+      if (existIdx < 0) {
+        newOrderList.push({ ...order })
+        newCheckedProductList.push({ ...checkedProductList[idx] })
+      }
+    })
+
+    setOrderList(newOrderList)
+    setCheckedProductList(newCheckedProductList)
   }
 
   return (
     <Dashboard title="장바구니" footer={false} navbar={false}>
-      {data && data.productListInCart.length > 0 ? (
+      {orderList.length > 0 ? (
         <StyledContainer className="cart-dashboard">
           <CartDashboardHeader
             checkedProductList={checkedProductList}
@@ -81,7 +101,7 @@ export const CartDashboard = (props: Props) => {
             deleteProductFromCartHandler={deleteProductFromCartHandler}
           />
           <CartDashboardOrderList
-            orderList={data.productListInCart}
+            orderList={orderList}
             checkedProductList={checkedProductList}
             setCheckedProductList={setCheckedProductList}
             modifyProductQuantityHandler={modifyProductQuantityHandler}

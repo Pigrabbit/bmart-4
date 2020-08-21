@@ -39,6 +39,10 @@ export const CartDashboard = (props: Props) => {
   const [checkedProductList, setCheckedProductList] = useState<CheckedProduct[]>([])
 
   useEffect(() => {
+    refetch()
+  }, [])
+
+  useEffect(() => {
     if (!data) return
 
     setCheckedProductList(
@@ -50,7 +54,7 @@ export const CartDashboard = (props: Props) => {
     setOrderList(data.productListInCart)
 
     setIsLoading(false)
-  }, [loading])
+  }, [data])
 
   const getSummary = useCallback(
     () => ({

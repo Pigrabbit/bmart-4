@@ -34,6 +34,7 @@ export const CartDashboard = (props: Props) => {
   const [modifyProductQuantity] = useMutation(MODIFY_PRODUCT_QUANTITY)
   const [deleteProductFromCart] = useMutation(DELETE_PRODUCT_FROM_CART)
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [orderList, setOrderList] = useState<ProductInCart[]>([])
   const [checkedProductList, setCheckedProductList] = useState<CheckedProduct[]>([])
 
@@ -47,6 +48,8 @@ export const CartDashboard = (props: Props) => {
       }))
     )
     setOrderList(data.productListInCart)
+
+    setIsLoading(false)
   }, [loading])
 
   const getSummary = useCallback(
@@ -90,6 +93,8 @@ export const CartDashboard = (props: Props) => {
     setOrderList(newOrderList)
     setCheckedProductList(newCheckedProductList)
   }
+
+  if (isLoading) return <p>...loading</p>
 
   return (
     <Dashboard title="장바구니" footer={false} navbar={false}>

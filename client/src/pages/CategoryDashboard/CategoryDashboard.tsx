@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
-import { useQuery, useLazyQuery } from '@apollo/client'
-import { VerticalList } from '../../components/VerticalList'
 import { Sorter } from '../../components/Sorter'
 import { RouteComponentProps } from 'react-router-dom'
 import { CATEGORIES } from '../../utils/constants'
 import { CategoryDashboardRouteProps } from '../../types/routeProps'
-import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
-import { replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
-import { scrolledToBottom } from '../../utils/scrolledToBottom'
+import { replaceSlashesWithCommas } from '../../utils/parser'
 import { ProductBlock } from './ProductBlock'
 
 type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
@@ -19,8 +15,6 @@ export const CategoryDashboard = (props: Props) => {
   const category = CATEGORIES.filter((c) => String(c.id) === match.params.categoryId)[0]
 
   const [pageList, setPageList] = useState<number[]>([0])
-
-  // useState를 활용해서 sorter 상태 관리
   const [sorter, setSorter] = useState('sellCountDesc')
   const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSorter(event.target.value)
@@ -29,31 +23,46 @@ export const CategoryDashboard = (props: Props) => {
   let page = 1
   let onePageLength = 10
 
-  const scrollEventHandler = () => {
-    if (scrolledToBottom()) {
-      setPageList([...pageList, page * onePageLength])
-      page++
-      console.log(pageList)
-    }
-  }
+  const ref = useRef<HTMLDivElement>(null)
 
-  window.addEventListener('scroll', scrollEventHandler)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          console.log('It works!')
+          setPageList((pageList) => [...pageList, ++page])
+          console.log('page', page)
+          console.log(pageList)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1,
+      }
+    )
+    if (ref.current) {
+      observer.observe(ref.current!)
+    }
+  }, [ref])
 
   return (
     <div>
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />
       <Sorter sorterChangeHandler={sorterChangeHandler} />
       <div>current sorter is {sorter}</div>
-      {pageList.map((el) => {
+      {pageList.map((el, idx) => {
         return (
           <ProductBlock
             page={el}
+            key={idx}
             onePageLength={onePageLength}
             sorter={sorter}
             categoryName={category.name}
           />
         )
       })}
+      <div className="endOfScreen" ref={ref}></div>
       <Footer />
     </div>
   )

@@ -83,14 +83,14 @@ export const SearchDashboard = (props: Props) => {
       body: JSON.stringify({ query: state.query }),
     })
     const data = await result.json()
-    console.log(data)
+    
     dispatch({ type: 'submit', payload: { searchResultList: data } })
   }
-  
+
   return (
     <Dashboard title="" header={false} footer={false}>
       {state.hasQueried ? (
-        <Redirect to={{ pathname: '/search-result', state: { result: state.searchResultList } }} />
+        <Redirect to={{ pathname: '/search-result', state: { searchResultList: state.searchResultList } }} />
       ) : (
         <StyledContainer className="search-dashboard">
           <form className="search-form" onSubmit={submitHandler}>

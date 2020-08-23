@@ -1,0 +1,5 @@
+const MAX_SEARCH_RESULT_COUNT = 100
+
+module.exports = {
+  MAX_SEARCH_RESULT_COUNT
+}

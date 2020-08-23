@@ -8,7 +8,7 @@ const searchInIndex = async (req, res, next) => {
       body: {
         query: {
           match: {
-            'name.nori': req.params.query
+            'name.nori': req.body.query
           }
         }
       }

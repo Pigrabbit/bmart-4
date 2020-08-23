@@ -1,2 +1,10 @@
 # es search 
 GET http://localhost:4000/search/1kg
+###
+
+POST http://localhost:4000/search
+Content-Type: application/json
+
+{
+  "query": "바나나우유"
+}

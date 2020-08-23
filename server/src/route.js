@@ -25,6 +25,6 @@ router.post(
 )
 
 const searchInIndex = require('./elasticsearch-controller')
-router.get('/search/:query', searchInIndex)
+router.post('/search', searchInIndex)
 
 module.exports = router

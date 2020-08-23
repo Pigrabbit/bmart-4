@@ -29,10 +29,7 @@ export const CategoryDashboard = (props: Props) => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          console.log('It works!')
           setPageList((pageList) => [...pageList, ++page])
-          console.log('page', page)
-          console.log(pageList)
         }
       },
       {

@@ -2,7 +2,7 @@ import React, { useState, useRef, FormEvent, useReducer } from 'react'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import { Dashboard } from '../../components/Dashboard'
 import styled from 'styled-components'
-import { SEARCH_URI } from '../../utils/constants'
+import { SEARCH_URI, SPECIAL_CHAR_REGEX } from '../../utils/constants'
 import { ProductCardType } from '../../types/productCard'
 
 type Props = {} & RouteComponentProps
@@ -54,6 +54,7 @@ const searchReducer = (state: State, action: Action) => {
       }
     }
     case 'input': {
+      if (SPECIAL_CHAR_REGEX.test(action.payload.query)) return {...state};
       return {
         ...state,
         query: action.payload.query,

@@ -1,8 +1,9 @@
-import React, { useState, useRef, FormEvent } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import React, { useState, useRef, FormEvent, useReducer } from 'react'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import { Dashboard } from '../../components/Dashboard'
 import styled from 'styled-components'
 import { SEARCH_URI } from '../../utils/constants'
+import { ProductCardType } from '../../types/productCard'
 
 type Props = {} & RouteComponentProps
 
@@ -32,41 +33,80 @@ const StyledSubmitBtn = styled.button`
   }
 `
 
-export const SearchDashboard = (props: Props) => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const formRef = useRef<HTMLFormElement | null>(null)
+type State = {
+  query: string
+  hasQueried: boolean
+  searchResultList: ProductCardType[]
+}
 
-  const submitHandler = (e: FormEvent) => {
+type Action = {
+  type: string
+  payload: any
+}
+
+const searchReducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case 'submit': {
+      return {
+        query: '',
+        hasQueried: true,
+        searchResultList: action.payload.searchResultList,
+      }
+    }
+    case 'input': {
+      return {
+        ...state,
+        query: action.payload.query,
+      }
+    }
+  }
+  return state
+}
+
+const initialState = {
+  query: '',
+  hasQueried: false,
+  searchResultList: [],
+}
+
+export const SearchDashboard = (props: Props) => {
+  const [state, dispatch] = useReducer(searchReducer, initialState)
+
+  const submitHandler = async (e: FormEvent) => {
     e.preventDefault()
-    
-    console.log(searchQuery)
-    fetch(SEARCH_URI as RequestInfo, {
+
+    const result = await fetch(SEARCH_URI as RequestInfo, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query: searchQuery })
+      body: JSON.stringify({ query: state.query }),
     })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(error => console.log(error))
+    const data = await result.json()
+    console.log(data)
+    dispatch({ type: 'submit', payload: { searchResultList: data } })
   }
+  
   return (
     <Dashboard title="" header={false} footer={false}>
-      <StyledContainer className="search-dashboard">
-        <form className="search-form" ref={formRef} onSubmit={submitHandler}>
-          <StyledInput
-            className="search-input"
-            type="text"
-            value={searchQuery}
-            name="query"
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <StyledSubmitBtn className="search-submit-btn" type="submit">
-            <img src={`${process.env.PUBLIC_URL}/images/navbar-icon/search.svg`}/>
-          </StyledSubmitBtn>
-        </form>
-      </StyledContainer>
+      {state.hasQueried ? (
+        <Redirect to={{ pathname: '/search-result', state: { result: state.searchResultList } }} />
+      ) : (
+        <StyledContainer className="search-dashboard">
+          <form className="search-form" onSubmit={submitHandler}>
+            <StyledInput
+              className="search-input"
+              type="text"
+              value={state.query}
+              name="query"
+              onChange={(e) => dispatch({ type: 'input', payload: { query: e.target.value } })}
+            />
+            <StyledSubmitBtn className="search-submit-btn" type="submit">
+              <img src={`${process.env.PUBLIC_URL}/images/navbar-icon/search.svg`} />
+            </StyledSubmitBtn>
+          </form>
+        </StyledContainer>
+      )}
     </Dashboard>
   )
 }

@@ -15,7 +15,6 @@ const searchInIndex = async (req, res, next) => {
         }
       }
     })
-    console.log(result.body.hits.hits.length)
     const dtoList = result.body.hits.hits.map((hit, idx) => {
       return new ProductSearchDTO(hit._source)
     })

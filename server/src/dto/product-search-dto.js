@@ -9,6 +9,7 @@ class ProductSearchDTO {
     sold_count,
     stock_count,
     coupang_product_id,
+    thumbnail_src,
   }) {
     this.id = id
     this.name = name
@@ -19,6 +20,7 @@ class ProductSearchDTO {
     this.soldCount = sold_count
     this.stockCount = stock_count
     this.coupangProductId = coupang_product_id
+    this.thumbnailSrc = `http://${thumbnail_src}`
   }
 }
 

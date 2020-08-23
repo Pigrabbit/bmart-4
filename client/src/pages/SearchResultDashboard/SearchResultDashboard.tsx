@@ -1,22 +1,25 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { ProductCardType } from '../../types/productCard'
+import { Dashboard } from '../../components/Dashboard'
+import { VerticalList } from '../../components/VerticalList'
 
 type Props = {} & RouteComponentProps
 
 type State = {
   searchResultList: ProductCardType[] 
-} | any
+}
 
 export const SearchResultDashboard = (props: Props) => {
   const { location } = props
-  const state: State = location.state || null
+  if (!location.state) return null
+  const state = location.state as State
 
   const { searchResultList } = state
-  console.log(searchResultList)
+  
   return (
-    <div>
-      search-result
-    </div>
+    <Dashboard title="" header={false}>
+        <VerticalList title="검색 결과" productList={searchResultList} />
+    </Dashboard>
   )
 }

@@ -7,7 +7,6 @@ const productListByCategoryResolver = async (parent, args) => {
   if (offset < 0 || limit < 0) {
     throw new Error(errorName.BAD_REQUEST)
   }
-  console.log(args)
   const conn = await pool.getConnection()
 
   try {
@@ -24,7 +23,6 @@ const productListByCategoryResolver = async (parent, args) => {
             : 'ORDER BY p.price ASC'
         } LIMIT ? OFFSET ?
         `
-    console.log(query, [userId, category, limit, offset, sorter])
     const [rows] = await conn.query(query, [userId, category, limit, offset])
     const result = rows.map((row) => new GetProductDTO(row))
 

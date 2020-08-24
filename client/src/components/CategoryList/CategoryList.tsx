@@ -1,49 +1,68 @@
 import React from 'react'
 import styled from 'styled-components'
 import { CATEGORIES } from '../../utils/constants'
-import { replaceSlashesWithHyphens, replaceSlashesWithCommas } from '../../utils/parser'
+import { replaceSlashesWithHyphens } from '../../utils/parser'
+import { StyledLink } from '../../styles/StyledLink'
+import { STYLES } from '../../utils/styleConstants'
+import { StyledWrapper } from '../../styles/StyledWrapper'
 
 const StyledCategoryList = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  background-color: #fff;
-  margin: 5px 0px;
-  padding: 10px 0px;
-`
-const StyledCategory = styled.a`
-  text-decoration: none;
   display: flex;
-  padding: 5px;
+  align-items: center;
+  overflow-x: auto;
+  background-color: #fff;
+  padding: 0 ${STYLES.padding};
+  padding-top: 10px;
+`
+const StyledCategory = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 56px;
+  margin-right: 12px;
 `
 
 const StyledEmoji = styled.div`
-  font-size: 25px;
-  margin: auto 10px;
+  display: flex;
+  justify-content: center;
+
+  img {
+    width: 56px;
+    height: 56px;
+
+    border-radius: 50%;
+  }
 `
 const StyledCategoryText = styled.div`
-  font-weight: 700;
   color: black;
   font-size: 12px;
-  margin: auto 0px;
   word-break: keep-all;
   word-wrap: break-word;
+  line-height: 30px;
+  text-align: center;
 `
+const StyledSpacer = styled.div`
+  width: 5px;
+  height: 1px;
+  flex: 0 0 auto;
+`
+
 export const CategoryList = () => {
   const categoryList = CATEGORIES
   return (
-    <StyledCategoryList className="category-list">
-      {categoryList.map((category, idx) => (
-        <StyledCategory
-          key={idx}
-          href={`/category/${replaceSlashesWithHyphens(String(category.id))}`}
-          className="category-list-item"
-        >
-          <StyledEmoji>{`${category.emoji}`}</StyledEmoji>
-          <StyledCategoryText>{`${replaceSlashesWithCommas(
-            String(category.name)
-          )}`}</StyledCategoryText>
-        </StyledCategory>
-      ))}
-    </StyledCategoryList>
+    <StyledWrapper>
+      <StyledCategoryList className="category-list">
+        {categoryList.map((category, idx) => (
+          <StyledLink key={idx} to={`/category/${replaceSlashesWithHyphens(String(category.id))}`}>
+            <StyledCategory className="category-list-item">
+              <StyledEmoji>
+                <img src={category.thumbnail} alt="" />
+              </StyledEmoji>
+              <StyledCategoryText>{`${String(category.displayName)}`}</StyledCategoryText>
+            </StyledCategory>
+          </StyledLink>
+        ))}
+        <StyledSpacer />
+      </StyledCategoryList>
+    </StyledWrapper>
   )
 }

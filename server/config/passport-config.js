@@ -7,15 +7,26 @@ require('dotenv').config({
 })
 
 passport.use(
-  'google',
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_OAUTH_ID,
       clientSecret: process.env.GOOGLE_OAUTH_SECRET,
       callbackURL: '/auth/google/redirect',
     },
-    () => {
-      console.log('callback here')
+    async (accessToken, refreshToken, profile, done) => {
+      // passport callback
+      // 이 google id 로 가입된 유저가 있는지 확인
+
+      if (registeredUser) {
+        //  있으면, 기존에 있는 유저정보 가져오기
+        done(null, registeredUser);
+      } else {
+        //  없으면, 새로 만들어주기
+
+        done(null, newUser);
+      }
+
+      // 로그인 시켜주기
     }
   )
 )

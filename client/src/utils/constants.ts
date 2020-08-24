@@ -2,6 +2,7 @@ export const CS_PHONE: string = '1600-0025'
 export const CS_EMAIL: string = 'bmart_together@woowahan.com'
 export const SLIDER_INTERVAL_TIME = 2000
 export const GRAPHQL_URI = process.env.REACT_APP_GRAPHQL_URI
+export const SEARCH_URI = process.env.REACT_APP_SEARCH_URI
 export const LAZY_LOAD_THRESHOLD = 0.1
 export const BAEDAL_TIP = 1000
 export const CATEGORIES = [
@@ -27,3 +28,4 @@ export const NAVIGATIONS = [
 ]
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1
+export const SPECIAL_CHAR_REGEX = /[~!@#$%^&*()_+|<>?:{}]/

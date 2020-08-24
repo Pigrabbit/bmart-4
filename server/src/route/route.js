@@ -12,13 +12,16 @@ const schema = require('../schema/schema')
 if (process.env.NODE_ENV === 'dev') {
   router.get(
     '/graphql',
-    graphqlHTTP({
-      schema,
-      graphiql: true,
-      customFormatErrorFn: (err) => {
-        const error = getErrorCode(err.message)
-        return { message: error.message, statusCode: error.statusCode }
-      },
+    graphqlHTTP((req, res) => {
+      return {
+        schema,
+        graphiql: true,
+        context: { req, res },
+        customFormatErrorFn: (err) => {
+          const error = getErrorCode(err.message)
+          return { message: error.message, statusCode: error.statusCode }
+        },
+      }
     })
   )
 }
@@ -26,13 +29,16 @@ if (process.env.NODE_ENV === 'dev') {
 router.post(
   '/graphql',
   isLoggedIn,
-  graphqlHTTP({
-    schema,
-    graphiql: false,
-    customFormatErrorFn: (err) => {
-      const error = getErrorCode(err.message)
-      return { message: error.message, statusCode: error.statusCode }
-    },
+  graphqlHTTP((req, res) => {
+    return {
+      schema,
+      graphiql: false,
+      context: { req, res },
+      customFormatErrorFn: (err) => {
+        const error = getErrorCode(err.message)
+        return { message: error.message, statusCode: error.statusCode }
+      },
+    }
   })
 )
 

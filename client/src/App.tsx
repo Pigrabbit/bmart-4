@@ -10,6 +10,8 @@ import { CategoryDashboard } from './pages/CategoryDashboard'
 import { CartDashboard } from './pages/CartDashboard'
 
 import { ProductDetailRouteProps, CategoryDashboardRouteProps } from './types/routeProps'
+import { SearchDashboard } from './pages/SearchDashboard'
+import { SearchResultDashboard } from './pages/SearchResultDashboard'
 
 function App() {
   return (
@@ -32,6 +34,14 @@ function App() {
             <Route
               path="/cart"
               component={(props: RouteComponentProps) => <CartDashboard {...props} />}
+            />
+            <Route
+              path="/search"
+              component={(props: RouteComponentProps) => <SearchDashboard {...props} />}
+            />
+            <Route
+              path="/search-result"
+              component={(props: RouteComponentProps) => <SearchResultDashboard {...props} />}
             />
             <Route
               path="/"

@@ -1,0 +1,1 @@
+export { SearchResultDashboard } from "./SearchResultDashboard"

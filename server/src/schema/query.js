@@ -7,16 +7,13 @@ const {
   GraphQLNonNull,
 } = require('graphql')
 
-const {
-  ProductType,
-  CartProductType,
-  ProductDetailImgType,
-} = require('../type')
+const { ProductType, CartProductType, ProductDetailImgType } = require('../type')
 
-const { productListByCategoryResolver, productDetailImgResolver } = require('../resolver/product-resolver')
 const {
-  productListInCartResolver,
-} = require('../resolver/cart-resolver')
+  productListByCategoryResolver,
+  productDetailImgResolver,
+} = require('../resolver/product-resolver')
+const { productListInCartResolver } = require('../resolver/cart-resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -30,7 +27,7 @@ const RootQueryType = new GraphQLObjectType({
         category: { type: GraphQLString },
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt },
-        sorter: { type: GraphQLInt },
+        sorter: { type: GraphQLString },
       },
       resolve: productListByCategoryResolver,
     },

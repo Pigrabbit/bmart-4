@@ -41,12 +41,7 @@ export const ProductCard = (props: Props) => {
         to={{
           pathname: `/product/${id}`,
           state: {
-            id,
-            price,
-            basePrice,
-            discountRate,
-            name,
-            coupangProductId,
+            ...product
           },
         }}
       >

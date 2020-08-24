@@ -8,11 +8,6 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'dev' ? FILE_PATH.env_dev : FILE_PATH.env_prod,
 })
 
-router.get('/login', (req, res, next) => {
-  // do something with passport
-  res.json({ message: 'login router' })
-})
-
 // auth logout
 router.get('/logout', (req, res, next) => {
   // handle with passport
@@ -28,7 +23,6 @@ router.get(
 )
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res, next) => {
-  console.log('google redirect')
   const payload = { id: req.user.id }
   const token = jwt.sign(payload, process.env.JWT_SECRET)
   res

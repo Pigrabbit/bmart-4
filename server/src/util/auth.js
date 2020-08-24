@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const { ReasonPhrases, StatusCodes } = require('http-status-codes')
 const { FILE_PATH } = require('../../config/config')
 
 require('dotenv').config({
@@ -8,12 +9,12 @@ require('dotenv').config({
 function isLoggedIn(req, res, next) {
   const token = req.headers.authorization.split(' ')[1]
   if (!token) {
-    res.status(401).json({ message: 'No token' })
+    res.status(StatusCodes.UNAUTHORIZED).json({ message: ReasonPhrases.UNAUTHORIZED })
   }
-  
+
   const isValid = jwt.verify(token, process.env.JWT_SECRET)
   if (!isValid) {
-    res.status(401).json({ message: 'INVALID_TOKEN' })
+    res.status(StatusCodes.FORBIDDEN).json({ message: ReasonPhrases.FORBIDDEN })
   }
 
   const userId = jwt.decode(token).id

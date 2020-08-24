@@ -7,19 +7,18 @@ require('dotenv').config({
 })
 
 function isLoggedIn(req, res, next) {
-  // const token = req.headers.authorization.split(' ')[1]
-  // if (!token) {
-  //   res.status(StatusCodes.UNAUTHORIZED).json({ message: ReasonPhrases.UNAUTHORIZED })
-  // }
+  const token = req.headers.authorization.split(' ')[1]
+  if (!token) {
+    res.status(StatusCodes.UNAUTHORIZED).json({ message: ReasonPhrases.UNAUTHORIZED })
+  }
 
-  // const isValid = jwt.verify(token, process.env.JWT_SECRET)
-  // if (!isValid) {
-  //   res.status(StatusCodes.FORBIDDEN).json({ message: ReasonPhrases.FORBIDDEN })
-  // }
+  const isValid = jwt.verify(token, process.env.JWT_SECRET)
+  if (!isValid) {
+    res.status(StatusCodes.FORBIDDEN).json({ message: ReasonPhrases.FORBIDDEN })
+  }
 
-  // const userId = jwt.decode(token).id
-  // res.locals.userId = userId
-  res.locals.userId = 2
+  const userId = jwt.decode(token).id
+  res.locals.userId = userId
   next()
 }
 

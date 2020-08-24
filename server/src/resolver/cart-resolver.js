@@ -6,7 +6,6 @@ const productListInCartResolver = async (parent, args, context) => {
   const res = await context.res
   const userId = res.locals.userId
 
-  // const { userId } = args
   const conn = await pool.getConnection()
 
   try {

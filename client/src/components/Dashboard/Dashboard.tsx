@@ -19,7 +19,7 @@ export const Dashboard = (props: Props) => {
 
   return (
     <StyledContainer>
-      {header && <Header title={title} />}
+      {header && <Header title={title} searchBar={true} />}
       {props.children}
       {footer && <Footer />}
       {navbar && <Navbar />}

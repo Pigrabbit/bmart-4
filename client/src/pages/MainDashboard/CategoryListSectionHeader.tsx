@@ -12,7 +12,7 @@ const StyledHeader = styled.div`
   align-items: center;
   position: sticky;
   top: ${`calc(${HEADER_HEIGHT} - 1px)`};
-  height: ${HEADER_HEIGHT};
+  height: 50px;
   background: white;
   z-index: 10;
   border-bottom: 1px solid ${STYLES.borderColor};

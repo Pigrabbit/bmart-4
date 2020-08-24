@@ -8,7 +8,7 @@ export const STYLES = {
   borderColor: '#ddd',
 }
 
-export const HEADER_HEIGHT = '50px'
+export const HEADER_HEIGHT = '100px'
 
 export const COLORS = {
   baemint: '#10b3ad',

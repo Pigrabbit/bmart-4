@@ -84,11 +84,11 @@ export const CATEGORIES = [
 ]
 
 export const NAVIGATIONS = [
-  { name: 'home', path: '/' },
-  { name: 'search', path: '/search' },
-  { name: 'favorite', path: '/favorite' },
-  { name: 'history', path: '/history' },
-  { name: 'cart', path: '/cart' },
+  { name: 'home', displayName: '홈', path: '/' },
+  { name: 'search', displayName: '검색', path: '/search' },
+  { name: 'favorite', displayName: '찜', path: '/favorite' },
+  { name: 'history', displayName: '주문내역', path: '/history' },
+  { name: 'cart', displayName: '장바구니', path: '/cart' },
 ]
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1

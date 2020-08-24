@@ -68,21 +68,21 @@ const StyledSlider = styled.div`
 
 export const CarouselBasic = (props: Props) => {
   const { bannerList } = props
-  const silderRef = useRef<HTMLDivElement>(null)
+  const sliderRef = useRef<HTMLDivElement>(null)
   const bannerRefList = useRef<Array<HTMLDivElement | null>>([])
   const [bannerIndex, setBannerIndex] = useState(0)
 
   useEffect(() => {
     const bannerObserveHandler = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.9) {
           setBannerIndex(bannerRefList.current.indexOf(entry.target as HTMLDivElement))
         }
       })
     }
     const observer = new IntersectionObserver(bannerObserveHandler, {
-      root: silderRef.current,
-      threshold: 0.5,
+      root: sliderRef.current,
+      threshold: 0.9,
     })
     bannerRefList.current.forEach((banner) => {
       observer.observe(banner!)
@@ -92,7 +92,7 @@ export const CarouselBasic = (props: Props) => {
   return (
     <StyledWrapper className="carousel-wrapper">
       <StyledCarousel className="carousel">
-        <StyledContainer className="carousel-slide-container" ref={silderRef}>
+        <StyledContainer className="carousel-slide-container" ref={sliderRef}>
           {bannerList.map((item, idx) => (
             <StyledSlider
               key={idx}
@@ -107,9 +107,11 @@ export const CarouselBasic = (props: Props) => {
         </StyledContainer>
         <div className="carousel-indicator-list">
           {bannerList.map((item, idx) => {
-            return idx === bannerIndex ?
-              <div key={idx} className="carousel-indicator-visible"></div> :
+            return idx === bannerIndex ? (
+              <div key={idx} className="carousel-indicator-visible"></div>
+            ) : (
               <div key={idx} className="carousel-indicator-invisible"></div>
+            )
           })}
         </div>
       </StyledCarousel>

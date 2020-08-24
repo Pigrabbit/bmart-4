@@ -38,6 +38,16 @@ const CartProductType = new GraphQLObjectType({
   }),
 })
 
+const ProductDetailImgType = new GraphQLObjectType({
+  name: 'ProductDetailImg',
+  description: 'This represents detail img data of product',
+  fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLID) },
+    coupangProductId: { type: GraphQLNonNull(GraphQLInt) },
+    src: { type: GraphQLNonNull(GraphQLString) },
+  }),
+})
+
 const changeStatusMessageType = new GraphQLObjectType({
   name: 'changeStatusMessage',
   description: '수정/삭제 성공 여부 메시지',
@@ -49,5 +59,6 @@ const changeStatusMessageType = new GraphQLObjectType({
 module.exports = {
   ProductType,
   CartProductType,
+  ProductDetailImgType,
   changeStatusMessageType,
 }

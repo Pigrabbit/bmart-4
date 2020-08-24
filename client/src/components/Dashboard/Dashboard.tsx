@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Header } from '../Header'
 import { Footer } from '../Footer'
@@ -6,20 +6,23 @@ import { Navbar } from '../Navbar'
 
 type Props = {
   title: string
+  header?: boolean
+  footer?: boolean
+  navbar?: boolean
   children: React.ReactElement
 }
 
 const StyledContainer = styled.div``
 
 export const Dashboard = (props: Props) => {
-  const { title } = props
+  const { title, header = true, footer = true, navbar = true } = props
 
   return (
     <StyledContainer>
-      <Header title={title}></Header>
+      {header && <Header title={title} />}
       {props.children}
-      <Footer></Footer>
-      <Navbar />
+      {footer && <Footer />}
+      {navbar && <Navbar />}
     </StyledContainer>
   )
 }

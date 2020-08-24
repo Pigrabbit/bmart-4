@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { NAV_ICON_LIST } from '../../utils/constants'
+import { NAVIGATIONS } from '../../utils/constants'
+import { StyledLink } from '../../styles/StyledLink'
 
 type Props = {}
 
@@ -18,7 +19,7 @@ const StyledContainer = styled.nav`
   border-top: 1px solid #ddd;
 `
 
-const StyledIcon = styled.a`
+const StyledIcon = styled.div`
   .navbar-item-icon {
     width: 34px;
     filter: invert(30%);
@@ -26,25 +27,21 @@ const StyledIcon = styled.a`
 `
 
 export const Navbar = (props: Props) => {
-  const iconList = NAV_ICON_LIST
+  const iconList = NAVIGATIONS
 
   return (
     <StyledContainer className="navbar">
-      {iconList.map((icon, idx) => (
-        <StyledIcon
-          key={idx}
-          href=""
-          className="navbar-item"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img
-            src={`${process.env.PUBLIC_URL}/images/navbar-icon/${icon}.svg`}
-            alt={`${icon}-icon`}
-            className="navbar-item-icon"
-            id={`navbar-item-icon-${icon}`}
-          />
-        </StyledIcon>
+      {iconList.map(({ name, path }, idx) => (
+        <StyledLink key={idx} to={{ pathname: path }}>
+          <StyledIcon className="navbar-item">
+            <img
+              src={`${process.env.PUBLIC_URL}/images/navbar-icon/${name}.svg`}
+              alt={`${name}-icon`}
+              className="navbar-item-icon"
+              id={`navbar-item-icon-${name}`}
+            />
+          </StyledIcon>
+        </StyledLink>
       ))}
     </StyledContainer>
   )

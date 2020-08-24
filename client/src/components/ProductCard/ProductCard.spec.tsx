@@ -40,6 +40,6 @@ describe('<ProductCard />', () => {
     expect(priceElm.text()).toBe('1,000,000원')
 
     const thumbnailElm = wrapper.find('.thumbnail')
-    expect(thumbnailElm.prop('src')).toBe(`http://${testProps.product.thumbnailSrc}`)
+    expect(thumbnailElm.prop('src')).toBe(testProps.product.thumbnailSrc)
   })
 })

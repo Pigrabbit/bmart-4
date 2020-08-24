@@ -1,7 +1,7 @@
 import React from 'react'
 import { cleanup } from '@testing-library/react'
 import { Navbar } from './Navbar'
-import { NAV_ICON_LIST } from '../../utils/constants'
+import { NAVIGATIONS } from '../../utils/constants'
 import { shallow } from 'enzyme'
 import { expect } from 'chai'
 
@@ -18,7 +18,7 @@ describe('<Navbar />', () => {
     const iconList = wrapper.find('.navbar-item')
     expect(iconList).to.have.lengthOf(5)
     iconList.forEach((icon, idx) => {
-      expect(icon.exists(`#navbar-item-icon-${NAV_ICON_LIST[idx]}`)).to.equal(true)
+      expect(icon.exists(`#navbar-item-icon-${NAVIGATIONS[idx].name}`)).to.equal(true)
     })
   })
 })

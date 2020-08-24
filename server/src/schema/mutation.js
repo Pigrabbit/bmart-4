@@ -1,23 +1,14 @@
-const {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLID,
-  GraphQLInt,
-  GraphQLString,
-  GraphQLList,
-  GraphQLNonNull,
-} = require('graphql')
+const { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull } = require('graphql')
 
-const { ProductType, CartProductType, changeStatusMessageType } = require('./type')
+const { changeStatusMessageType } = require('../type')
+
+const { likeProductResolver, dislikeProductResolver } = require('../resolver/like-resolver')
 const {
-  likeProductResolver,
-  dislikeProductResolver,
-  productListByCategoryResolver,
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,
   productListInCartResolver,
-} = require('./resolver')
+} = require('../resolver/cart-resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -92,16 +83,11 @@ const RootMutationType = new GraphQLObjectType({
       type: changeStatusMessageType,
       description: '카트에 담긴 상품 삭제 기능',
       args: {
-        orderProductId: { type: GraphQLNonNull(GraphQLID) },
+        orderProductIds: { type: GraphQLNonNull(GraphQLList(GraphQLID)) },
       },
       resolve: deleteProductFromCartResolver,
     },
   }),
 })
 
-const schema = new GraphQLSchema({
-  query: RootQueryType,
-  mutation: RootMutationType,
-})
-
-module.exports = schema
+module.exports = { RootMutationType }

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { getErrorCode } = require('../errors')
+const { isLoggedIn } = require('../util/auth')
 const authRouter = require('./auth-router')
 router.use('/auth', authRouter)
 
@@ -24,6 +25,7 @@ if (process.env.NODE_ENV === 'dev') {
 
 router.post(
   '/graphql',
+  isLoggedIn,
   graphqlHTTP({
     schema,
     graphiql: false,

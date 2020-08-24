@@ -28,20 +28,16 @@ router.get(
 )
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res, next) => {
-  // TODO
-  // sign jwt token here
-  // and send to client
   console.log('google redirect')
   const payload = { id: req.user.id }
   const token = jwt.sign(payload, process.env.JWT_SECRET)
-  // res.status(200).json({ token })
   res
     .status(200)
     .cookie('token', token, {
       // expires after 7 days (1 week)
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     })
-    .redirect('http://localhost:3000/')
+    .redirect('http://localhost:3000/login')
 })
 
 module.exports = router

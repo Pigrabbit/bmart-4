@@ -9,17 +9,18 @@ type Props = {
   header?: boolean
   footer?: boolean
   navbar?: boolean
+  searchBar?: boolean
   children: React.ReactElement
 }
 
 const StyledContainer = styled.div``
 
 export const Dashboard = (props: Props) => {
-  const { title, header = true, footer = true, navbar = true } = props
+  const { title, header = true, footer = true, navbar = true, searchBar = false } = props
 
   return (
     <StyledContainer>
-      {header && <Header title={title} searchBar={true} />}
+      {header && <Header title={title} searchBar={header && searchBar} />}
       {props.children}
       {footer && <Footer />}
       {navbar && <Navbar />}

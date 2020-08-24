@@ -27,7 +27,7 @@ export const MainDashboard = (props: Props) => {
   const { productListByCategory } = data
 
   return (
-    <Dashboard title="">
+    <Dashboard title="" searchBar={true}>
       <StyledContainer className="dashboard">
         <Carousel bannerList={bigBannerList} />
         <CategoryList />

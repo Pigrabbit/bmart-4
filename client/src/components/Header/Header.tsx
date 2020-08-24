@@ -17,7 +17,7 @@ const StyledContainer = styled.header`
   position: sticky;
   top: 0;
   background: white;
-  z-index: 10;
+  z-index: 1000;
   border-bottom: 1px solid ${STYLES.borderColor};
 `
 const StyledHeader = styled.div`

@@ -89,7 +89,7 @@ export const SearchDashboard = (props: Props) => {
   }
 
   return (
-    <Dashboard title="" header={false} footer={false}>
+    <Dashboard title="검색" navbar={false} searchBar={false} footer={false}>
       {state.hasQueried ? (
         <Redirect
           to={{ pathname: '/search-result', state: { searchResultList: state.searchResultList } }}

@@ -7,7 +7,35 @@ const {
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,
+  productListInCartResolver,
 } = require('../resolver/cart-resolver')
+
+const RootQueryType = new GraphQLObjectType({
+  name: 'Query',
+  description: 'Root Query',
+  fields: () => ({
+    productListByCategory: {
+      type: new GraphQLList(ProductType),
+      description: 'List of products',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+        category: { type: GraphQLString },
+        offset: { type: GraphQLInt },
+        limit: { type: GraphQLInt },
+        sorter: { type: GraphQLString },
+      },
+      resolve: productListByCategoryResolver,
+    },
+    productListInCart: {
+      type: new GraphQLList(CartProductType),
+      description: '장바구니 상품 리스트',
+      args: {
+        userId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: productListInCartResolver,
+    },
+  }),
+})
 
 const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',

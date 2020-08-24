@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client'
 
 export const GET_PRODUCTLIST_BY_CATEGORY = gql`
-  query GetProductListByCategory($category: String!, $offset: Int!, $limit: Int!, $sorter: Int!) {
+  query GetProductListByCategory(
+    $category: String!
+    $offset: Int!
+    $limit: Int!
+    $sorter: String!
+  ) {
     productListByCategory(
       userId: 1
       category: $category

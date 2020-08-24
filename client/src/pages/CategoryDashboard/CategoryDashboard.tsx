@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
-import { useQuery } from '@apollo/client'
-import { VerticalList } from '../../components/VerticalList'
 import { Sorter } from '../../components/Sorter'
 import { RouteComponentProps } from 'react-router-dom'
-import { CATEGORIES } from '../../utils/constants'
+import { CATEGORIES, ONE_PAGE_LENGTH } from '../../utils/constants'
 import { CategoryDashboardRouteProps } from '../../types/routeProps'
-import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
-import { replaceHyphensWithSlashes, replaceSlashesWithCommas } from '../../utils/parser'
+import { replaceSlashesWithCommas } from '../../utils/parser'
+import { ProductBlock } from './ProductBlock'
 
 type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 
@@ -16,39 +14,59 @@ export const CategoryDashboard = (props: Props) => {
   const { match } = props
   const category = CATEGORIES.filter((c) => String(c.id) === match.params.categoryId)[0]
 
-  // useState를 활용해서 sorter 상태 관리
-  const [sorter, setSorter] = useState(0)
+  const currentPage = useRef<number>(1)
+  const noMoreProducts = useRef<boolean>(false)
+  const [pageList, setPageList] = useState<number[]>([0])
+  const [sorter, setSorter] = useState('sellCountDesc')
+
   const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSorter(parseInt(event.target.value))
+    setSorter(event.target.value)
   }
 
-  const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
-    variables: {
-      category: replaceHyphensWithSlashes(category.name),
-      offset: 100,
-      limit: 100,
-      sorter: Number(sorter),
-    },
-  })
+  const endOfScreenRef = useRef<HTMLDivElement>(null)
 
-  if (loading)
-    return (
-      <div>
-        <Header title={`${replaceSlashesWithCommas(category.name)}`} />
-        <Sorter sorterChangeHandler={sorterChangeHandler} />
-        <div>Loading...</div>
-        <Footer />
-      </div>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!noMoreProducts.current) {
+            setPageList((pageList) => [...pageList, currentPage.current])
+            currentPage.current += 1
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1,
+      }
     )
-  const { productListByCategory } = data
+    if (endOfScreenRef && endOfScreenRef.current) {
+      observer.observe(endOfScreenRef.current)
+    }
+  }, [endOfScreenRef])
 
   return (
     <div>
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />
       <Sorter sorterChangeHandler={sorterChangeHandler} />
-      <div>
-        <VerticalList title="" productList={productListByCategory} />
-      </div>
+      {pageList.map((el, idx) => {
+        return (
+          <ProductBlock
+            page={el}
+            key={idx}
+            onePageLength={ONE_PAGE_LENGTH}
+            sorter={sorter}
+            categoryName={category.name}
+            noMoreProducts={noMoreProducts}
+          />
+        )
+      })}
+      {noMoreProducts.current ? (
+        <div>없음</div>
+      ) : (
+        <div className="endOfScreen" ref={endOfScreenRef}></div>
+      )}
       <Footer />
     </div>
   )

@@ -28,4 +28,5 @@ export const NAVIGATIONS = [
 ]
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1
+export const ONE_PAGE_LENGTH = 10
 export const SPECIAL_CHAR_REGEX = /[~!@#$%^&*()_+|<>?:{}]/

@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { CATEGORIES } from '../../utils/constants'
-import { replaceSlashesWithHyphens } from '../../utils/parser'
 import { StyledLink } from '../../styles/StyledLink'
 import { STYLES } from '../../utils/styleConstants'
 import { StyledWrapper } from '../../styles/StyledWrapper'
@@ -21,7 +20,7 @@ const StyledCategory = styled.div`
   margin-right: 12px;
 `
 
-const StyledEmoji = styled.div`
+const StyledThumbnail = styled.div`
   display: flex;
   justify-content: center;
 
@@ -52,11 +51,11 @@ export const CategoryList = () => {
     <StyledWrapper>
       <StyledCategoryList className="category-list">
         {categoryList.map((category, idx) => (
-          <StyledLink key={idx} to={`/category/${replaceSlashesWithHyphens(String(category.id))}`}>
+          <StyledLink key={idx} to={`/category/${category.id}`}>
             <StyledCategory className="category-list-item">
-              <StyledEmoji>
+              <StyledThumbnail>
                 <img src={category.thumbnail} alt="" />
-              </StyledEmoji>
+              </StyledThumbnail>
               <StyledCategoryText>{`${String(category.displayName)}`}</StyledCategoryText>
             </StyledCategory>
           </StyledLink>

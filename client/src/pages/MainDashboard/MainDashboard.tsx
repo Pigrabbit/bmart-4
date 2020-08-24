@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 import { RouteComponentProps } from 'react-router-dom'
@@ -19,6 +19,22 @@ type Props = {} & RouteComponentProps
 const StyledContainer = styled.main``
 
 export const MainDashboard = (props: Props) => {
+
+  useEffect(() => {
+    if (!document.cookie.includes('token')) {
+      return
+    }
+    const tokenLoc = document.cookie.indexOf('token')
+    let endLoc = Math.min(document.cookie.length, document.cookie.indexOf(';', tokenLoc))
+    if (endLoc === -1) {
+      endLoc = document.cookie.length
+    }
+    const token = document.cookie.substring(tokenLoc, endLoc + 1)
+    if (!token) return
+    localStorage.setItem('token', token.split('=')[1])
+    document.cookie = `token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
+  }, [])
+
   const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
     variables: { category: '과일', offset: 10, limit: 10, sorter: 'sellCountDesc' },
   })

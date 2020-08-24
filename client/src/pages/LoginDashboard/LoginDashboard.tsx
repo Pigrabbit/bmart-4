@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MouseEvent, useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { STYLES } from '../../utils/styleConstants'
@@ -12,9 +12,9 @@ const StyledContainer = styled.div`
 export const LoginDashboard = (props: Props) => {
   return (
     <StyledContainer>
-      <button className='google-login-btn'>
+      <a className="google-login-btn" href="http://localhost:4000/auth/google">
         Sign In with Google
-      </button>
+      </a>
     </StyledContainer>
-    )
+  )
 }

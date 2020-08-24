@@ -5,26 +5,34 @@ const { getErrorCode } = require('./errors')
 const { graphqlHTTP } = require('express-graphql')
 const schema = require('./schema/schema')
 
-router.get(
+// dev 환경에서만 graphiql 사용
+if (process.env.NODE_ENV === 'dev') {
+  router.get(
+    '/graphql',
+    graphqlHTTP({
+      schema,
+      graphiql: true,
+      customFormatErrorFn: (err) => {
+        const error = getErrorCode(err.message)
+        return { message: error.message, statusCode: error.statusCode }
+      },
+    })
+  )
+}
+
+router.post(
   '/graphql',
   graphqlHTTP({
     schema,
-    graphiql: true,
+    graphiql: false,
     customFormatErrorFn: (err) => {
       const error = getErrorCode(err.message)
       return { message: error.message, statusCode: error.statusCode }
     },
   })
 )
-router.post(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    graphiql: false,
-  })
-)
 
 const searchInIndex = require('./elasticsearch-controller')
-router.get('/search/:query', searchInIndex)
+router.post('/search', searchInIndex)
 
 module.exports = router

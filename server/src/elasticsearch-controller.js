@@ -1,14 +1,16 @@
 const client = require('../config/elasticsearch-config')
 const ProductSearchDTO = require('./dto/product-search-dto')
+const { MAX_SEARCH_RESULT_COUNT } = require('./util/constants')
 
 const searchInIndex = async (req, res, next) => {
   try {
     const result = await client.search({
       index: 'product',
+      size: MAX_SEARCH_RESULT_COUNT,
       body: {
         query: {
           match: {
-            'name.nori': req.params.query
+            'name.nori': req.body.query
           }
         }
       }

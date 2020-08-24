@@ -21,6 +21,7 @@ const StyledThumbnail = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 6px;
+    filter: brightness(0.96);
   }
 `
 const StyledContent = styled.div`

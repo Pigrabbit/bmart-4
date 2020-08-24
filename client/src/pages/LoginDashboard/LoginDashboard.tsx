@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { STYLES } from '../../utils/styleConstants'
+import { OAUTH_URI } from '../../utils/constants'
 
 type Props = {} & RouteComponentProps
 
@@ -32,10 +33,10 @@ export const LoginDashboard = (props: Props) => {
   return (
     <StyledContainer>
       {isTokenSaved ? (
-        <Redirect to={{ pathname: '/'}}/>
+        <Redirect to={{ pathname: '/' }} />
       ) : (
-        <a className="google-login-btn" href="http://localhost:4000/auth/google">
-          Sign In with Google
+        <a href={OAUTH_URI}>
+          <button className="google-login-btn">Sign In with Google</button>
         </a>
       )}
     </StyledContainer>

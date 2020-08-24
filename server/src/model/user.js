@@ -16,6 +16,8 @@ class User {
       const [rows] = await conn.query(query, [this.id])
 
       return rows[0]
+    } catch (error) {
+      throw error
     } finally {
       conn.release()
     }
@@ -28,6 +30,8 @@ class User {
       const [rows] = await conn.query(query, [this.google_id])
 
       return rows[0]
+    } catch (error) {
+      throw error
     } finally {
       conn.release()
     }
@@ -45,6 +49,8 @@ class User {
         this.email,
         this.google_id,
       ])
+    } catch (error) {
+      throw error
     } finally {
       conn.release()
     }

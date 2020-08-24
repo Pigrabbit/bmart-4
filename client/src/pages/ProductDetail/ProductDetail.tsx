@@ -87,7 +87,7 @@ const StyledDetailInfo = styled.div`
   margin-top: -20px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
 
   .product-detail-name {
     font-size: 24px;

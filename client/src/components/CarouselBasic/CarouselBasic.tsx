@@ -15,31 +15,30 @@ const StyledCarousel = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  filter: brightness(0.96);
   position: relative;
 
   .carousel-indicator-list {
-    width: 60%;
     position: absolute;
-    bottom: 2%;
+    bottom: 24px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
   }
 
   .carousel-indicator-invisible {
-    height: 16px;
-    width: 16px;
-    background-color: transparent;
-    border: 1px solid #bbb;
+    height: 8px;
+    width: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 50%;
+    margin: 0 1px;
   }
 
   .carousel-indicator-visible {
-    height: 16px;
-    width: 16px;
-    background-color: #bbb;
-    border: 1px solid #bbb;
+    height: 8px;
+    width: 8px;
+    background-color: white;
     border-radius: 50%;
+    margin: 0 1px;
   }
 `
 const StyledContainer = styled.div`

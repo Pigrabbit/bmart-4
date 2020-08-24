@@ -24,7 +24,6 @@ type Action = {
 const searchResultReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'sorterChange': {
-      console.log(action.payload.sorter)
       if (action.payload.sorter === 0) {
         return {
           resultList: [...state.resultList]

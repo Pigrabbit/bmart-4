@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const { getErrorCode } = require('./errors')
+const { getErrorCode } = require('../errors')
+const authRouter = require('./auth-router')
+router.use('/auth', authRouter)
 
 const { graphqlHTTP } = require('express-graphql')
-const schema = require('./schema/schema')
+const schema = require('../schema/schema')
 
 // dev 환경에서만 graphiql 사용
 if (process.env.NODE_ENV === 'dev') {
@@ -32,7 +34,7 @@ router.post(
   })
 )
 
-const searchInIndex = require('./elasticsearch-controller')
+const searchInIndex = require('../elasticsearch-controller')
 router.post('/search', searchInIndex)
 
 module.exports = router

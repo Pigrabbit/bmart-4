@@ -16,7 +16,7 @@ require('dotenv').config({
   path: (process.env.NODE_ENV === 'dev') ? FILE_PATH.env_dev : FILE_PATH.env_prod
 })
 
-const router = require('./src/route')
+const router = require('./src/route/route')
 app.use('/', router)
 
 app.use('/', (req, res, next) => {

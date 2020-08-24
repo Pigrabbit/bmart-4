@@ -20,6 +20,7 @@ const StyledThumbnail = styled.div`
   img {
     width: 100%;
     height: 100%;
+    border-radius: 6px;
   }
 `
 const StyledContent = styled.div`

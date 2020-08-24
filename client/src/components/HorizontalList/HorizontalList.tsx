@@ -12,7 +12,7 @@ export type Props = {
 }
 
 const StyledContainer = styled.div`
-  padding: ${STYLES.padding} 0;
+  padding: 12px 0;
   width: 100%;
   overflow-x: hidden;
 `

@@ -11,7 +11,8 @@ export type Props = {
 }
 
 const StyledContainer = styled.div`
-  padding: ${STYLES.padding};
+  padding: 12px ${STYLES.padding};
+  padding-bottom: 0;
   width: 100%;
 `
 const StyledHeader = styled.div`

@@ -13,48 +13,30 @@ import { ProductDetailRouteProps, CategoryDashboardRouteProps } from './types/ro
 import { SearchDashboard } from './pages/SearchDashboard'
 import { SearchResultDashboard } from './pages/SearchResultDashboard'
 import { LoginDashboard } from './pages/LoginDashboard'
+import { AuthProvider } from './context/AuthContext'
+import { PrivateRoute } from './routes/PrivateRoute'
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <Router>
-          <Switch>
-            <Route
-              path="/login"
-              component={(props: RouteComponentProps) => <LoginDashboard {...props} />}
-            />
-            <Route
-              path="/product/:productId"
-              component={(props: RouteComponentProps<ProductDetailRouteProps>) => (
-                <ProductDetail {...props} />
-              )}
-            />
-            <Route
-              path="/category/:categoryId"
-              component={(props: RouteComponentProps<CategoryDashboardRouteProps>) => (
-                <CategoryDashboard {...props} />
-              )}
-            />
-            <Route
-              path="/cart"
-              component={(props: RouteComponentProps) => <CartDashboard {...props} />}
-            />
-            <Route
-              path="/search"
-              component={(props: RouteComponentProps) => <SearchDashboard {...props} />}
-            />
-            <Route
-              path="/search-result"
-              component={(props: RouteComponentProps) => <SearchResultDashboard {...props} />}
-            />
-            <Route
-              path="/"
-              component={(props: RouteComponentProps) => <MainDashboard {...props} />}
-            />
-          </Switch>
-        </Router>
-      </div>
+      <AuthProvider>
+        <div className="App">
+          <Router>
+            <Switch>
+              <Route
+                path="/login"
+                component={(props: RouteComponentProps) => <LoginDashboard {...props} />}
+              />
+              <PrivateRoute path="/product/:productId" component={ProductDetail} />
+              <PrivateRoute path="/category/:categoryId" component={CategoryDashboard} />
+              <PrivateRoute path="/cart" component={CartDashboard} />
+              <PrivateRoute path="/search" component={SearchDashboard} />
+              <PrivateRoute path="/search-result" component={SearchResultDashboard} />
+              <PrivateRoute path="/" component={MainDashboard} />
+            </Switch>
+          </Router>
+        </div>
+      </AuthProvider>
     </ApolloProvider>
   )
 }

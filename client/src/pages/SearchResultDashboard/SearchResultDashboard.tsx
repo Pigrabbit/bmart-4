@@ -24,7 +24,7 @@ type Action = {
 const searchResultReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'sorterChange': {
-      if (action.payload.sorter === 0) {
+      if (action.payload.sorter === 'sellCountDesc') {
         return {
           resultList: [...state.resultList].sort((a, b) => {
             if (a.id > b.id) return 1
@@ -32,7 +32,7 @@ const searchResultReducer = (state: State, action: Action) => {
           }),
           sorter: action.payload.sorter,
         }
-      } else if (action.payload.sorter === 1) {
+      } else if (action.payload.sorter === 'priceAsc') {
         return {
           resultList: [...state.resultList].sort((a, b) => {
             if (a.price > b.price) return 1
@@ -40,7 +40,7 @@ const searchResultReducer = (state: State, action: Action) => {
           }),
           sorter: action.payload.sorter,
         }
-      } else if (action.payload.sorter === 2) {
+      } else if (action.payload.sorter === 'priceDesc') {
         return {
           resultList: [...state.resultList].sort((a, b) => {
             if (a.price < b.price) return 1
@@ -65,12 +65,9 @@ export const SearchResultDashboard = (props: Props) => {
   }
 
   const [state, dispatch] = useReducer(searchResultReducer, initialState)
-
-  // useState를 활용해서 sorter 상태 관리
-  const [sorter, setSorter] = useState(0)
-  const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch({ type: 'sorterChange', payload: { sorter: parseInt(event.target.value) } })
-  }
+   const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      dispatch({ type: 'sorterChange', payload: { sorter: event.target.value }})
+   }
 
   return (
     <Dashboard title="" header={false}>

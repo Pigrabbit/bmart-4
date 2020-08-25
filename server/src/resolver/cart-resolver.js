@@ -2,8 +2,10 @@ const pool = require('../../db')
 const { GetProductDTO } = require('../dto/get-product-dto')
 const { errorName } = require('../errors/error-type')
 
-const productListInCartResolver = async (parent, args) => {
-  const { userId } = args
+const productListInCartResolver = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+
   const conn = await pool.getConnection()
 
   try {
@@ -31,8 +33,11 @@ const productListInCartResolver = async (parent, args) => {
   }
 }
 
-const addProductToCartResolver = async (parent, args) => {
-  const { userId, productId, quantity } = args
+const addProductToCartResolver = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+
+  const { productId, quantity } = args
   if (quantity <= 0) {
     throw new Error(errorName.BAD_REQUEST)
   }

@@ -4,13 +4,54 @@ import styled from 'styled-components'
 import { STYLES } from '../../utils/styleConstants'
 import { OAUTH_URI } from '../../utils/constants'
 import { AuthStateContext, AuthDispatchContext } from '../../context/AuthContext'
+import { Header } from '../../components/Header'
 
 type Props = {} & RouteComponentProps
 
 const StyledContainer = styled.div`
-  padding: ${STYLES.padding};
+  margin: auto;
+  width: 100%;
 `
 
+const StyledDashboard = styled.div`
+  width: 100vw;
+  height: 100vh;
+  /* background: linear-gradient(275.27deg, #349ca3 0%, #61e7cf 100%); */
+`
+
+const StyledImg = styled.img`
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  position: relative;
+  z-index: 2;
+`
+
+const StyledLoginButton = styled.img`
+  margin: auto;
+  display: block;
+  transform: translateY(-17px);
+  z-index: 1;
+  position: relative;
+`
+
+const StyledLogo = styled.img`
+  margin: 50px auto;
+  position: relative;
+`
+
+const StyledLink = styled.a`
+  width: 100%;
+  margin: auto;
+  display: block;
+  position: relative;
+`
+
+const StyledTitle = styled.div`
+  font-size: 50px;
+  margin: auto;
+  text-align: center;
+`
 export const LoginDashboard = (props: Props) => {
   const { isAuthenticated } = useContext(AuthStateContext)
   const dispatch = useContext(AuthDispatchContext)
@@ -32,14 +73,25 @@ export const LoginDashboard = (props: Props) => {
   }, [])
 
   return (
-    <StyledContainer>
-      {isAuthenticated ? (
-        <Redirect to={{ pathname: '/' }} />
-      ) : (
-        <a href={OAUTH_URI}>
-          <button className="google-login-btn">Sign In with Google</button>
-        </a>
-      )}
-    </StyledContainer>
+    <StyledDashboard>
+      <StyledContainer>
+        {isAuthenticated ? (
+          <Redirect to={{ pathname: '/' }} />
+        ) : (
+          <StyledLink href={OAUTH_URI}>
+            <StyledImg
+              className="google-login-btn"
+              src={`${process.env.PUBLIC_URL}/images/pre.png`}
+              width="120"
+            />
+            <StyledLoginButton
+              className="google-login-btn"
+              src={`${process.env.PUBLIC_URL}/images/signin.png`}
+              width="250"
+            />
+          </StyledLink>
+        )}
+      </StyledContainer>
+    </StyledDashboard>
   )
 }

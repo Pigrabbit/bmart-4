@@ -8,24 +8,6 @@ router.use('/auth', authRouter)
 const { graphqlHTTP } = require('express-graphql')
 const schema = require('../schema/schema')
 
-// dev 환경에서만 graphiql 사용
-if (process.env.NODE_ENV === 'dev') {
-  router.get(
-    '/graphql',
-    graphqlHTTP((req, res) => {
-      return {
-        schema,
-        graphiql: true,
-        context: { req, res },
-        customFormatErrorFn: (err) => {
-          const error = getErrorCode(err.message)
-          return { message: error.message, statusCode: error.statusCode }
-        },
-      }
-    })
-  )
-}
-
 router.post(
   '/graphql',
   isLoggedIn,
@@ -33,6 +15,25 @@ router.post(
     return {
       schema,
       graphiql: false,
+      context: { req, res },
+      customFormatErrorFn: (err) => {
+        const error = getErrorCode(err.message)
+        return { message: error.message, statusCode: error.statusCode }
+      },
+    }
+  })
+)
+
+// dev 환경에서만 graphiql 사용
+router.get(
+  '/graphql',
+  graphqlHTTP((req, res, next) => {
+    if (process.env.NODE_ENV === 'prod') {
+      return next()
+    }
+    return {
+      schema,
+      graphiql: true,
       context: { req, res },
       customFormatErrorFn: (err) => {
         const error = getErrorCode(err.message)

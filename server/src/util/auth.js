@@ -7,6 +7,12 @@ require('dotenv').config({
 })
 
 function isLoggedIn(req, res, next) {
+  // 개발 환경에서 token 검사 하지 않음
+  if (process.env.NODE_ENV === 'dev') {
+    res.locals.userId = 1
+    return next()
+  }
+
   const token = req.headers.authorization.split(' ')[1]
   if (!token) {
     res.status(StatusCodes.UNAUTHORIZED).json({ message: ReasonPhrases.UNAUTHORIZED })

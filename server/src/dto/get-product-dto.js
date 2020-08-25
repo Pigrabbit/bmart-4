@@ -21,7 +21,7 @@ class GetProductDTO {
     this.soldCount = sold_count
     this.stockCount = stock_count
     this.coupangProductId = coupang_product_id
-    this.thumbnailSrc = `http://${thumbnail_src}`
+    this.thumbnailSrc = `https://${thumbnail_src}`
     this.isLiked = is_liked === 'true'
   }
 }

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
 import { NAVIGATIONS } from '../../utils/constants'
 import { StyledLink } from '../../styles/StyledLink'
+import { useHistory } from 'react-router-dom'
 
 type Props = {
   title: string
@@ -77,18 +78,15 @@ const StyledButton = styled.button`
   color: black;
 `
 
-export const backButtonClickHandler = () => {
-  window.history.back()
-}
-
 export const Header = (props: Props) => {
   const { title, searchBar = false } = props
+  const history = useHistory()
   const searchUri = NAVIGATIONS.find((nav) => nav.name === 'search')
 
   return (
     <StyledContainer className="header" data-testid="header">
       <StyledHeader>
-        <StyledButton className="header-back-button" onClick={backButtonClickHandler}>
+        <StyledButton className="header-back-button" onClick={() => history.goBack()}>
           {title !== '' && <i className="icon">arrow_left</i>}
         </StyledButton>
         <StyledLogo>

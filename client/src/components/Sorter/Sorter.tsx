@@ -11,7 +11,7 @@ const StyledSorter = styled.div`
   display: flex;
   position: sticky;
   top: calc((${HEADER_HEIGHT} / 2) - 1px);
-  z-index: 100;
+  z-index: 1000;
   background: white;
   justify-content: flex-end;
   padding: 8px 17px;

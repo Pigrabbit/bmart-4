@@ -11,7 +11,6 @@ import {
   DeleteProductFromCartVars,
   ProductInCart,
   ProductInCartData,
-  ProductInCartVars,
 } from '../../apis/graphqlQuery'
 import { CartDashboardHeader } from './CartDashboardHeader'
 import { CartDashboardOrderList } from './CartDashboardOrderList'
@@ -27,12 +26,15 @@ export type CheckedProduct = { productOrderId: string; checked: boolean }
 const StyledContainer = styled.div``
 
 export const CartDashboard = (props: Props) => {
-  const { loading, data, refetch } = useQuery<ProductInCartData, ProductInCartVars>(
-    GET_PRODUCTLIST_IN_CART,
-    { variables: { userId: 1 } }
+  const { loading, data, refetch } = useQuery<ProductInCartData>(GET_PRODUCTLIST_IN_CART, {
+    variables: {},
+  })
+  const [modifyProductQuantity] = useMutation<{}, ModifyProductQuantityVars>(
+    MODIFY_PRODUCT_QUANTITY
   )
-  const [modifyProductQuantity] = useMutation(MODIFY_PRODUCT_QUANTITY)
-  const [deleteProductFromCart] = useMutation(DELETE_PRODUCT_FROM_CART)
+  const [deleteProductFromCart] = useMutation<{}, DeleteProductFromCartVars>(
+    DELETE_PRODUCT_FROM_CART
+  )
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [orderList, setOrderList] = useState<ProductInCart[]>([])

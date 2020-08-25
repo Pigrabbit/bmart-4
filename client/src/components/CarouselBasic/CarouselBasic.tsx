@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { BannerType } from '../../types/banner'
 import styled from 'styled-components'
 import { StyledWrapper } from '../../styles/StyledWrapper'
+import { ProductDetailImg } from '../../apis/graphqlQuery'
 
 type Props = {
   width?: number
-  bannerList: BannerType[]
+  bannerList: ProductDetailImg[]
 }
 
 const StyledCarousel = styled.div`

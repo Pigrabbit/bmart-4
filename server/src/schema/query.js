@@ -4,6 +4,7 @@ const {
   GraphQLString,
   GraphQLList,
   GraphQLNonNull,
+  GraphQLID,
 } = require('graphql')
 
 const { ProductType, CartProductType, ProductDetailImgType } = require('../type')
@@ -38,7 +39,7 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(ProductDetailImgType),
       description: '상품 상세 이미지 src',
       args: {
-        coupangProductId: { type: GraphQLNonNull(GraphQLInt) },
+        coupangProductId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve: productDetailImgResolver,
     },

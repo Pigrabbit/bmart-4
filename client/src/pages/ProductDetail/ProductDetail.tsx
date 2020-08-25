@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
 import { OrderModal } from '../../components/OrderModal'
-import { GET_PRODUCT_DETAIL_IMG_SRC_LIST } from '../../apis/graphqlQuery'
+import {
+  GET_PRODUCT_DETAIL_IMG_SRC_LIST,
+  ProductDetailImgData,
+  ProductDetailImgVars,
+} from '../../apis/graphqlQuery'
 import { useQuery } from '@apollo/client'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
 import { OrderButton } from '../../components/OrderButton'
 import { Dashboard } from '../../components/Dashboard'
-import { BannerType } from '../../types/banner'
 
 type Props = {} & RouteComponentProps<ProductDetailRouteProps>
-
-type StateType = { coupangProductId: string } | any
 
 const StyledContainer = styled.div`
   background-color: white;
@@ -157,27 +158,37 @@ const StyledThumbnails = styled.div`
   }
 `
 
+export type StateType = {
+  id: string
+  price: number
+  name: string
+  coupangProductId: string
+  basePrice: number
+  discountRate: number
+}
+
 export const ProductDetail = (props: Props) => {
-  const { location } = props
-  const state: StateType = location.state || null
+  const { state } = useLocation<StateType>()
   const { id, price, name, coupangProductId, basePrice, discountRate } = state
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
   const [isOrderPlaced, setIsOrderPlaced] = useState(false)
 
-  const { loading, data } = useQuery(GET_PRODUCT_DETAIL_IMG_SRC_LIST, {
-    variables: { coupangProductId: parseInt(coupangProductId) },
-  })
+  const { loading, data } = useQuery<ProductDetailImgData, ProductDetailImgVars>(
+    GET_PRODUCT_DETAIL_IMG_SRC_LIST,
+    {
+      variables: { coupangProductId },
+    }
+  )
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  if (loading) return <LoadingIndicator />
-  const { productDetailImgList } = data
-
-  return (
+  return loading || !data ? (
+    <LoadingIndicator />
+  ) : (
     <Dashboard title="상세정보" navbar={false} footer={false}>
       <StyledContainer className="product-detail">
         <StyledSlider
@@ -194,7 +205,7 @@ export const ProductDetail = (props: Props) => {
           </div>
         </StyledSlider>
         <StyledCarouselWrap>
-          <CarouselBasic bannerList={productDetailImgList} />
+          <CarouselBasic bannerList={data.productDetailImgList} />
         </StyledCarouselWrap>
         <StyledDetailInfo className="product-detail-info">
           <StyledInformations>
@@ -226,7 +237,7 @@ export const ProductDetail = (props: Props) => {
             </div>
           </StyledDetails>
           <StyledThumbnails>
-            {(productDetailImgList as BannerType[]).map((item, idx) => (
+            {data.productDetailImgList.map((item, idx) => (
               <div className="detail-thumbnail" key={idx}>
                 <img src={item.src} alt="" />
               </div>
@@ -241,7 +252,7 @@ export const ProductDetail = (props: Props) => {
             id={id}
             name={name}
             price={price}
-            thumbnailSrc={productDetailImgList[0].src}
+            thumbnailSrc={data.productDetailImgList[0].src}
             savedCount={savedCount}
             setSavedCount={setSavedCount}
             setIsModalVisible={setIsModalVisible}

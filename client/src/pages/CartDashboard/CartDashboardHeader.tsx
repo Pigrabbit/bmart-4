@@ -4,6 +4,7 @@ import { STYLES, COLORS } from '../../utils/styleConstants'
 import { CheckedProduct } from './CartDashboard'
 import { DeleteProductFromCartVars } from '../../apis/graphqlQuery'
 import { Confirm } from '../../components/Confirm'
+import { Checkbox } from '../../components/Checkbox'
 
 type Props = {
   checkedProductList: CheckedProduct[]
@@ -26,15 +27,14 @@ const StyledContainer = styled.div`
   align-items: center;
   padding: 0 ${STYLES.padding};
 `
-const StyledCheckbox = styled.label`
+const StyledCheckboxLabel = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  & input {
-    margin-right: 8px;
-    width: 19px;
-    height: 19px;
+  .content {
+    margin-left: 8px;
+    font-size: 13.5px;
   }
 `
 const StyledVacateButton = styled.button`
@@ -53,8 +53,7 @@ export const CartDashboardHeader = (props: Props) => {
     }, 0)
   }, [checkedProductList])
 
-  const clickToggleCheckButtonHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const { checked } = e.target
+  const clickToggleCheckButtonHandler = (checked: boolean) => {
     props.setCheckedProductList(checkedProductList.map((p) => ({ ...p, checked })))
   }
 
@@ -77,14 +76,15 @@ export const CartDashboardHeader = (props: Props) => {
           }}
         />
       )}
-      <StyledCheckbox>
-        <input
-          type="checkbox"
+      <StyledCheckboxLabel>
+        <Checkbox
           checked={allOrdersChecked === checkedProductList.length}
-          onChange={clickToggleCheckButtonHandler}
+          changeHandler={clickToggleCheckButtonHandler}
         />
-        선택해제
-      </StyledCheckbox>
+        <div className="content">
+          {allOrdersChecked === checkedProductList.length ? '선택해제' : '전체선택'}
+        </div>
+      </StyledCheckboxLabel>
       <StyledVacateButton disabled={allOrdersChecked === 0} onClick={() => setIsConfirmOpen(true)}>
         선택 비우기
       </StyledVacateButton>

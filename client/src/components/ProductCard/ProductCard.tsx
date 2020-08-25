@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
 import { StyledLink } from '../../styles/StyledLink'
 import { COLORS } from '../../utils/styleConstants'
+import { useMutation } from '@apollo/client'
+import {
+  LIKE_PRODUCT,
+  DISLIKE_PRODUCT,
+  LikeProductVars,
+  DislikeProductData,
+} from '../../apis/graphqlQuery'
 
 export type Props = {
   product: ProductCardType
@@ -59,16 +66,25 @@ const StyledContent = styled.div`
 
 export const ProductCard = (props: Props) => {
   const { product, width = '50%', style } = props
-  const {
-    id,
-    price,
-    name,
-    thumbnailSrc,
-    coupangProductId,
-    basePrice,
-    discountRate,
-    isLiked,
-  } = product
+  const { id, price, name, thumbnailSrc, coupangProductId, basePrice, discountRate } = product
+
+  const [isLiked, setIsLiked] = useState(props.product.isLiked)
+
+  const [likeProduct] = useMutation<{}, LikeProductVars>(LIKE_PRODUCT)
+  const [dislikeProduct] = useMutation<DislikeProductData, LikeProductVars>(DISLIKE_PRODUCT)
+
+  const toggleProductLike = async (e: React.MouseEvent) => {
+    e.preventDefault()
+
+    const params = { variables: { productId: id } }
+    if (isLiked) {
+      await dislikeProduct(params)
+    } else {
+      await likeProduct(params)
+    }
+
+    setIsLiked(!isLiked)
+  }
 
   return (
     <StyledContainer className="product-card" width={width} style={style}>
@@ -81,7 +97,7 @@ export const ProductCard = (props: Props) => {
         }}
       >
         <StyledThumbnail>
-          <div className="icon-wrap">
+          <div className="icon-wrap" onClick={toggleProductLike}>
             {isLiked ? (
               <i className="icon like">heart_circle</i>
             ) : (

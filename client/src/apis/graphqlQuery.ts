@@ -156,15 +156,24 @@ export const ADD_PRODUCT_TO_CART = gql`
     addProductToCart(productId: $productId, quantity: $quantity)
   }
 `
+
+export type LikeProductVars = {
+  productId: string
+}
+
+export type DislikeProductData = {
+  dislikeProduct: SuccessData
+}
+
 export const LIKE_PRODUCT = gql`
-  mutation likeProduct($productId: ID!) {
+  mutation LikeProduct($productId: ID!) {
     likeProduct(productId: $productId)
   }
 `
 
 export const DISLIKE_PRODUCT = gql`
-  mutation dislikeProduct($productId: ID!) {
-    likeProduct(productId: $productId) {
+  mutation DislikeProduct($productId: ID!) {
+    dislikeProduct(productId: $productId) {
       success
     }
   }

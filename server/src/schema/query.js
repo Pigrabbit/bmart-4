@@ -1,6 +1,5 @@
 const {
   GraphQLObjectType,
-  GraphQLID,
   GraphQLInt,
   GraphQLString,
   GraphQLList,
@@ -23,7 +22,6 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(ProductType),
       description: 'List of products',
       args: {
-        userId: { type: GraphQLNonNull(GraphQLID) },
         category: { type: GraphQLString },
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt },
@@ -34,9 +32,6 @@ const RootQueryType = new GraphQLObjectType({
     productListInCart: {
       type: new GraphQLList(CartProductType),
       description: '장바구니 상품 리스트',
-      args: {
-        userId: { type: GraphQLNonNull(GraphQLID) },
-      },
       resolve: productListInCartResolver,
     },
     productDetailImgList: {

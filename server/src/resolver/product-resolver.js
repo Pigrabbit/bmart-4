@@ -3,8 +3,11 @@ const { GetProductDTO } = require('../dto/get-product-dto')
 const { GetProductDetailDTO } = require('../dto/get-product-detail-dto')
 const { errorName } = require('../errors/error-type')
 
-const productListByCategoryResolver = async (parent, args) => {
-  const { userId, category, offset = 0, limit = 10, sorter = 'sellCountDesc' } = args
+const productListByCategoryResolver = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+  const { category, offset = 0, limit = 10, sorter = 'sellCountDesc' } = args
+
   if (offset < 0 || limit < 0) {
     throw new Error(errorName.BAD_REQUEST)
   }

@@ -2,7 +2,6 @@ class User {
   constructor(db, { id, username, firstname, lastname, email, google_id }) {
     this.db = db
     this.id = id
-    this.username = username
     this.firstname = firstname
     this.lastname = lastname
     this.email = email
@@ -40,15 +39,8 @@ class User {
   async create() {
     const conn = await this.db.getConnection()
     try {
-      const query =
-        'INSERT INTO user (username, firstname, lastname, email, google_id) VALUES (?, ?, ? ,?, ?)'
-      await conn.query(query, [
-        this.username,
-        this.firstname,
-        this.lastname,
-        this.email,
-        this.google_id,
-      ])
+      const query = 'INSERT INTO user (firstname, lastname, email, google_id) VALUES (?, ? ,?, ?)'
+      await conn.query(query, [this.firstname, this.lastname, this.email, this.google_id])
     } catch (error) {
       throw error
     } finally {

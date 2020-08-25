@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
-import { RouteComponentProps } from 'react-router-dom'
 
 import { Carousel } from '../../components/Carousel'
 import { Dashboard } from '../../components/Dashboard'
@@ -14,7 +13,7 @@ import { CategoryListSection } from './CategoryListSection'
 import { bigBannerList, smallBannerList } from '../../utils/mockData'
 import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
 
-type Props = {} & RouteComponentProps
+type Props = {}
 
 const StyledContainer = styled.main``
 

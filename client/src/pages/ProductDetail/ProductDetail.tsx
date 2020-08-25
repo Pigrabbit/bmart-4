@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
 import { OrderModal } from '../../components/OrderModal'
 import { GET_PRODUCT_DETAIL_IMG_SRC_LIST } from '../../apis/graphqlQuery'
@@ -13,7 +12,7 @@ import { OrderButton } from '../../components/OrderButton'
 import { Dashboard } from '../../components/Dashboard'
 import { BannerType } from '../../types/banner'
 
-type Props = {} & RouteComponentProps<ProductDetailRouteProps>
+type Props = {}
 
 type StateType = { coupangProductId: string } | any
 
@@ -158,9 +157,8 @@ const StyledThumbnails = styled.div`
 `
 
 export const ProductDetail = (props: Props) => {
-  const { location } = props
-  const state: StateType = location.state || null
-  const { id, price, name, coupangProductId, basePrice, discountRate } = state
+  const location = useLocation<StateType>()
+  const { id, price, name, coupangProductId, basePrice, discountRate } = location.state
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)

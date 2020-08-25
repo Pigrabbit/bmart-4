@@ -1,11 +1,11 @@
 import React, { useState, useReducer } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import { ProductCardType } from '../../types/productCard'
 import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
 import { Sorter } from '../../components/Sorter'
+import { useLocation } from 'react-router-dom'
 
-type Props = {} & RouteComponentProps
+type Props = {}
 
 type RouteState = {
   searchResultList: ProductCardType[]
@@ -55,9 +55,8 @@ const searchResultReducer = (state: State, action: Action) => {
 }
 
 export const SearchResultDashboard = (props: Props) => {
-  const { location } = props
-  const routeState = location.state as RouteState
-  const { searchResultList } = routeState
+  const location = useLocation<RouteState>()
+  const { searchResultList } = location.state
 
   const initialState = {
     resultList: searchResultList,
@@ -65,9 +64,9 @@ export const SearchResultDashboard = (props: Props) => {
   }
 
   const [state, dispatch] = useReducer(searchResultReducer, initialState)
-   const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      dispatch({ type: 'sorterChange', payload: { sorter: event.target.value }})
-   }
+  const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch({ type: 'sorterChange', payload: { sorter: event.target.value } })
+  }
 
   return (
     <Dashboard title="" header={false}>

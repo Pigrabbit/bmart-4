@@ -16,13 +16,23 @@ const StyledContainer = styled.nav`
   height: 60px;
   z-index: 100;
   background-color: white;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #ccc;
 `
 
 const StyledIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
   .navbar-item-icon {
-    width: 34px;
+    width: 30px;
     filter: invert(30%);
+  }
+  p {
+    text-align: center;
+    font-size: 10px;
+    margin-top: 2px;
   }
 `
 
@@ -31,7 +41,7 @@ export const Navbar = (props: Props) => {
 
   return (
     <StyledContainer className="navbar">
-      {iconList.map(({ name, path }, idx) => (
+      {iconList.map(({ name, displayName, path }, idx) => (
         <StyledLink key={idx} to={{ pathname: path }}>
           <StyledIcon className="navbar-item">
             <img
@@ -40,6 +50,7 @@ export const Navbar = (props: Props) => {
               className="navbar-item-icon"
               id={`navbar-item-icon-${name}`}
             />
+            <p>{displayName}</p>
           </StyledIcon>
         </StyledLink>
       ))}

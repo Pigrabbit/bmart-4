@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
@@ -8,14 +8,17 @@ import { GET_PRODUCT_DETAIL_IMG_SRC_LIST } from '../../apis/graphqlQuery'
 import { useQuery } from '@apollo/client'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { parseToLocalMoneyString } from '../../utils/parser'
-import { STYLES, COLORS } from '../../utils/styleConstants'
+import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
+import { OrderButton } from '../../components/OrderButton'
+import { Dashboard } from '../../components/Dashboard'
+import { BannerType } from '../../types/banner'
 
 type Props = {} & RouteComponentProps<ProductDetailRouteProps>
 
 type StateType = { coupangProductId: string } | any
 
 const StyledContainer = styled.div`
-  height: 100%;
+  background-color: white;
 
   .confirm-slider[data-is-order-placed=\'true\'] {
     animation: 1s ease-in-out slideUp;
@@ -73,26 +76,18 @@ const StyledSlider = styled.div`
   }
 `
 
-const StyledOrderButton = styled.button`
-  position: fixed;
-  bottom: 15px;
-  left: 10%;
-  z-index: 2;
-  padding: 15px 0;
-  width: 80%;
-  font-size: 1rem;
-  border: 1px solid black;
-  border-radius: ${STYLES.smallRadius};
-  background-color: #eef1f3;
-`
-
 const StyledDetailInfo = styled.div`
-  margin: 60px 30px;
   display: flex;
   flex-direction: column;
   align-content: flex-start;
   justify-items: center;
-  height: 100%;
+  z-index: 100;
+  position: relative;
+  background: white;
+  margin-top: -20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
 
   .product-detail-name {
     font-size: 24px;
@@ -100,8 +95,9 @@ const StyledDetailInfo = styled.div`
   }
 
   .product-detail-price {
-    margin-top: 15px;
-    font-size: 16px;
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 700;
   }
   .product-detail-discount {
     margin-top: 15px;
@@ -112,11 +108,52 @@ const StyledDetailInfo = styled.div`
   .product-detail-base-price {
     font-size: 16px;
     text-decoration: line-through;
+    color: ${COLORS.gray};
   }
   .product-detail-discount-rate {
     margin: 0 0 2px 8px;
     font-size: 16px;
     color: #eb4d4b;
+  }
+`
+const StyledDetails = styled.div`
+  padding: 20px ${STYLES.padding};
+  padding-bottom: 40px;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 14px;
+
+    .name {
+      font-weight: 700;
+      width: 70px;
+    }
+
+    .description {
+      width: calc(100% - 70px);
+
+      b {
+        margin: 0 4px;
+      }
+    }
+  }
+`
+const StyledInformations = styled.div`
+  padding: 20px ${STYLES.padding};
+  padding-top: 40px;
+`
+const StyledCarouselWrap = styled.div`
+  position: sticky;
+  top: calc((${HEADER_HEIGHT} / 2));
+`
+const StyledThumbnails = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  img {
+    width: 100%;
   }
 `
 
@@ -132,51 +169,88 @@ export const ProductDetail = (props: Props) => {
   const { loading, data } = useQuery(GET_PRODUCT_DETAIL_IMG_SRC_LIST, {
     variables: { coupangProductId: parseInt(coupangProductId) },
   })
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   if (loading) return <LoadingIndicator />
   const { productDetailImgList } = data
 
   return (
-    <StyledContainer className="product-detail">
-      <StyledSlider className="confirm-slider" data-is-order-placed={isOrderPlaced} onAnimationEnd={() => setIsOrderPlaced(false)}>
-        <div className="confirm-slider-content" data-is-order-placed={isOrderPlaced} onAnimationEnd={() => setIsOrderPlaced(false)}>
-          장바구니에 상품이 담겼습니다
-        </div>
-      </StyledSlider>
-      <CarouselBasic bannerList={productDetailImgList} />
-      <StyledDetailInfo className="product-detail-info">
-        <p className="product-detail-name">{name}</p>
-        {discountRate > 0 ? (
-          <div className="product-detail-discount">
-            <p className="product-detail-base-price">{parseToLocalMoneyString(basePrice)}원</p>
-            <p className="product-detail-discount-rate">{discountRate}% ↓</p>
+    <Dashboard title="상세정보" navbar={false} footer={false}>
+      <StyledContainer className="product-detail">
+        <StyledSlider
+          className="confirm-slider"
+          data-is-order-placed={isOrderPlaced}
+          onAnimationEnd={() => setIsOrderPlaced(false)}
+        >
+          <div
+            className="confirm-slider-content"
+            data-is-order-placed={isOrderPlaced}
+            onAnimationEnd={() => setIsOrderPlaced(false)}
+          >
+            장바구니에 상품이 담겼습니다
           </div>
+        </StyledSlider>
+        <StyledCarouselWrap>
+          <CarouselBasic bannerList={productDetailImgList} />
+        </StyledCarouselWrap>
+        <StyledDetailInfo className="product-detail-info">
+          <StyledInformations>
+            <p className="product-detail-name">{name}</p>
+            {discountRate > 0 ? (
+              <div className="product-detail-discount">
+                <p className="product-detail-base-price">{parseToLocalMoneyString(basePrice)}원</p>
+                <p className="product-detail-discount-rate">{discountRate}% ↓</p>
+              </div>
+            ) : (
+              ''
+            )}
+            <p className="product-detail-price">{parseToLocalMoneyString(price)}원</p>
+          </StyledInformations>
+          <StyledDetails>
+            <div className="row">
+              <div className="name">배달 정보</div>
+              <div className="description">
+                배달시간<b>27~37분</b>예상
+              </div>
+            </div>
+            <div className="row">
+              <div className="name">적립 혜택</div>
+              <div className="description">배민페이로 결제하면 포인트 0.5% 적립</div>
+            </div>
+            <div className="row">
+              <div className="name">원산지표시</div>
+              <div className="description">하단 상세 내용 참고</div>
+            </div>
+          </StyledDetails>
+          <StyledThumbnails>
+            {(productDetailImgList as BannerType[]).map((item, idx) => (
+              <div className="detail-thumbnail" key={idx}>
+                <img src={item.src} alt="" />
+              </div>
+            ))}
+          </StyledThumbnails>
+        </StyledDetailInfo>
+        <OrderButton clickHandler={() => setIsModalVisible(true)}>
+          <>주문하기</>
+        </OrderButton>
+        {isModalVisible ? (
+          <OrderModal
+            id={id}
+            name={name}
+            price={price}
+            thumbnailSrc={productDetailImgList[0].src}
+            savedCount={savedCount}
+            setSavedCount={setSavedCount}
+            setIsModalVisible={setIsModalVisible}
+            setIsOrderPlaced={setIsOrderPlaced}
+          />
         ) : (
           ''
         )}
-        <p className="product-detail-price">{parseToLocalMoneyString(price)}원</p>
-      </StyledDetailInfo>
-      <StyledOrderButton
-        className="product-detail-order-btn"
-        onClick={() => {
-          setIsModalVisible(true)
-        }}
-      >
-        주문하기
-      </StyledOrderButton>
-      {isModalVisible ? (
-        <OrderModal
-          id={id}
-          name={name}
-          price={price}
-          thumbnailSrc={productDetailImgList[0].src}
-          savedCount={savedCount}
-          setSavedCount={setSavedCount}
-          setIsModalVisible={setIsModalVisible}
-          setIsOrderPlaced={setIsOrderPlaced}
-        />
-      ) : (
-        ''
-      )}
-    </StyledContainer>
+      </StyledContainer>
+    </Dashboard>
   )
 }

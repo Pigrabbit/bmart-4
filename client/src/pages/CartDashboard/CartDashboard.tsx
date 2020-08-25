@@ -75,7 +75,11 @@ export const CartDashboard = (props: Props) => {
     setOrderList(
       orderList.map((order) =>
         order.id === variables.orderProductId
-          ? { ...order, quantity: variables.quantity }
+          ? {
+              ...order,
+              quantity: variables.quantity,
+              priceSum: variables.quantity * order.product.price,
+            }
           : { ...order }
       )
     )

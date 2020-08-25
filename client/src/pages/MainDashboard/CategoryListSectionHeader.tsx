@@ -12,7 +12,7 @@ const StyledHeader = styled.div`
   align-items: center;
   position: sticky;
   top: ${`calc(${HEADER_HEIGHT} - 1px)`};
-  height: ${HEADER_HEIGHT};
+  height: 50px;
   background: white;
   z-index: 10;
   border-bottom: 1px solid ${STYLES.borderColor};
@@ -37,6 +37,20 @@ const StyledHeader = styled.div`
     }
   }
 `
+const StyledTitle = styled.div`
+  font-size: 20px;
+  background-color: white;
+  text-align: center;
+  padding: 20px 0 10px 0;
+
+  p {
+    line-height: 30px;
+
+    &:first-child {
+      font-weight: 700;
+    }
+  }
+`
 
 export const CategoryListSectionHeader = (props: Props) => {
   const { selectedCategory } = props
@@ -57,16 +71,22 @@ export const CategoryListSectionHeader = (props: Props) => {
   }, [selectedCategory])
 
   return (
-    <StyledHeader ref={headerRef}>
-      {CATEGORIES.map((category, idx) => {
-        return selectedCategory === category.name ? (
-          <div key={idx} ref={headerItemRef} className="selected">
-            {category.name}
-          </div>
-        ) : (
-          <div key={idx}>{category.name}</div>
-        )
-      })}
-    </StyledHeader>
+    <>
+      <StyledTitle>
+        <p>번쩍하면 배달오는</p>
+        <p>B마트 대표상품</p>
+      </StyledTitle>
+      <StyledHeader ref={headerRef}>
+        {CATEGORIES.map((category, idx) => {
+          return selectedCategory === category.name ? (
+            <div key={idx} ref={headerItemRef} className="selected">
+              {category.name}
+            </div>
+          ) : (
+            <div key={idx}>{category.name}</div>
+          )
+        })}
+      </StyledHeader>
+    </>
   )
 }

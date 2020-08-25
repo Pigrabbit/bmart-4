@@ -20,6 +20,8 @@ const StyledThumbnail = styled.div`
   img {
     width: 100%;
     height: 100%;
+    border-radius: 6px;
+    filter: brightness(0.96);
   }
 `
 const StyledContent = styled.div`
@@ -39,7 +41,7 @@ export const ProductCard = (props: Props) => {
         to={{
           pathname: `/product/${id}`,
           state: {
-            ...product
+            ...product,
           },
         }}
       >

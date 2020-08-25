@@ -1,6 +1,6 @@
 export const STYLES = {
   padding: '17px',
-  margin: '10px',
+  margin: '6px',
   shadow: '0 1px 5px rgba(0, 0, 0, 0.2)',
   largeRadius: '20px',
   mediumRadius: '12px',
@@ -8,7 +8,7 @@ export const STYLES = {
   borderColor: '#ddd',
 }
 
-export const HEADER_HEIGHT = '50px'
+export const HEADER_HEIGHT = '100px'
 
 export const COLORS = {
   baemint: '#10b3ad',

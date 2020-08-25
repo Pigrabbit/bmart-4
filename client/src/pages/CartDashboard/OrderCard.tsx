@@ -9,6 +9,7 @@ import {
 } from '../../apis/graphqlQuery'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 import { StyledLink } from '../../styles/StyledLink'
+import { Checkbox } from '../../components/Checkbox'
 
 type Props = {
   order: ProductInCart
@@ -50,13 +51,8 @@ const StyledTitle = styled.div`
     overflow-x: hidden;
     padding-right: 8px;
 
-    .checkbox {
-      margin-right: 8px;
-      width: 19px;
-      height: 19px;
-    }
-
     .product-name {
+      margin-left: 8px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
@@ -144,11 +140,9 @@ export const OrderCard = (props: Props) => {
     <StyledContainer className="order-card">
       <StyledTitle>
         <label className="check">
-          <input
-            type="checkbox"
-            className="checkbox"
+          <Checkbox
             checked={checked}
-            onChange={props.toggleCheckboxHandler}
+            changeHandler={(checked: boolean) => props.toggleCheckboxHandler()}
           />
           <h3 className="product-name">{product.name}</h3>
         </label>

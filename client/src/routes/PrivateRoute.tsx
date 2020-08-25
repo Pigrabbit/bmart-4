@@ -10,7 +10,7 @@ type Props = {
 
 export const PrivateRoute = ({ component: Component, path, ...rest }: Props) => {
   const { isAuthenticated } = useContext(AuthStateContext)
-  console.log(isAuthenticated)
+  
   return (
     <Route
       {...rest}

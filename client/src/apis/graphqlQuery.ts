@@ -8,7 +8,6 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
     $sorter: String!
   ) {
     productListByCategory(
-      userId: 1
       category: $category
       offset: $offset
       limit: $limit
@@ -57,7 +56,7 @@ export type ProductInCartVars = { userId: number }
 
 export const GET_PRODUCTLIST_IN_CART = gql`
   query GetProductListInCart {
-    productListInCart(userId: 1) {
+    productListInCart {
       id
       quantity
       priceSum
@@ -105,6 +104,6 @@ export const DELETE_PRODUCT_FROM_CART = gql`
 
 export const ADD_PRODUCT_TO_CART = gql`
   mutation AddProductToCart($productId: ID!, $quantity: Int!) {
-    addProductToCart(userId: 1, productId: $productId, quantity: $quantity)
+    addProductToCart(productId: $productId, quantity: $quantity)
   }
 `

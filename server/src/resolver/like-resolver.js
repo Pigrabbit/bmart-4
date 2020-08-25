@@ -1,8 +1,11 @@
 const pool = require('../../db')
 const { errorName } = require('../errors/error-type')
 
-const likeProductResolver = async (parent, args) => {
-  const { userId, productId } = args
+const likeProductResolver = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+
+  const { productId } = args
   const conn = await pool.getConnection()
 
   try {
@@ -20,8 +23,11 @@ const likeProductResolver = async (parent, args) => {
   }
 }
 
-const dislikeProductResolver = async (parent, args) => {
-  const { userId, productId } = args
+const dislikeProductResolver = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+
+  const { productId } = args
   const conn = await pool.getConnection()
 
   try {

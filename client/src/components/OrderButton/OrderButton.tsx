@@ -36,6 +36,7 @@ const StyledOrderButton = styled.button`
   background-color: ${COLORS.baemint};
   font-size: 16px;
   font-weight: 700;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 
   &:disabled {
     background-color: ${COLORS.disabled};

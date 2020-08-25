@@ -28,9 +28,10 @@ const StyledCarousel = styled.div`
   .carousel-indicator-invisible {
     height: 8px;
     width: 8px;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     margin: 0 1px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }
 
   .carousel-indicator-visible {
@@ -39,6 +40,7 @@ const StyledCarousel = styled.div`
     background-color: white;
     border-radius: 50%;
     margin: 0 1px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }
 `
 const StyledContainer = styled.div`
@@ -46,6 +48,7 @@ const StyledContainer = styled.div`
   height: 100%;
   margin: 0 auto;
   display: flex;
+  width: 10000px;
 
   overflow-x: auto;
   scroll-snap-type: x mandatory;

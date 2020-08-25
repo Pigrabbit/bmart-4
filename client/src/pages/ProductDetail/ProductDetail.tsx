@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
 import { ProductDetailRouteProps } from '../../types/routeProps'
@@ -169,6 +169,11 @@ export const ProductDetail = (props: Props) => {
   const { loading, data } = useQuery(GET_PRODUCT_DETAIL_IMG_SRC_LIST, {
     variables: { coupangProductId: parseInt(coupangProductId) },
   })
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   if (loading) return <LoadingIndicator />
   const { productDetailImgList } = data
 

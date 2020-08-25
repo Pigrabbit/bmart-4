@@ -168,8 +168,8 @@ export type StateType = {
 }
 
 export const ProductDetail = (props: Props) => {
-  const { state } = useLocation<StateType>()
-  const { id, price, name, coupangProductId, basePrice, discountRate } = state
+  const location = useLocation<StateType>()
+  const { id, price, name, coupangProductId, basePrice, discountRate } = location.state
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)

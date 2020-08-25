@@ -34,7 +34,6 @@ const StyledThumbnail = styled.div`
     .icon {
       color: #eee;
       border-radius: 50%;
-      background: #aaa;
 
       &.like {
         color: ${COLORS.red};

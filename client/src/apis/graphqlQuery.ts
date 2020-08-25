@@ -104,6 +104,14 @@ export const GET_PRODUCTLIST_IN_CART = gql`
     }
   }
 `
+type SuccessData = {
+  success: boolean
+}
+
+export type ModifyProductQuantityData = {
+  modifyProductQuantity: SuccessData
+}
+
 export type ModifyProductQuantityVars = {
   productId: string
   orderProductId: string
@@ -121,6 +129,10 @@ export const MODIFY_PRODUCT_QUANTITY = gql`
     }
   }
 `
+
+export type DeleteProductFromCartData = {
+  deleteProductFromCart: SuccessData
+}
 
 export type DeleteProductFromCartVars = {
   orderProductIds: string[]
@@ -142,5 +154,18 @@ export type AddProductToCartVars = {
 export const ADD_PRODUCT_TO_CART = gql`
   mutation AddProductToCart($productId: ID!, $quantity: Int!) {
     addProductToCart(productId: $productId, quantity: $quantity)
+  }
+`
+export const LIKE_PRODUCT = gql`
+  mutation likeProduct($productId: ID!) {
+    likeProduct(productId: $productId)
+  }
+`
+
+export const DISLIKE_PRODUCT = gql`
+  mutation dislikeProduct($productId: ID!) {
+    likeProduct(productId: $productId) {
+      success
+    }
   }
 `

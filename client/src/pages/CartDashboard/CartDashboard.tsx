@@ -11,6 +11,8 @@ import {
   DeleteProductFromCartVars,
   ProductInCart,
   ProductInCartData,
+  ModifyProductQuantityData,
+  DeleteProductFromCartData,
 } from '../../apis/graphqlQuery'
 import { CartDashboardHeader } from './CartDashboardHeader'
 import { CartDashboardOrderList } from './CartDashboardOrderList'
@@ -29,10 +31,10 @@ export const CartDashboard = (props: Props) => {
   const { loading, data, refetch } = useQuery<ProductInCartData>(GET_PRODUCTLIST_IN_CART, {
     variables: {},
   })
-  const [modifyProductQuantity] = useMutation<{}, ModifyProductQuantityVars>(
+  const [modifyProductQuantity] = useMutation<ModifyProductQuantityData, ModifyProductQuantityVars>(
     MODIFY_PRODUCT_QUANTITY
   )
-  const [deleteProductFromCart] = useMutation<{}, DeleteProductFromCartVars>(
+  const [deleteProductFromCart] = useMutation<DeleteProductFromCartData, DeleteProductFromCartVars>(
     DELETE_PRODUCT_FROM_CART
   )
 
@@ -72,7 +74,8 @@ export const CartDashboard = (props: Props) => {
   )
 
   const modifyProductQuantityHandler = async (variables: ModifyProductQuantityVars) => {
-    await modifyProductQuantity({ variables })
+    const { data } = await modifyProductQuantity({ variables })
+    if (!data?.modifyProductQuantity.success) return
 
     setOrderList(
       orderList.map((order) =>

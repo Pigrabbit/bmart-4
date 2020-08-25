@@ -45,17 +45,24 @@ const addProductToCartResolver = async (parent, args, context) => {
   const conn = await pool.getConnection()
 
   try {
+    await conn.beginTransaction()
     const findProductQuery = 'SELECT * FROM product WHERE id = ?'
     const [product] = await conn.query(findProductQuery, [productId])
     if (!product.length) return 0
 
     const totalPrice = product[0].price * quantity
 
-    const findOrderQuery = 'SELECT * FROM `order` WHERE user_id = ?'
+    const findOrderQuery = 'SELECT * FROM `order` WHERE user_id = ? and is_paid = 0'
     const [order] = await conn.query(findOrderQuery, [userId])
-    if (!order.length) return 0
-
-    const orderId = order[0].id
+    let orderId = null
+    if (!order.length) {
+      const createOrderQuery = 'INSERT INTO `order` (user_id, is_paid) VALUES (?, ?)'
+      const [rows] = await conn.query(createOrderQuery, [userId, 0])
+      const { insertId } = rows
+      orderId = insertId
+    } else {
+      orderId = order[0].id
+    }
 
     const findProductInCart = 'SELECT * FROM order_product WHERE order_id = ? AND product_id = ?'
     const [existProduct] = await conn.query(findProductInCart, [orderId, productId])
@@ -72,6 +79,7 @@ const addProductToCartResolver = async (parent, args, context) => {
       ])
       const { affectedRows } = rows
 
+      await conn.commit()
       return affectedRows === 1 ? existProduct[0].id : 0
     } else {
       const query =
@@ -80,9 +88,11 @@ const addProductToCartResolver = async (parent, args, context) => {
       const [rows] = await conn.query(query, [orderId, productId, quantity, totalPrice])
       const { insertId } = rows
 
+      await conn.commit()
       return insertId
     }
   } catch (err) {
+    conn.rollback()
     throw new Error(errorName.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()

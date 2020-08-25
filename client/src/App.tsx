@@ -13,6 +13,7 @@ import { ProductDetailRouteProps, CategoryDashboardRouteProps } from './types/ro
 import { SearchDashboard } from './pages/SearchDashboard'
 import { SearchResultDashboard } from './pages/SearchResultDashboard'
 import { LoginDashboard } from './pages/LoginDashboard'
+import { LikedProductDashboard } from './pages/LikedProductDashboard'
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
               path="/search-result"
               component={(props: RouteComponentProps) => <SearchResultDashboard {...props} />}
             />
+            <Route path="/favorite" component={LikedProductDashboard} />
             <Route
               path="/"
               component={(props: RouteComponentProps) => <MainDashboard {...props} />}

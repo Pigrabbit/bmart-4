@@ -42,6 +42,30 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
   }
 `
 
+export type LikedProductListVars = {
+  offset: number
+  limit: number
+}
+
+export type LikedProductListData = {
+  likedProductList: ProductByCategory[]
+}
+
+export const GET_LIKED_PRODUCTLIST = gql`
+  query GetLikedProductList($offset: Int!, $limit: Int!) {
+    likedProductList(offset: $offset, limit: $limit) {
+      id
+      price
+      basePrice
+      discountRate
+      name
+      thumbnailSrc
+      coupangProductId
+      isLiked
+    }
+  }
+`
+
 export type ProductDetailImg = {
   id: string
   src: string

@@ -12,6 +12,7 @@ const { ProductType, CartProductType, ProductDetailImgType } = require('../type'
 const {
   productListByCategoryResolver,
   productDetailImgResolver,
+  likedProductListResolver,
 } = require('../resolver/product-resolver')
 const { productListInCartResolver } = require('../resolver/cart-resolver')
 
@@ -42,6 +43,15 @@ const RootQueryType = new GraphQLObjectType({
         coupangProductId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve: productDetailImgResolver,
+    },
+    likedProductList: {
+      type: new GraphQLList(ProductType),
+      description: '찜한 상품 리스트',
+      args: {
+        offset: { type: GraphQLInt },
+        limit: { type: GraphQLInt },
+      },
+      resolve: likedProductListResolver,
     },
   }),
 })

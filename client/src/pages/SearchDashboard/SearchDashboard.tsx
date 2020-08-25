@@ -1,11 +1,11 @@
 import React, { useState, useRef, FormEvent, useReducer } from 'react'
-import { RouteComponentProps, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { Dashboard } from '../../components/Dashboard'
 import styled from 'styled-components'
 import { SEARCH_URI, SPECIAL_CHAR_REGEX } from '../../utils/constants'
 import { ProductCardType } from '../../types/productCard'
 
-type Props = {} & RouteComponentProps
+type Props = {}
 
 const StyledContainer = styled.section`
   margin-top: 30px;

@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { RouteComponentProps } from 'react-router-dom'
 import { Dashboard } from '../../components/Dashboard'
 import { useQuery, useMutation } from '@apollo/client'
 import {
@@ -20,7 +19,7 @@ import { NotFound } from './NotFound'
 import { CartDashboardFooter } from './CartDashboardFooter'
 import { CartDashboardBill } from './CartDashboardBill'
 
-type Props = {} & RouteComponentProps
+type Props = {}
 
 export type CheckedProduct = { productOrderId: string; checked: boolean }
 

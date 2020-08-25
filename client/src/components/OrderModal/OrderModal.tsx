@@ -20,7 +20,7 @@ const StyledContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 1000;
   width: 100%;
   height: 100%;
 
@@ -88,7 +88,7 @@ const StyledModalOrderButton = styled.button`
   position: fixed;
   bottom: 15px;
   left: 5%;
-  z-index: 10;
+  z-index: 2000;
   width: 90%;
   border: 1px solid #bbb;
   border-radius: 5px;

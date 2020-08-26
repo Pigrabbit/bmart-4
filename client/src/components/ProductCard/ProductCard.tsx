@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
-import { COLORS } from '../../utils/styleConstants'
 import { useMutation } from '@apollo/client'
 import {
   LIKE_PRODUCT,
@@ -11,6 +10,7 @@ import {
   DislikeProductData,
 } from '../../apis/graphqlQuery'
 import { useHistory } from 'react-router-dom'
+import { ProductCardThumbnail } from './ProductCardThumbnail'
 
 export type Props = {
   width?: string
@@ -25,50 +25,7 @@ const StyledContainer = styled.div<StyledContainerProp>`
   width: ${(props) => props.width};
   flex: 0 0 auto;
 `
-const StyledThumbnail = styled.div`
-  position: relative;
-  font-size: 0;
 
-  .icon-wrap {
-    font-size: 24px;
-    line-height: 24px;
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    right: 4px;
-    bottom: 4px;
-    z-index: 10;
-
-    .icon {
-      color: #eee;
-      border-radius: 50%;
-
-      &.like {
-        color: ${COLORS.red};
-      }
-    }
-  }
-
-  .thumbnail-wrap {
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
-    filter: brightness(0.96);
-    overflow: hidden;
-
-    &.alt::before {
-      content: '';
-      display: block;
-      padding: 50%;
-      background-color: #fafafa;
-    }
-
-    .thumbnail {
-      width: 100%;
-      height: 100%;
-    }
-  }
-`
 const StyledContent = styled.div`
   line-height: 20px;
   margin-top: 4px;
@@ -124,43 +81,16 @@ export const ProductCard = (props: Props) => {
     }, 200)
   }
 
-  const renderThumbnail = () => {
-    if (lazyLoad === undefined) {
-      return (
-        <div className="thumbnail-wrap">
-          <img className="thumbnail" src={thumbnailSrc} alt="" />
-        </div>
-      )
-    } else {
-      if (!lazyLoad) {
-        return (
-          <div className="thumbnail-wrap alt">
-            <img className="thumbnail" src={''} data-lazy={thumbnailSrc} alt="" />
-          </div>
-        )
-      } else {
-        return (
-          <div className="thumbnail-wrap">
-            <img className="thumbnail" src={thumbnailSrc} data-lazy={thumbnailSrc} alt="" />
-          </div>
-        )
-      }
-    }
-  }
-
   return (
     <StyledContainer className="product-card" width={width} style={style}>
       <StyledLink onClick={seperateClickEventHandler}>
-        <StyledThumbnail onDoubleClick={seperateClickEventHandler}>
-          <div className="icon-wrap" onClick={toggleProductLike}>
-            {isLiked ? (
-              <i className="icon like">heart_circle</i>
-            ) : (
-              <i className="icon">heart_circle_fill</i>
-            )}
-          </div>
-          {renderThumbnail()}
-        </StyledThumbnail>
+        <ProductCardThumbnail
+          lazyLoad={lazyLoad}
+          isLiked={isLiked}
+          thumbnailSrc={thumbnailSrc}
+          toggleProductLike={toggleProductLike}
+          seperateClickEventHandler={seperateClickEventHandler}
+        />
         <StyledContent>
           <div className="product-name">{name}</div>
           <div className="price">{parseToLocalMoneyString(price)}원</div>

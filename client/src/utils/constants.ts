@@ -6,6 +6,7 @@ export const SEARCH_URI = process.env.REACT_APP_SEARCH_URI
 export const OAUTH_URI = process.env.REACT_APP_GOOGLE_OAUTH_URI
 export const LAZY_LOAD_THRESHOLD = 0.1
 export const BAEDAL_TIP = 1000
+export const MIN_ORDER_PRICE = 5000
 export const CATEGORIES = [
   {
     id: 0,

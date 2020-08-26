@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useRef, useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import {
   GET_PRODUCTLIST_BY_CATEGORY,
@@ -11,6 +11,7 @@ import styled from 'styled-components'
 type Props = {
   idx: number
   category: string
+  lazyLoad: boolean
   changeFocus: (category: string, flag: 'in' | 'out') => void
 }
 const StyledDetector = styled.div`
@@ -20,12 +21,20 @@ const StyledDetector = styled.div`
 `
 
 export const CategoryList = (props: Props) => {
-  const { category, idx } = props
+  const { category, idx, lazyLoad } = props
   const observer = useRef<IntersectionObserver | null>(null)
   const rootRef = useRef<HTMLDivElement>(null)
+  const [imageLazyLoaded, setImageLazyLoaded] = useState<boolean>(false)
 
   let previousY = 0
   let previousRatio = 0
+
+  useEffect(() => {
+    if (lazyLoad && !imageLazyLoaded) {
+      console.log(category)
+      setImageLazyLoaded(true)
+    }
+  }, [lazyLoad])
 
   const categoryListRef = useCallback(
     (el: HTMLDivElement) => {
@@ -70,9 +79,13 @@ export const CategoryList = (props: Props) => {
   return loading || !data ? (
     <div>Loading...</div>
   ) : (
-    <div className={`category-${idx}`} ref={rootRef}>
+    <div id={`category-${idx}`} ref={rootRef}>
       <StyledDetector ref={categoryListRef}></StyledDetector>
-      <VerticalList title={category} productList={data.productListByCategory} />
+      <VerticalList
+        title={category}
+        lazyLoad={imageLazyLoaded}
+        productList={data.productListByCategory}
+      />
     </div>
   )
 }

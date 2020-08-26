@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CATEGORIES } from '../../utils/constants'
 import { HEADER_HEIGHT, STYLES } from '../../utils/styleConstants'
 
-type Props = { selectedCategory: string }
+type Props = { focusedCategory: string }
 
 const StyledHeader = styled.div`
   display: flex;
@@ -53,7 +53,7 @@ const StyledTitle = styled.div`
 `
 
 export const CategoryListSectionHeader = (props: Props) => {
-  const { selectedCategory } = props
+  const { focusedCategory } = props
 
   const headerRef = useRef<HTMLDivElement>(null)
   const headerItemRef = useRef<HTMLDivElement>(null)
@@ -68,7 +68,7 @@ export const CategoryListSectionHeader = (props: Props) => {
     const windowWidth = window.innerWidth
 
     headerElm.scrollLeft = posX + (headerWidth - windowWidth) / 2
-  }, [selectedCategory])
+  }, [focusedCategory])
 
   return (
     <>
@@ -78,7 +78,7 @@ export const CategoryListSectionHeader = (props: Props) => {
       </StyledTitle>
       <StyledHeader ref={headerRef}>
         {CATEGORIES.map((category, idx) => {
-          return selectedCategory === category.name ? (
+          return focusedCategory === category.name ? (
             <div key={idx} ref={headerItemRef} className="selected">
               {category.name}
             </div>

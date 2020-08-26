@@ -13,8 +13,9 @@ import {
 import { useHistory } from 'react-router-dom'
 
 export type Props = {
-  product: ProductCardType
   width?: string
+  lazyLoad?: boolean
+  product: ProductCardType
   style?: React.CSSProperties
 }
 
@@ -48,11 +49,24 @@ const StyledThumbnail = styled.div`
     }
   }
 
-  .thumbnail {
+  .thumbnail-wrap {
     width: 100%;
     height: 100%;
     border-radius: 6px;
     filter: brightness(0.96);
+    overflow: hidden;
+
+    &.alt::before {
+      content: '';
+      display: block;
+      padding: 50%;
+      background-color: #fafafa;
+    }
+
+    .thumbnail {
+      width: 100%;
+      height: 100%;
+    }
   }
 `
 const StyledContent = styled.div`
@@ -74,7 +88,7 @@ export const ProductCard = (props: Props) => {
   const history = useHistory()
   let interval: any = null
 
-  const { product, width = '50%', style } = props
+  const { product, width = '50%', style, lazyLoad } = props
   const { id, price, name, thumbnailSrc, coupangProductId, basePrice, discountRate } = product
 
   const [isLiked, setIsLiked] = useState(props.product.isLiked)
@@ -110,6 +124,30 @@ export const ProductCard = (props: Props) => {
     }, 200)
   }
 
+  const renderThumbnail = () => {
+    if (lazyLoad === undefined) {
+      return (
+        <div className="thumbnail-wrap">
+          <img className="thumbnail" src={thumbnailSrc} alt="" />
+        </div>
+      )
+    } else {
+      if (!lazyLoad) {
+        return (
+          <div className="thumbnail-wrap alt">
+            <img className="thumbnail" src={''} data-lazy={thumbnailSrc} alt="" />
+          </div>
+        )
+      } else {
+        return (
+          <div className="thumbnail-wrap">
+            <img className="thumbnail" src={thumbnailSrc} data-lazy={thumbnailSrc} alt="" />
+          </div>
+        )
+      }
+    }
+  }
+
   return (
     <StyledContainer className="product-card" width={width} style={style}>
       <StyledLink onClick={seperateClickEventHandler}>
@@ -121,7 +159,7 @@ export const ProductCard = (props: Props) => {
               <i className="icon">heart_circle_fill</i>
             )}
           </div>
-          <img className="thumbnail" src={thumbnailSrc} alt="" />
+          {renderThumbnail()}
         </StyledThumbnail>
         <StyledContent>
           <div className="product-name">{name}</div>

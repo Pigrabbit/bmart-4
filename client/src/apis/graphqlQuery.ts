@@ -202,10 +202,27 @@ export const DISLIKE_PRODUCT = gql`
     }
   }
 `
+
+export type CheckoutOrderData = {
+  checkoutOrder: SuccessData
+}
+
 export const CHECKOUT_ORDER = gql`
   mutation CheckoutOrder {
     checkoutOrder {
       success
+    }
+  }
+`
+
+export const GET_ORDER_HISTORY = gql`
+  query GetOrderHistory {
+    orderHistoryList {
+      id,
+      orderedAt,
+      productList {
+        
+      }
     }
   }
 `

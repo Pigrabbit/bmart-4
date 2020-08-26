@@ -33,6 +33,36 @@ const productListInCartResolver = async (parent, args, context) => {
   }
 }
 
+const productListInOrderResolver = async (parent, args, context) => {
+  const { id } = parent
+  const conn = await pool.getConnection()
+  console.log('hi')
+  try {
+    const query = `
+      SELECT op.id orderProductId, op.quantity, op.price_sum, p.* 
+      FROM order_product op
+      JOIN product p ON op.product_id = p.id
+      JOIN \`order\` o ON o.id = op.order_id
+      WHERE o.id = ?;
+    `
+
+    const [rows] = await conn.query(query, [id])
+    console.log(rows)
+    const result = rows.map((row) => ({
+      id: row.orderProductId,
+      quantity: row.quantity,
+      priceSum: row.price_sum,
+      product: new GetProductDTO(row),
+    }))
+
+    return result
+  } catch (err) {
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
+  } finally {
+    conn.release()
+  }
+}
+
 const addProductToCartResolver = async (parent, args, context) => {
   const res = await context.res
   const userId = res.locals.userId
@@ -152,6 +182,7 @@ const deleteProductFromCartResolver = async (parent, args) => {
 
 module.exports = {
   productListInCartResolver,
+  productListInOrderResolver,
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,

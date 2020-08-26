@@ -70,6 +70,7 @@ const getOrderProductById = async (parent, args, context) => {
     const query = `SELECT * FROM product p JOIN order_product op 
     ON p.id = op.product_id WHERE op.order_id = ?`
     const [rows] = await conn.query(query, [id])
+    console.log(rows)
     const result = rows.map((row) => new GetProductDTO(row))
 
     return result

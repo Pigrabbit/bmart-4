@@ -5,7 +5,9 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
+  GraphQLList,
 } = require('graphql')
+const { getOrderProductById } = require('./resolver/product-resolver')
 
 const ProductType = new GraphQLObjectType({
   name: 'Product',
@@ -48,6 +50,19 @@ const ProductDetailImgType = new GraphQLObjectType({
   }),
 })
 
+const OrderType = new GraphQLObjectType({
+  name: 'Order',
+  description: 'This represents an order',
+  fields: () => ({
+    id: { type: GraphQLNonNull(GraphQLID) },
+    orderedAt: { type: GraphQLNonNull(GraphQLString) },
+    productList: {
+      type: GraphQLList(ProductType),
+      resolve: getOrderProductById,
+    },
+  }),
+})
+
 const changeStatusMessageType = new GraphQLObjectType({
   name: 'changeStatusMessage',
   description: '수정/삭제 성공 여부 메시지',
@@ -60,5 +75,6 @@ module.exports = {
   ProductType,
   CartProductType,
   ProductDetailImgType,
+  OrderType,
   changeStatusMessageType,
 }

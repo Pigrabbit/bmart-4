@@ -6,13 +6,14 @@ const {
   GraphQLNonNull,
 } = require('graphql')
 
-const { ProductType, CartProductType, ProductDetailImgType } = require('../type')
+const { ProductType, CartProductType, ProductDetailImgType, OrderType } = require('../type')
 
 const {
   productListByCategoryResolver,
   productDetailImgResolver,
 } = require('../resolver/product-resolver')
 const { productListInCartResolver } = require('../resolver/cart-resolver')
+const { orderHistoryListResolver } = require('../resolver/order-resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -42,6 +43,11 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: productDetailImgResolver,
     },
+    orderHistoryList: {
+      type: new GraphQLList(OrderType),
+      description: '',
+      resolve: orderHistoryListResolver,
+    }
   }),
 })
 

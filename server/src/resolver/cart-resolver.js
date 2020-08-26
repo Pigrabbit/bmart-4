@@ -1,6 +1,6 @@
 const pool = require('../../db')
 const { GetProductDTO } = require('../dto/get-product-dto')
-const { errorName } = require('../errors/error-type')
+const { ReasonPhrases } = require('http-status-codes')
 
 const productListInCartResolver = async (parent, args, context) => {
   const res = await context.res
@@ -14,7 +14,7 @@ const productListInCartResolver = async (parent, args, context) => {
       FROM order_product op
       JOIN product p ON op.product_id = p.id
       JOIN \`order\` o ON o.id = op.order_id
-      WHERE o.user_id = ?;
+      WHERE o.user_id = ? AND o.is_paid = 0;
     `
 
     const [rows] = await conn.query(query, [userId])
@@ -27,7 +27,7 @@ const productListInCartResolver = async (parent, args, context) => {
 
     return result
   } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }
@@ -39,7 +39,7 @@ const addProductToCartResolver = async (parent, args, context) => {
 
   const { productId, quantity } = args
   if (quantity <= 0) {
-    throw new Error(errorName.BAD_REQUEST)
+    throw new Error(ReasonPhrases.BAD_REQUEST)
   }
 
   const conn = await pool.getConnection()
@@ -93,7 +93,7 @@ const addProductToCartResolver = async (parent, args, context) => {
     }
   } catch (err) {
     conn.rollback()
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }
@@ -102,7 +102,7 @@ const addProductToCartResolver = async (parent, args, context) => {
 const modifyProductQuantityResolver = async (parent, args) => {
   const { productId, orderProductId, quantity } = args
   if (quantity <= 0) {
-    throw new Error(errorName.BAD_REQUEST)
+    throw new Error(ReasonPhrases.BAD_REQUEST)
   }
 
   const conn = await pool.getConnection()
@@ -122,7 +122,7 @@ const modifyProductQuantityResolver = async (parent, args) => {
     const { affectedRows } = rows
     return { success: affectedRows === 1 }
   } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }
@@ -144,7 +144,7 @@ const deleteProductFromCartResolver = async (parent, args) => {
 
     return { success: deletedRows === orderProductIds.length }
   } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }

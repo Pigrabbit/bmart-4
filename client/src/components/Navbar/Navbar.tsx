@@ -7,7 +7,7 @@ type Props = {}
 
 const StyledContainer = styled.nav`
   padding: 4px 16px 4px 16px;
-  padding-bottom: calc(4px + env(safe-area-inset-bottom))
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
   display: flex;
   justify-content: space-between;
   align-items: center;

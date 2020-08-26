@@ -35,12 +35,16 @@ function App() {
                 path="/login"
                 component={(props: RouteComponentProps) => <LoginDashboard {...props} />}
               />
-              <PrivateRoute path="/product/:productId" component={ProductDetail} />
-              <PrivateRoute path="/category/:categoryId" component={CategoryDashboard} />
-              <PrivateRoute path="/cart" component={CartDashboard} />
-              <PrivateRoute path="/favorite" component={LikedProductDashboard} />
-              <PrivateRoute path="/search" component={SearchDashboard} />
-              <PrivateRoute path="/search-result" component={SearchResultDashboard} />
+              <PrivateRoute exact={true} path="/product/:productId" component={ProductDetail} />
+              <PrivateRoute
+                exact={true}
+                path="/category/:categoryId"
+                component={CategoryDashboard}
+              />
+              <PrivateRoute exact={true} path="/cart" component={CartDashboard} />
+              <PrivateRoute exact={true} path="/favorite" component={LikedProductDashboard} />
+              <PrivateRoute exact={true} path="/search" component={SearchDashboard} />
+              <PrivateRoute exact={true} path="/search-result" component={SearchResultDashboard} />
               <PrivateRoute exact={true} path="/" component={MainDashboard} />
               <Redirect to={{ pathname: '/' }} />
             </Switch>

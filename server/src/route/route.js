@@ -11,11 +11,11 @@ const schema = require('../schema/schema')
 router.post(
   '/graphql',
   isLoggedIn,
-  graphqlHTTP((req, res) => {
+  graphqlHTTP((req, res, next) => {
     return {
       schema,
       graphiql: false,
-      context: { req, res },
+      context: { req, res, next },
       customFormatErrorFn: (err) => {
         const error = getErrorCode(err.message)
         return { message: error.message, statusCode: error.statusCode }
@@ -34,7 +34,7 @@ router.get(
     return {
       schema,
       graphiql: true,
-      context: { req, res },
+      context: { req, res, next },
       customFormatErrorFn: (err) => {
         const error = getErrorCode(err.message)
         return { message: error.message, statusCode: error.statusCode }

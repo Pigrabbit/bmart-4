@@ -8,6 +8,7 @@ const {
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,
 } = require('../resolver/cart-resolver')
+const { checkoutOrderResolver } = require('../resolver/order-resolver')
 
 const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
@@ -59,9 +60,6 @@ const RootMutationType = new GraphQLObjectType({
     checkoutOrder: {
       type: GraphQLNonNull(GraphQLID),
       description: '결제하기 기능',
-      args: {
-        orderId: { type: GraphQLNonNull(GraphQLID) },
-      },
       resolve: checkoutOrderResolver,
     },
   }),

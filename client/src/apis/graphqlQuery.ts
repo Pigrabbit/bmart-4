@@ -215,13 +215,34 @@ export const CHECKOUT_ORDER = gql`
   }
 `
 
+export type OrderHistory = {
+  id: string
+  orderedAt: string
+  cartProductList: ProductInCart[]
+}
+
+export type OrderHistoryData = {
+  orderHistoryList: OrderHistory[]
+}
+
 export const GET_ORDER_HISTORY = gql`
   query GetOrderHistory {
     orderHistoryList {
-      id,
-      orderedAt,
-      productList {
-        
+      id
+      orderedAt
+      cartProductList {
+        id
+        quantity
+        priceSum
+        product {
+          id
+          name
+          price
+          basePrice
+          discountRate
+          thumbnailSrc
+          coupangProductId
+        }
       }
     }
   }

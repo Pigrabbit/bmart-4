@@ -36,7 +36,7 @@ const productListInCartResolver = async (parent, args, context) => {
 const productListInOrderResolver = async (parent, args, context) => {
   const { id } = parent
   const conn = await pool.getConnection()
-  console.log('hi')
+
   try {
     const query = `
       SELECT op.id orderProductId, op.quantity, op.price_sum, p.* 
@@ -47,7 +47,7 @@ const productListInOrderResolver = async (parent, args, context) => {
     `
 
     const [rows] = await conn.query(query, [id])
-    console.log(rows)
+
     const result = rows.map((row) => ({
       id: row.orderProductId,
       quantity: row.quantity,

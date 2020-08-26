@@ -40,7 +40,7 @@ const orderHistoryListResolver = async (parent, args, context) => {
     const query = 'SELECT * FROM `order` WHERE user_id = ? and is_paid = 1'
     const [rows] = await conn.query(query, [userId])
     const result = rows.map((row) => new GetOrderHistoryDTO(row))
-    console.log(result)
+
     return result
   } catch {
     throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)

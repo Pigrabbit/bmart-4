@@ -102,6 +102,10 @@ export const PRODUCT_SORT_TYPE: { id: SortType; name: string }[] = [
   { id: 'priceDesc', name: '가격 높은순' },
 ]
 
+export const KR_WEEKDAY = [
+  '일', '월', '화', '수', '목', '금', '토'
+]
+
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1
 export const ONE_PAGE_LENGTH = 10

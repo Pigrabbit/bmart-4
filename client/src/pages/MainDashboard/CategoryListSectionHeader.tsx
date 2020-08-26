@@ -2,8 +2,13 @@ import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { CATEGORIES } from '../../utils/constants'
 import { HEADER_HEIGHT, STYLES } from '../../utils/styleConstants'
+import { useHistory } from 'react-router-dom'
 
-type Props = { focusedCategory: string }
+type Props = {
+  focusedCategory: string
+  changeFocus: (category: string, flag: 'in' | 'out') => void
+  selectCategory: (focusedCategory: string) => void
+}
 
 const StyledHeader = styled.div`
   display: flex;
@@ -70,6 +75,12 @@ export const CategoryListSectionHeader = (props: Props) => {
     headerElm.scrollLeft = posX + (headerWidth - windowWidth) / 2
   }, [focusedCategory])
 
+  const clickCategoryHeaderHandler = (categoryName: string, idx: number) => () => {
+    const a = document.querySelector<HTMLDivElement>(`#category-${idx}`)
+    window.scroll(0, (a?.offsetTop || 0) - 140)
+    props.changeFocus(categoryName, 'in')
+  }
+
   return (
     <>
       <StyledTitle>
@@ -79,11 +90,18 @@ export const CategoryListSectionHeader = (props: Props) => {
       <StyledHeader ref={headerRef}>
         {CATEGORIES.map((category, idx) => {
           return focusedCategory === category.name ? (
-            <div key={idx} ref={headerItemRef} className="selected">
+            <div
+              key={idx}
+              ref={headerItemRef}
+              className="selected"
+              onClick={clickCategoryHeaderHandler(category.name, idx)}
+            >
               {category.name}
             </div>
           ) : (
-            <div key={idx}>{category.name}</div>
+            <div key={idx} onClick={clickCategoryHeaderHandler(category.name, idx)}>
+              {category.name}
+            </div>
           )
         })}
       </StyledHeader>

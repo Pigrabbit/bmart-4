@@ -24,7 +24,11 @@ export const CategoryListSection = (props: Props) => {
 
   return (
     <section className="category-list-section">
-      <CategoryListSectionHeader focusedCategory={focusedCategory} />
+      <CategoryListSectionHeader
+        focusedCategory={focusedCategory}
+        changeFocus={changeFocus}
+        selectCategory={selectCategory}
+      />
       {CATEGORIES.map((category, idx) => (
         <div className="wrap" key={idx}>
           <CategoryList

@@ -31,7 +31,6 @@ export const CategoryList = (props: Props) => {
 
   useEffect(() => {
     if (lazyLoad && !imageLazyLoaded) {
-      console.log(category)
       setImageLazyLoaded(true)
     }
   }, [lazyLoad])
@@ -40,7 +39,7 @@ export const CategoryList = (props: Props) => {
     (el: HTMLDivElement) => {
       observer.current = new IntersectionObserver(observeHandler, {
         root: rootRef.current,
-        rootMargin: '-100px 0px 0px 0px',
+        rootMargin: '-150px 0px 0px 0px',
         threshold: 1,
       })
       if (el) observer.current.observe(el)
@@ -52,9 +51,11 @@ export const CategoryList = (props: Props) => {
     const currentY = entry.boundingClientRect.y
     const isIntersecting = entry.isIntersecting
     const currentRatio = entry.intersectionRatio
+    if (currentY < 0) return
 
     if (currentY < previousY) {
       if (currentRatio > previousRatio && isIntersecting) {
+        props.changeFocus(category, 'out')
       } else {
         props.changeFocus(category, 'in')
       }

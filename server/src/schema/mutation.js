@@ -56,6 +56,14 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: deleteProductFromCartResolver,
     },
+    checkoutOrder: {
+      type: GraphQLNonNull(GraphQLID),
+      description: '결제하기 기능',
+      args: {
+        orderId: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve: checkoutOrderResolver,
+    },
   }),
 })
 

@@ -64,14 +64,14 @@ export const HistoryCard = (props: Props) => {
   const { orderHistory } = props
   const { orderedAt, cartProductList } = orderHistory
 
-  const [title, setTitle] = useState(cartProductList[0].product.name)
-  const [quantity, setQuantity] = useState(cartProductList.length)
-  const [orderSum, setOrderSum] = useState(
+  const [title, setTitle] = useState<string>(cartProductList[0].product.name)
+  const [quantity, setQuantity] = useState<number>(cartProductList.length)
+  const [orderSum, setOrderSum] = useState<number>(
     cartProductList.reduce((acc, cur) => {
       return acc + cur.priceSum
     }, 0)
   )
-  const [isDetailOpened, setIsDetailOpened] = useState(false)
+  const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false)
 
   return (
     <StyledContainer className="history-item" onClick={() => setIsDetailOpened(!isDetailOpened)}>

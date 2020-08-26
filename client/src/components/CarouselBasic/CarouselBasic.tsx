@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { StyledWrapper } from '../../styles/StyledWrapper'
 import { ProductDetailImg } from '../../apis/graphqlQuery'
+import {
+  CAROUSEL_BASIC_INIT_BOUNDING_RECT_X_ERR,
+  CAROUSEL_BASIC_INIT_BOUNDING_RECT_Y_ERR,
+  CAROUSEL_BASIC_INTERSECTION_RATIO_THRESHOLD,
+  CAROUSEL_BASIC_INTERSECTION_THRESHOLD,
+} from '../../utils/constants'
 
 type Props = {
   width?: number
@@ -30,7 +36,7 @@ const StyledCarousel = styled.div`
     width: 8px;
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
-    margin: 0 1px;
+    margin: 0 3px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }
 
@@ -39,7 +45,7 @@ const StyledCarousel = styled.div`
     width: 8px;
     background-color: white;
     border-radius: 50%;
-    margin: 0 1px;
+    margin: 0 3px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }
 `
@@ -72,19 +78,33 @@ export const CarouselBasic = (props: Props) => {
   const { bannerList } = props
   const sliderRef = useRef<HTMLDivElement>(null)
   const bannerRefList = useRef<Array<HTMLDivElement | null>>([])
-  const [bannerIndex, setBannerIndex] = useState(0)
+  const [bannerIndex, setBannerIndex] = useState<number>(0)
+
+  const isInitialAdjustment = (entry: IntersectionObserverEntry): boolean => {
+    return (
+      entry.boundingClientRect.x === CAROUSEL_BASIC_INIT_BOUNDING_RECT_X_ERR &&
+      entry.boundingClientRect.y === CAROUSEL_BASIC_INIT_BOUNDING_RECT_Y_ERR
+    )
+  }
 
   useEffect(() => {
-    const bannerObserveHandler = (entries: IntersectionObserverEntry[]) => {
+    const bannerObserveHandler = (
+      entries: IntersectionObserverEntry[],
+      observer: IntersectionObserver
+    ) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.9) {
+        if (
+          entry.isIntersecting &&
+          entry.intersectionRatio >= CAROUSEL_BASIC_INTERSECTION_RATIO_THRESHOLD
+        ) {
+          if (isInitialAdjustment(entry)) return
           setBannerIndex(bannerRefList.current.indexOf(entry.target as HTMLDivElement))
         }
       })
     }
     const observer = new IntersectionObserver(bannerObserveHandler, {
       root: sliderRef.current,
-      threshold: 0.9,
+      threshold: CAROUSEL_BASIC_INTERSECTION_THRESHOLD,
     })
     bannerRefList.current.forEach((banner) => {
       observer.observe(banner!)

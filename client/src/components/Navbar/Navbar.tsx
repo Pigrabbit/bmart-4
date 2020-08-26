@@ -5,11 +5,6 @@ import { StyledLink } from '../../styles/StyledLink'
 
 type Props = {}
 
-const StyledNavbarLifter = styled.nav`
-  padding-bottom: calc(env(safe-area-inset-bottom));
-  background-color: white;
-`
-
 const StyledContainer = styled.nav`
   padding: 4px 16px 4px 16px;
   display: grid;
@@ -18,7 +13,7 @@ const StyledContainer = styled.nav`
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 60px;
+  height: calc(60px + env(safe-area-inset-bottom));
   z-index: 2000;
   background-color: white;
   border-top: 1px solid #ccc;
@@ -45,22 +40,20 @@ export const Navbar = (props: Props) => {
   const iconList = NAVIGATIONS
 
   return (
-    <StyledNavbarLifter>
-      <StyledContainer className="navbar">
-        {iconList.map(({ name, displayName, path }, idx) => (
-          <StyledLink key={idx} to={{ pathname: path }}>
-            <StyledIcon className="navbar-item">
-              <img
-                src={`${process.env.PUBLIC_URL}/images/navbar-icon/${name}.svg`}
-                alt={`${name}-icon`}
-                className="navbar-item-icon"
-                id={`navbar-item-icon-${name}`}
-              />
-              <p>{displayName}</p>
-            </StyledIcon>
-          </StyledLink>
-        ))}
-      </StyledContainer>
-    </StyledNavbarLifter>
+    <StyledContainer className="navbar">
+      {iconList.map(({ name, displayName, path }, idx) => (
+        <StyledLink key={idx} to={{ pathname: path }}>
+          <StyledIcon className="navbar-item">
+            <img
+              src={`${process.env.PUBLIC_URL}/images/navbar-icon/${name}.svg`}
+              alt={`${name}-icon`}
+              className="navbar-item-icon"
+              id={`navbar-item-icon-${name}`}
+            />
+            <p>{displayName}</p>
+          </StyledIcon>
+        </StyledLink>
+      ))}
+    </StyledContainer>
   )
 }

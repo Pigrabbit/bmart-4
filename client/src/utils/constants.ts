@@ -107,9 +107,7 @@ export const KR_WEEKDAY = [
 // relate to CategoryListSection component's lazyloading implements
 // 현재 포커싱된 카테고리 이후 몇 개의 카테고리의 loading을 진행할 것인가에 대한 상수
 export const CATEGORY_SECTION_LAZYLOAD_ADDER = 2
-// Carousel Basic indicator 초기 오작동 버그 검증을 위한 상수
-export const CAROUSEL_BASIC_INIT_BOUNDING_RECT_X_ERR = 375
-export const CAROUSEL_BASIC_INIT_BOUNDING_RECT_Y_ERR = 51
+
 export const CAROUSEL_BASIC_INTERSECTION_RATIO_THRESHOLD = 0.9
 export const CAROUSEL_BASIC_INTERSECTION_THRESHOLD = 0.9
 

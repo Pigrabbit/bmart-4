@@ -1,48 +1,15 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState } from 'react'
 import { CategoryList } from './CategoryList'
-import { CATEGORIES, LAZY_LOAD_THRESHOLD } from '../../utils/constants'
+import { CATEGORIES, CATEGORY_SECTION_LAZYLOAD_ADDER } from '../../utils/constants'
 import { CategoryListSectionHeader } from './CategoryListSectionHeader'
 
 type Props = {}
 
 export const CategoryListSection = (props: Props) => {
-  const [hasMore, setHasMore] = useState<boolean>(true)
-  const [categoryList, setCategoryList] = useState<string[]>([CATEGORIES[0].name])
-  const observer = useRef<IntersectionObserver | null>(null)
-  const [selectedCategory, selectCategory] = useState<string>(CATEGORIES[0].name)
-
-  const addCategoryListHandler = () => {
-    const length = categoryList.length
-
-    if (length >= CATEGORIES.length) {
-      setHasMore(false)
-      return
-    }
-
-    setCategoryList([...categoryList, CATEGORIES[length].name])
-  }
-
-  const lastCategoryListRef = useCallback(
-    (el) => {
-      if (hasMore && observer.current) observer.current.disconnect()
-
-      if (observer.current) observer.current.disconnect()
-
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            addCategoryListHandler()
-          }
-        },
-        { threshold: LAZY_LOAD_THRESHOLD }
-      )
-      if (el) observer.current.observe(el)
-    },
-    [hasMore, categoryList]
-  )
+  const [focusedCategory, selectCategory] = useState<string>(CATEGORIES[0].name)
 
   const changeFocus = (category: string, flag: 'in' | 'out') => {
-    if (flag === 'in' && selectedCategory !== category) {
+    if (flag === 'in' && focusedCategory !== category) {
       selectCategory(category)
     }
 
@@ -52,20 +19,26 @@ export const CategoryListSection = (props: Props) => {
     }
   }
 
+  let lazyLoadedIndex = CATEGORIES.findIndex((c) => c.name === focusedCategory)
+  if (lazyLoadedIndex < 0) lazyLoadedIndex = CATEGORIES.length
+
   return (
     <section className="category-list-section">
-      <CategoryListSectionHeader selectedCategory={selectedCategory} />
-      {categoryList.map((category, idx) => {
-        return idx + 1 === categoryList.length ? (
-          <div className="wrap" ref={lastCategoryListRef} key={idx}>
-            <CategoryList idx={idx} category={category} changeFocus={changeFocus} />
-          </div>
-        ) : (
-          <div className="wrap" key={idx}>
-            <CategoryList idx={idx} category={category} changeFocus={changeFocus} />
-          </div>
-        )
-      })}
+      <CategoryListSectionHeader
+        focusedCategory={focusedCategory}
+        changeFocus={changeFocus}
+        selectCategory={selectCategory}
+      />
+      {CATEGORIES.map((category, idx) => (
+        <div className="wrap" key={idx}>
+          <CategoryList
+            idx={idx}
+            category={category.name}
+            lazyLoad={idx < lazyLoadedIndex + CATEGORY_SECTION_LAZYLOAD_ADDER}
+            changeFocus={changeFocus}
+          />
+        </div>
+      ))}
     </section>
   )
 }

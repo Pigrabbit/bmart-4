@@ -37,7 +37,7 @@ const orderHistoryListResolver = async (parent, args, context) => {
   const conn = await pool.getConnection()
 
   try {
-    const query = 'SELECT * FROM `order` WHERE user_id = ? and is_paid = 1'
+    const query = 'SELECT * FROM `order` WHERE user_id = ? and is_paid = 1 ORDER BY ordered_at DESC'
     const [rows] = await conn.query(query, [userId])
     const result = rows.map((row) => new GetOrderHistoryDTO(row))
 

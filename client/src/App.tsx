@@ -16,6 +16,7 @@ import { LoginDashboard } from './pages/LoginDashboard'
 import { LikedProductDashboard } from './pages/LikedProductDashboard'
 import { AuthProvider } from './context/AuthContext'
 import { PrivateRoute } from './routes/PrivateRoute'
+import { NotFoundDashboard } from './pages/NotFoundDashboard'
 
 function App() {
   return (
@@ -34,7 +35,8 @@ function App() {
               <PrivateRoute path="/favorite" component={LikedProductDashboard} />
               <PrivateRoute path="/search" component={SearchDashboard} />
               <PrivateRoute path="/search-result" component={SearchResultDashboard} />
-              <PrivateRoute path="/" component={MainDashboard} />
+              <PrivateRoute exact={true} path="/" component={MainDashboard} />
+              <Route path="/" component={(props: RouteComponentProps) => <NotFoundDashboard />} />
             </Switch>
           </Router>
         </div>

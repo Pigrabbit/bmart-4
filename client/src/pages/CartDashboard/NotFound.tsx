@@ -4,7 +4,7 @@ import styled from 'styled-components'
 type Props = {}
 
 const StyledContainer = styled.div`
-  background-image: url("${process.env.PUBLIC_URL}/images/tung.png");
+  background-image: url("${process.env.PUBLIC_URL}/images/cart-tung.png");
   height: calc(100vh - 50px);
   background-position: center;
   background-size: 50%;

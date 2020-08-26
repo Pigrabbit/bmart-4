@@ -1,5 +1,11 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, RouteComponentProps } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  RouteComponentProps,
+  Redirect,
+} from 'react-router-dom'
 
 import { ApolloProvider } from '@apollo/client'
 import { client } from './utils/apolloClient'
@@ -36,7 +42,7 @@ function App() {
               <PrivateRoute path="/search" component={SearchDashboard} />
               <PrivateRoute path="/search-result" component={SearchResultDashboard} />
               <PrivateRoute exact={true} path="/" component={MainDashboard} />
-              <Route path="/" component={(props: RouteComponentProps) => <NotFoundDashboard />} />
+              <Redirect to={{ pathname: '/' }} />
             </Switch>
           </Router>
         </div>

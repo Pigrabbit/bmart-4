@@ -46,7 +46,16 @@ export const ProductCard = (props: Props) => {
   let interval: any = null
 
   const { product, width = '50%', style, lazyLoad } = props
-  const { id, price, name, thumbnailSrc, coupangProductId, basePrice, discountRate } = product
+  const {
+    id,
+    price,
+    name,
+    thumbnailSrc,
+    stockCount,
+    coupangProductId,
+    basePrice,
+    discountRate,
+  } = product
 
   const [isLiked, setIsLiked] = useState(props.product.isLiked)
 
@@ -87,6 +96,7 @@ export const ProductCard = (props: Props) => {
         <ProductCardThumbnail
           lazyLoad={lazyLoad}
           isLiked={isLiked}
+          isSoldOut={stockCount === 0}
           thumbnailSrc={thumbnailSrc}
           toggleProductLike={toggleProductLike}
           seperateClickEventHandler={seperateClickEventHandler}

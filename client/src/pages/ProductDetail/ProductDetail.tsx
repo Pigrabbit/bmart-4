@@ -43,7 +43,6 @@ const StyledSlider = styled.div`
   bottom: 0;
   right: 0;
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,7 +51,7 @@ const StyledSlider = styled.div`
   .confirm-slider-content {
     width: 70%;
     text-align: center;
-    background-color: ${COLORS.gray};
+    background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
     font-size: 16px;
     padding: 5px 0;

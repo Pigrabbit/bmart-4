@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { StyledWrapper } from '../../styles/StyledWrapper'
 import { ProductDetailImg } from '../../apis/graphqlQuery'
 import {
-  CAROUSEL_BASIC_INIT_BOUNDING_RECT_X_ERR,
-  CAROUSEL_BASIC_INIT_BOUNDING_RECT_Y_ERR,
   CAROUSEL_BASIC_INTERSECTION_RATIO_THRESHOLD,
   CAROUSEL_BASIC_INTERSECTION_THRESHOLD,
 } from '../../utils/constants'
@@ -81,17 +79,11 @@ export const CarouselBasic = (props: Props) => {
   const [bannerIndex, setBannerIndex] = useState<number>(0)
 
   const isInitialAdjustment = (entry: IntersectionObserverEntry): boolean => {
-    return (
-      entry.boundingClientRect.x === CAROUSEL_BASIC_INIT_BOUNDING_RECT_X_ERR &&
-      entry.boundingClientRect.y === CAROUSEL_BASIC_INIT_BOUNDING_RECT_Y_ERR
-    )
+    return entry.boundingClientRect.x === sliderRef.current?.getBoundingClientRect().width
   }
 
   useEffect(() => {
-    const bannerObserveHandler = (
-      entries: IntersectionObserverEntry[],
-      observer: IntersectionObserver
-    ) => {
+    const bannerObserveHandler = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (
           entry.isIntersecting &&

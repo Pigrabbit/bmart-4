@@ -48,7 +48,7 @@ const searchReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'submit': {
       return {
-        query: '',
+        ...state,
         hasQueried: true,
         searchResultList: action.payload.searchResultList,
       }
@@ -85,14 +85,17 @@ export const SearchDashboard = (props: Props) => {
     })
     const data = await result.json()
 
-    dispatch({ type: 'submit', payload: { searchResultList: data } })
+    dispatch({ type: 'submit', payload: { searchResultList: data, query: state.query } })
   }
 
   return (
     <Dashboard title="검색" navbar={false} searchBar={false} footer={false}>
       {state.hasQueried ? (
         <Redirect
-          to={{ pathname: '/search-result', state: { searchResultList: state.searchResultList } }}
+          to={{
+            pathname: '/search-result',
+            state: { searchResultList: state.searchResultList, query: state.query },
+          }}
         />
       ) : (
         <StyledContainer className="search-dashboard">

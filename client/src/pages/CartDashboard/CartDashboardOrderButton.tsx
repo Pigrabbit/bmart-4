@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { BAEDAL_TIP } from '../../utils/constants'
 import { OrderButton } from '../../components/OrderButton'
+import { useMutation } from '@apollo/client'
+import { CHECKOUT_ORDER } from '../../apis/graphqlQuery'
 
 type Props = {
   summary: { totalPrice: number; totalCount: number }
@@ -24,8 +26,14 @@ export const CartDashboardOrderButton = (props: Props) => {
 
   const hurdle = totalCount === 0 || totalPrice < 5000
 
+  const [checkoutOrder, { data }] = useMutation(CHECKOUT_ORDER)
+
+  const clickCheckoutButtonHandler = () => {
+    checkoutOrder()
+  }
+
   return (
-    <OrderButton hurdle={hurdle} clickHandler={() => {}}>
+    <OrderButton hurdle={hurdle} clickHandler={clickCheckoutButtonHandler}>
       <>
         {!hurdle && <StyledOrderCount className="order-count">{totalCount}</StyledOrderCount>}
         {!hurdle

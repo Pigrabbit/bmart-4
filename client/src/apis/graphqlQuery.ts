@@ -107,3 +107,11 @@ export const ADD_PRODUCT_TO_CART = gql`
     addProductToCart(productId: $productId, quantity: $quantity)
   }
 `
+
+export const CHECKOUT_ORDER = gql`
+  mutation CheckoutOrder {
+    checkoutOrder {
+      success
+    }
+  }
+`

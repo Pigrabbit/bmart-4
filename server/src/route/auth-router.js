@@ -23,7 +23,7 @@ router.get(
 )
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res, next) => {
-  const payload = { id: req.user.id }
+  const payload = { id: req.user.id, firstname: req.user.firstname, lastname: req.user.lastname }
   const token = jwt.sign(payload, process.env.JWT_SECRET)
   res
     .status(200)

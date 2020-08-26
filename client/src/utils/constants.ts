@@ -1,3 +1,5 @@
+import { SortType } from '../types/sort'
+
 export const CS_PHONE: string = '1600-0025'
 export const CS_EMAIL: string = 'bmart_together@woowahan.com'
 export const SLIDER_INTERVAL_TIME = 2000
@@ -93,6 +95,13 @@ export const NAVIGATIONS = [
   { name: 'history', displayName: '주문내역', path: '/history' },
   { name: 'cart', displayName: '장바구니', path: '/cart' },
 ]
+
+export const PRODUCT_SORT_TYPE: { id: SortType; name: string }[] = [
+  { id: '', name: '기본 정렬순' },
+  { id: 'priceAsc', name: '가격 낮은순' },
+  { id: 'priceDesc', name: '가격 높은순' },
+]
+
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1
 export const ONE_PAGE_LENGTH = 10

@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
-import { StyledLink } from '../../styles/StyledLink'
+import { COLORS } from '../../utils/styleConstants'
+import { useMutation } from '@apollo/client'
+import {
+  LIKE_PRODUCT,
+  DISLIKE_PRODUCT,
+  LikeProductVars,
+  DislikeProductData,
+} from '../../apis/graphqlQuery'
+import { useHistory } from 'react-router-dom'
 
 export type Props = {
   product: ProductCardType
@@ -17,7 +25,30 @@ const StyledContainer = styled.div<StyledContainerProp>`
   flex: 0 0 auto;
 `
 const StyledThumbnail = styled.div`
-  img {
+  position: relative;
+  font-size: 0;
+
+  .icon-wrap {
+    font-size: 24px;
+    line-height: 24px;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    z-index: 10;
+
+    .icon {
+      color: #eee;
+      border-radius: 50%;
+
+      &.like {
+        color: ${COLORS.red};
+      }
+    }
+  }
+
+  .thumbnail {
     width: 100%;
     height: 100%;
     border-radius: 6px;
@@ -26,26 +57,70 @@ const StyledThumbnail = styled.div`
 `
 const StyledContent = styled.div`
   line-height: 20px;
+  margin-top: 4px;
+
   .price {
     font-weight: 700;
   }
 `
 
+const StyledLink = styled.a`
+  color: inherit;
+  display: block;
+  text-decoration: none;
+`
+
 export const ProductCard = (props: Props) => {
+  const history = useHistory()
+  let interval: any = null
+
   const { product, width = '50%', style } = props
   const { id, price, name, thumbnailSrc, coupangProductId, basePrice, discountRate } = product
 
+  const [isLiked, setIsLiked] = useState(props.product.isLiked)
+
+  const [likeProduct] = useMutation<{}, LikeProductVars>(LIKE_PRODUCT)
+  const [dislikeProduct] = useMutation<DislikeProductData, LikeProductVars>(DISLIKE_PRODUCT)
+
+  const toggleProductLike = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+
+    const params = { variables: { productId: id } }
+    if (isLiked) {
+      await dislikeProduct(params)
+    } else {
+      await likeProduct(params)
+    }
+
+    setIsLiked(!isLiked)
+  }
+
+  const seperateClickEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault()
+
+    if (interval) {
+      toggleProductLike(e)
+      clearTimeout(interval)
+      return
+    }
+
+    interval = setTimeout(() => {
+      history.push(`/product/${id}`, { ...product })
+      interval = null
+    }, 200)
+  }
+
   return (
     <StyledContainer className="product-card" width={width} style={style}>
-      <StyledLink
-        to={{
-          pathname: `/product/${id}`,
-          state: {
-            ...product,
-          },
-        }}
-      >
-        <StyledThumbnail>
+      <StyledLink onClick={seperateClickEventHandler}>
+        <StyledThumbnail onDoubleClick={seperateClickEventHandler}>
+          <div className="icon-wrap" onClick={toggleProductLike}>
+            {isLiked ? (
+              <i className="icon like">heart_circle</i>
+            ) : (
+              <i className="icon">heart_circle_fill</i>
+            )}
+          </div>
           <img className="thumbnail" src={thumbnailSrc} alt="" />
         </StyledThumbnail>
         <StyledContent>

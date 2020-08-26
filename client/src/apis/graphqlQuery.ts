@@ -1,5 +1,27 @@
 import { gql } from '@apollo/client'
 
+export type ProductByCategory = {
+  id: string
+  name: string
+  price: number
+  basePrice: number
+  discountRate: number
+  thumbnailSrc: string
+  coupangProductId: string
+  isLiked: boolean
+}
+
+export type ProductByCategoryData = {
+  productListByCategory: ProductByCategory[]
+}
+
+export type ProductByCategoryVars = {
+  category: string
+  offset: number
+  limit: number
+  sorter: string
+}
+
 export const GET_PRODUCTLIST_BY_CATEGORY = gql`
   query GetProductListByCategory(
     $category: String!
@@ -7,12 +29,7 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
     $limit: Int!
     $sorter: String!
   ) {
-    productListByCategory(
-      category: $category
-      offset: $offset
-      limit: $limit
-      sorter: $sorter
-    ) {
+    productListByCategory(category: $category, offset: $offset, limit: $limit, sorter: $sorter) {
       id
       price
       basePrice
@@ -20,12 +37,51 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
       name
       thumbnailSrc
       coupangProductId
+      isLiked
     }
   }
 `
 
+export type LikedProductListVars = {
+  offset: number
+  limit: number
+}
+
+export type LikedProductListData = {
+  likedProductList: ProductByCategory[]
+}
+
+export const GET_LIKED_PRODUCTLIST = gql`
+  query GetLikedProductList($offset: Int!, $limit: Int!) {
+    likedProductList(offset: $offset, limit: $limit) {
+      id
+      price
+      basePrice
+      discountRate
+      name
+      thumbnailSrc
+      coupangProductId
+      isLiked
+    }
+  }
+`
+
+export type ProductDetailImg = {
+  id: string
+  src: string
+  coupangProductId: string
+}
+
+export type ProductDetailImgData = {
+  productDetailImgList: ProductDetailImg[]
+}
+
+export type ProductDetailImgVars = {
+  coupangProductId: string
+}
+
 export const GET_PRODUCT_DETAIL_IMG_SRC_LIST = gql`
-  query GetProductDetailImg($coupangProductId: Int!) {
+  query GetProductDetailImg($coupangProductId: ID!) {
     productDetailImgList(coupangProductId: $coupangProductId) {
       id
       coupangProductId
@@ -52,7 +108,7 @@ export type ProductInCartData = {
   productListInCart: ProductInCart[]
 }
 
-export type ProductInCartVars = { userId: number }
+export type ProductInCartVars = {}
 
 export const GET_PRODUCTLIST_IN_CART = gql`
   query GetProductListInCart {
@@ -72,6 +128,14 @@ export const GET_PRODUCTLIST_IN_CART = gql`
     }
   }
 `
+type SuccessData = {
+  success: boolean
+}
+
+export type ModifyProductQuantityData = {
+  modifyProductQuantity: SuccessData
+}
+
 export type ModifyProductQuantityVars = {
   productId: string
   orderProductId: string
@@ -90,6 +154,10 @@ export const MODIFY_PRODUCT_QUANTITY = gql`
   }
 `
 
+export type DeleteProductFromCartData = {
+  deleteProductFromCart: SuccessData
+}
+
 export type DeleteProductFromCartVars = {
   orderProductIds: string[]
 }
@@ -102,12 +170,38 @@ export const DELETE_PRODUCT_FROM_CART = gql`
   }
 `
 
+export type AddProductToCartVars = {
+  productId: string
+  quantity: number
+}
+
 export const ADD_PRODUCT_TO_CART = gql`
   mutation AddProductToCart($productId: ID!, $quantity: Int!) {
     addProductToCart(productId: $productId, quantity: $quantity)
   }
 `
 
+export type LikeProductVars = {
+  productId: string
+}
+
+export type DislikeProductData = {
+  dislikeProduct: SuccessData
+}
+
+export const LIKE_PRODUCT = gql`
+  mutation LikeProduct($productId: ID!) {
+    likeProduct(productId: $productId)
+  }
+`
+
+export const DISLIKE_PRODUCT = gql`
+  mutation DislikeProduct($productId: ID!) {
+    dislikeProduct(productId: $productId) {
+      success
+    }
+  }
+`
 export const CHECKOUT_ORDER = gql`
   mutation CheckoutOrder {
     checkoutOrder {

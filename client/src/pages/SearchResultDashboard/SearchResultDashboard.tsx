@@ -1,13 +1,13 @@
-import React, { useState, useReducer, Dispatch } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import React, { useState, useReducer } from 'react'
 import { ProductCardType } from '../../types/productCard'
 import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
 import { Sorter } from '../../components/Sorter'
 import { SortType } from '../../types/sort'
 import { PRODUCT_SORT_TYPE } from '../../utils/constants'
+import { useLocation } from 'react-router-dom'
 
-type Props = {} & RouteComponentProps
+type Props = {}
 
 type RouteState = {
   searchResultList: ProductCardType[]
@@ -58,9 +58,8 @@ const searchResultReducer = (state: State, action: Action): State => {
 }
 
 export const SearchResultDashboard = (props: Props) => {
-  const { location } = props
-  const routeState = location.state as RouteState
-  const { searchResultList } = routeState
+  const location = useLocation<RouteState>()
+  const { searchResultList } = location.state
 
   const initialState: State = {
     resultList: searchResultList,

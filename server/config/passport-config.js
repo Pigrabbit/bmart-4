@@ -17,7 +17,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_OAUTH_ID,
       clientSecret: process.env.GOOGLE_OAUTH_SECRET,
-      callbackURL: '/auth/google/redirect',
+      callbackURL: process.env.GOOGLE_OAUTH_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       // 이 google id 로 가입된 유저가 있는지 확인

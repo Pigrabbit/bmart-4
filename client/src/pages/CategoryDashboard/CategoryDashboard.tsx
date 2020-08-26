@@ -2,17 +2,17 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
 import { Sorter } from '../../components/Sorter'
-import { RouteComponentProps } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 import { CATEGORIES, ONE_PAGE_LENGTH, PRODUCT_SORT_TYPE } from '../../utils/constants'
 import { CategoryDashboardRouteProps } from '../../types/routeProps'
 import { replaceSlashesWithCommas } from '../../utils/parser'
 import { ProductBlock } from './ProductBlock'
 import { SortType } from '../../types/sort'
 
-type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
+type Props = {}
 
 export const CategoryDashboard = (props: Props) => {
-  const { match } = props
+  const match = useRouteMatch<CategoryDashboardRouteProps>()
   const category = CATEGORIES.filter((c) => String(c.id) === match.params.categoryId)[0]
 
   const currentPage = useRef<number>(1)

@@ -2,11 +2,10 @@ use mart;
 
 CREATE TABLE IF NOT EXISTS user (
   id bigint PRIMARY KEY AUTO_INCREMENT,
-  username varchar(100) NOT NULL,
   firstname varchar(100) NOT NULL,
   lastname varchar(100) NOT NULL,
   email varchar(100) NOT NULL,
-  password varchar(255) NOT NULL
+  google_id varchar(255) NOT NULL
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS product (

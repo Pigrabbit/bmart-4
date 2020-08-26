@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { ProductDetailRouteProps } from '../../types/routeProps'
 import { CarouselBasic } from '../../components/CarouselBasic'
 import { OrderModal } from '../../components/OrderModal'
 import {
@@ -16,7 +15,7 @@ import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
 import { OrderButton } from '../../components/OrderButton'
 import { Dashboard } from '../../components/Dashboard'
 
-type Props = {} & RouteComponentProps<ProductDetailRouteProps>
+type Props = {}
 
 const StyledContainer = styled.div`
   background-color: white;

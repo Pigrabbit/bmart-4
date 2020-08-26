@@ -1,23 +1,39 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { OrderHistory } from '../../apis/graphqlQuery'
-import { STYLES } from '../../utils/styleConstants'
+import { STYLES, COLORS } from '../../utils/styleConstants'
 import { toLocalDateString, parseToLocalMoneyString } from '../../utils/parser'
+import { HistoryCardDetail } from './HistoryCardDetail'
 
 type Props = {
   orderHistory: OrderHistory
 }
 
-const StyledContainer = styled.div``
-
-const StyledContent = styled.div`
+const StyledContainer = styled.div`
   margin: ${STYLES.margin};
   border: 1px solid black;
+  border-radius: 6px;
+
+  .history-detail-list {
+    height: 100%;
+    margin: 6px 0;
+    display: grid;
+    align-items: stretch;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fill, minmax(30px, 1fr));
+  }
+
+  .history-detail-item:nth-child(odd) {
+    background-color: ${COLORS.lightGray};
+    color: #fff;
+  }
+`
+
+const StyledContent = styled.div`
   height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 6px;
 `
 
 const StyledData = styled.div`
@@ -30,6 +46,10 @@ const StyledData = styled.div`
   .history-item-date {
     font-size: 18px;
     font-weight: 700;
+  }
+
+  .history-item-total-price {
+    font-weight: 500;
   }
 `
 
@@ -72,12 +92,9 @@ export const HistoryCard = (props: Props) => {
         </StyledToggleBtn>
       </StyledContent>
       {isDetailOpened ? (
-        <div className="history-detail">
+        <div className="history-detail-list">
           {cartProductList.map((cartProduct, idx) => (
-            <div key={idx}>
-              <div>{cartProduct.quantity}</div>
-              <div>{cartProduct.priceSum}</div>
-            </div>
+            <HistoryCardDetail key={idx} cartProduct={cartProduct} />
           ))}
         </div>
       ) : (

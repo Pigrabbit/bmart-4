@@ -43,7 +43,7 @@ export const CartDashboardOrderButton = (props: Props) => {
   }, [data, isCheckedOut])
 
   return (
-    <OrderButton hurdle={hurdle} clickHandler={clickCheckoutButtonHandler}>
+    <OrderButton disabled={hurdle} clickHandler={clickCheckoutButtonHandler}>
       <>
         {!hurdle && <StyledOrderCount className="order-count">{totalCount}</StyledOrderCount>}
         {!hurdle

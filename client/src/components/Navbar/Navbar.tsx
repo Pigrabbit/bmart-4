@@ -7,6 +7,7 @@ type Props = {}
 
 const StyledContainer = styled.nav`
   padding: 4px 16px 4px 16px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   align-items: center;

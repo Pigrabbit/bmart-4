@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { CategoryList } from './CategoryList'
-import { CATEGORIES } from '../../utils/constants'
+import { CATEGORIES, CATEGORY_SECTION_LAZYLOAD_ADDER } from '../../utils/constants'
 import { CategoryListSectionHeader } from './CategoryListSectionHeader'
 
 type Props = {}
@@ -34,7 +34,7 @@ export const CategoryListSection = (props: Props) => {
           <CategoryList
             idx={idx}
             category={category.name}
-            lazyLoad={idx < lazyLoadedIndex + 2}
+            lazyLoad={idx < lazyLoadedIndex + CATEGORY_SECTION_LAZYLOAD_ADDER}
             changeFocus={changeFocus}
           />
         </div>

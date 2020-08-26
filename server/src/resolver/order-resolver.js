@@ -29,6 +29,11 @@ const checkoutOrderResolver = async (parent, args, context) => {
   }
 }
 
+const orderHistoryListResolver = (parent, args, context) => {
+
+}
+
 module.exports = {
   checkoutOrderResolver,
+  orderHistoryListResolver,
 }

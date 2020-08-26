@@ -48,6 +48,14 @@ const ProductDetailImgType = new GraphQLObjectType({
   }),
 })
 
+const OrderType = new GraphQLObjectType({
+  name: 'Order type',
+  description: 'This represents an order',
+  fields: () => ({
+
+  }),
+})
+
 const changeStatusMessageType = new GraphQLObjectType({
   name: 'changeStatusMessage',
   description: '수정/삭제 성공 여부 메시지',
@@ -60,5 +68,6 @@ module.exports = {
   ProductType,
   CartProductType,
   ProductDetailImgType,
+  OrderType,
   changeStatusMessageType,
 }

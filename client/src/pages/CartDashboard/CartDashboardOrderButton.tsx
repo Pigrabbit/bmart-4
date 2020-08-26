@@ -26,7 +26,7 @@ export const CartDashboardOrderButton = (props: Props) => {
 
   const hurdle = totalCount === 0 || totalPrice < 5000
 
-  const [checkoutOrder, { data }] = useMutation(CHECKOUT_ORDER)
+  const [checkoutOrder] = useMutation(CHECKOUT_ORDER)
 
   const clickCheckoutButtonHandler = () => {
     checkoutOrder()

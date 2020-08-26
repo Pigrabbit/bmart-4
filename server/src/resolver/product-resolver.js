@@ -87,8 +87,9 @@ const likedProductListResolver = async (parent, args, context) => {
     const userId = res.locals.userId
     const { offset = 0, limit = 20 } = args
 
-    const query = `
-      SELECT p.*, "true" as is_liked  FROM wishlist w JOIN product p ON w.product_id = p.id 
+    const query = ` SELECT p.*, "true" as is_liked  
+      FROM wishlist w JOIN product p 
+      ON w.product_id = p.id 
       WHERE w.user_id = ? LIMIT ? OFFSET ?
     `
     const [rows] = await conn.query(query, [userId, limit, offset])
@@ -97,7 +98,7 @@ const likedProductListResolver = async (parent, args, context) => {
 
     return result
   } catch {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }

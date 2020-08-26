@@ -7,6 +7,7 @@ import { ProductCardList } from './ProductCardList'
 
 export type Props = {
   title: string
+  lazyLoad?: boolean
   productList: ProductCardType[]
 }
 
@@ -23,7 +24,7 @@ const StyledHeader = styled.div`
 `
 
 export const VerticalList = (props: Props) => {
-  const { title, productList } = props
+  const { title, productList, lazyLoad } = props
 
   return (
     <StyledWrapper>
@@ -31,7 +32,7 @@ export const VerticalList = (props: Props) => {
         <StyledHeader>
           <h2 className="title">{title}</h2>
         </StyledHeader>
-        <ProductCardList productList={productList} />
+        <ProductCardList lazyLoad={lazyLoad} productList={productList} />
       </StyledContainer>
     </StyledWrapper>
   )

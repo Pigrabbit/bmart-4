@@ -2,8 +2,13 @@ import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { CATEGORIES } from '../../utils/constants'
 import { HEADER_HEIGHT, STYLES } from '../../utils/styleConstants'
+import { useHistory } from 'react-router-dom'
 
-type Props = { selectedCategory: string }
+type Props = {
+  focusedCategory: string
+  changeFocus: (category: string, flag: 'in' | 'out') => void
+  selectCategory: (focusedCategory: string) => void
+}
 
 const StyledHeader = styled.div`
   display: flex;
@@ -53,7 +58,7 @@ const StyledTitle = styled.div`
 `
 
 export const CategoryListSectionHeader = (props: Props) => {
-  const { selectedCategory } = props
+  const { focusedCategory } = props
 
   const headerRef = useRef<HTMLDivElement>(null)
   const headerItemRef = useRef<HTMLDivElement>(null)
@@ -68,7 +73,13 @@ export const CategoryListSectionHeader = (props: Props) => {
     const windowWidth = window.innerWidth
 
     headerElm.scrollLeft = posX + (headerWidth - windowWidth) / 2
-  }, [selectedCategory])
+  }, [focusedCategory])
+
+  const clickCategoryHeaderHandler = (categoryName: string, idx: number) => () => {
+    const a = document.querySelector<HTMLDivElement>(`#category-${idx}`)
+    window.scroll(0, (a?.offsetTop || 0) - 140)
+    props.changeFocus(categoryName, 'in')
+  }
 
   return (
     <>
@@ -78,12 +89,19 @@ export const CategoryListSectionHeader = (props: Props) => {
       </StyledTitle>
       <StyledHeader ref={headerRef}>
         {CATEGORIES.map((category, idx) => {
-          return selectedCategory === category.name ? (
-            <div key={idx} ref={headerItemRef} className="selected">
+          return focusedCategory === category.name ? (
+            <div
+              key={idx}
+              ref={headerItemRef}
+              className="selected"
+              onClick={clickCategoryHeaderHandler(category.name, idx)}
+            >
               {category.name}
             </div>
           ) : (
-            <div key={idx}>{category.name}</div>
+            <div key={idx} onClick={clickCategoryHeaderHandler(category.name, idx)}>
+              {category.name}
+            </div>
           )
         })}
       </StyledHeader>

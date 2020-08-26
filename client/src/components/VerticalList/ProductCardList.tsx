@@ -4,6 +4,7 @@ import { ProductCardType } from '../../types/productCard'
 import { ProductCard } from '../ProductCard'
 
 type Props = {
+  lazyLoad?: boolean
   productList: ProductCardType[]
 }
 
@@ -16,7 +17,7 @@ const StyledProductList = styled.div`
 `
 
 export const ProductCardList = (props: Props) => {
-  const { productList } = props
+  const { productList, lazyLoad } = props
 
   return (
     <StyledProductList className="product-list">
@@ -24,6 +25,7 @@ export const ProductCardList = (props: Props) => {
         <ProductCard
           key={idx}
           product={product}
+          lazyLoad={lazyLoad}
           width="calc(50% - 5px)"
           style={{ marginBottom: '10px' }}
         />

@@ -1,5 +1,6 @@
 const pool = require('../../db')
 const { ReasonPhrases } = require('http-status-codes')
+const { GetOrderHistoryDTO } = require('../dto/get-order-history-dto')
 
 const checkoutOrderResolver = async (parent, args, context) => {
   const { res } = await context
@@ -38,8 +39,9 @@ const orderHistoryListResolver = async (parent, args, context) => {
   try {
     const query = 'SELECT * FROM `order` WHERE user_id = ? and is_paid = 1'
     const [rows] = await conn.query(query, [userId])
+    const result = rows.map((row) => new GetOrderHistoryDTO(row))
 
-    return rows
+    return result
   } catch {
     throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {

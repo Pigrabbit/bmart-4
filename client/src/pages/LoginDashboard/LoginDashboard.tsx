@@ -1,10 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { STYLES } from '../../utils/styleConstants'
 import { OAUTH_URI } from '../../utils/constants'
 import { AuthStateContext, AuthDispatchContext } from '../../context/AuthContext'
-import { Header } from '../../components/Header'
+import {
+  parseCookieToJson,
+  clearCookie,
+  saveJsonToLocalStorage,
+  decodeToken,
+} from '../../utils/storageHandler'
 
 type Props = {} & RouteComponentProps
 
@@ -52,19 +56,17 @@ export const LoginDashboard = (props: Props) => {
   const dispatch = useContext(AuthDispatchContext)
 
   useEffect(() => {
-    if (!document.cookie.includes('token')) {
-      return
+    if (document.cookie) {
+      let cookieJson = parseCookieToJson(document.cookie)
+      clearCookie()
+
+      let decodedToken = decodeToken(cookieJson['token'])
+      cookieJson['firstname'] = decodedToken['firstname']
+      cookieJson['lastname'] = decodedToken['lastname']
+      saveJsonToLocalStorage(cookieJson)
+
+      dispatch({ type: 'signIn', payload: { isAuthenticated: true } })
     }
-    const tokenLoc = document.cookie.indexOf('token')
-    let endLoc = Math.min(document.cookie.length, document.cookie.indexOf(';', tokenLoc))
-    if (endLoc === -1) {
-      endLoc = document.cookie.length
-    }
-    const token = document.cookie.substring(tokenLoc, endLoc + 1)
-    if (!token) return
-    localStorage.setItem('token', token.split('=')[1])
-    document.cookie = `token=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
-    dispatch({ type: 'signIn', payload: { isAuthenticated: true } })
   }, [])
 
   return (

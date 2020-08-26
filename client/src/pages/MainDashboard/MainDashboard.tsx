@@ -28,7 +28,6 @@ export const MainDashboard = (props: Props) => {
       variables: { category: '과일', offset: 10, limit: 10, sorter: '' },
     }
   )
-
   return loading || !data ? (
     <LoadingIndicator />
   ) : (
@@ -37,16 +36,12 @@ export const MainDashboard = (props: Props) => {
         <Carousel bannerList={bigBannerList} />
         <CategoryList />
         <HorizontalList
-          title="성현님을 위해 준비한 상품"
+          title={`회원님을 위해 준비한 상품`}
           productList={data.productListByCategory}
           double={true}
         ></HorizontalList>
         <Carousel bannerList={smallBannerList} />
-        <HorizontalList
-          title="동혁님을 위해 준비한 상품"
-          productList={data.productListByCategory}
-        />
-        <VerticalList title="성현님을 위해 준비한 상품" productList={data.productListByCategory} />
+        <HorizontalList title="현재 가장 인기 있는 상품" productList={data.productListByCategory} />
         <CategoryListSection />
       </StyledContainer>
     </Dashboard>

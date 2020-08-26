@@ -6,14 +6,15 @@ import { StyledLink } from '../../styles/StyledLink'
 type Props = {}
 
 const StyledContainer = styled.nav`
-  padding: 4px 16px;
-  display: flex;
-  justify-content: space-between;
+  padding: 4px 16px 4px 16px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   align-items: center;
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 60px;
+  height: calc(60px + env(safe-area-inset-bottom));
   z-index: 2000;
   background-color: white;
   border-top: 1px solid #ccc;

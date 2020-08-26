@@ -1,7 +1,7 @@
 const pool = require('../../db')
 const { GetProductDTO } = require('../dto/get-product-dto')
 const { GetProductDetailDTO } = require('../dto/get-product-detail-dto')
-const { errorName } = require('../errors/error-type')
+const { ReasonPhrases } = require('http-status-codes')
 
 const productListByCategoryResolver = async (parent, args, context) => {
   const res = await context.res
@@ -9,7 +9,7 @@ const productListByCategoryResolver = async (parent, args, context) => {
   const { category, offset = 0, limit = 10, sorter = 'sellCountDesc' } = args
 
   if (offset < 0 || limit < 0) {
-    throw new Error(errorName.BAD_REQUEST)
+    throw new Error(ReasonPhrases.BAD_REQUEST)
   }
 
   const conn = await pool.getConnection()
@@ -33,7 +33,7 @@ const productListByCategoryResolver = async (parent, args, context) => {
 
     return result
   } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }
@@ -50,7 +50,7 @@ const productDetailImgResolver = async (parent, args) => {
 
     return result
   } catch {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }

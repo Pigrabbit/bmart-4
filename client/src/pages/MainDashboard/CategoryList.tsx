@@ -7,10 +7,12 @@ import {
 } from '../../apis/graphqlQuery'
 import { VerticalList } from '../../components/VerticalList'
 import styled from 'styled-components'
+import { STYLES } from '../../utils/styleConstants'
 
 type Props = {
   idx: number
   category: string
+  categoryId: number
   lazyLoad: boolean
   changeFocus: (category: string, flag: 'in' | 'out') => void
 }
@@ -20,8 +22,30 @@ const StyledDetector = styled.div`
   background-color: white;
 `
 
+const StyledMoreLinkRow = styled.div`
+  margin: 0 0 5px 0;
+  padding: 10px 0 10px 0;
+  font-size: 1.5em;
+  text-decoration: none;
+  background: white;
+  height: 50px;
+`
+
+const StyledMoreLink = styled.a`
+  position: absolute;
+  right: ${STYLES.padding};
+  &:link {
+    color: black;
+    text-decoration: none;
+  }
+  &:visited {
+    color: black;
+    text-decoration: none;
+  }
+`
+
 export const CategoryList = (props: Props) => {
-  const { category, idx, lazyLoad } = props
+  const { category, idx, lazyLoad, categoryId } = props
   const observer = useRef<IntersectionObserver | null>(null)
   const rootRef = useRef<HTMLDivElement>(null)
   const [imageLazyLoaded, setImageLazyLoaded] = useState<boolean>(false)
@@ -87,6 +111,11 @@ export const CategoryList = (props: Props) => {
         lazyLoad={imageLazyLoaded}
         productList={data.productListByCategory}
       />
+      <StyledMoreLinkRow>
+        <StyledMoreLink href={`/category/${categoryId}`}>
+          더 보기 <i className="icon">chevron_right</i>
+        </StyledMoreLink>
+      </StyledMoreLinkRow>
     </div>
   )
 }

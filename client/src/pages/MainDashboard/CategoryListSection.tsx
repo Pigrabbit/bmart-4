@@ -34,6 +34,7 @@ export const CategoryListSection = (props: Props) => {
           <CategoryList
             idx={idx}
             category={category.name}
+            categoryId={category.id}
             lazyLoad={idx < lazyLoadedIndex + CATEGORY_SECTION_LAZYLOAD_ADDER}
             changeFocus={changeFocus}
           />

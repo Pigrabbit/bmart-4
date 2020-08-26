@@ -1,6 +1,5 @@
 import React from 'react'
 import { ProductCardType } from '../../types/productCard'
-import { StyledWrapper } from '../../styles/StyledWrapper'
 import { STYLES } from '../../utils/styleConstants'
 import styled from 'styled-components'
 import { ProductCardList } from './ProductCardList'
@@ -12,6 +11,7 @@ export type Props = {
 }
 
 const StyledContainer = styled.div`
+  background-color: white;
   padding: 12px ${STYLES.padding};
   padding-bottom: 0;
   width: 100%;
@@ -27,13 +27,11 @@ export const VerticalList = (props: Props) => {
   const { title, productList, lazyLoad } = props
 
   return (
-    <StyledWrapper>
-      <StyledContainer>
-        <StyledHeader>
-          <h2 className="title">{title}</h2>
-        </StyledHeader>
-        <ProductCardList lazyLoad={lazyLoad} productList={productList} />
-      </StyledContainer>
-    </StyledWrapper>
+    <StyledContainer>
+      <StyledHeader>
+        <h2 className="title">{title}</h2>
+      </StyledHeader>
+      <ProductCardList lazyLoad={lazyLoad} productList={productList} />
+    </StyledContainer>
   )
 }

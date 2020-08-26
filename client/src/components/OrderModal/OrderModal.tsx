@@ -151,6 +151,13 @@ const modalReducer = (state: State, action: Action) => {
             count: state.count - 1,
           }
     }
+    case 'error': {
+      return {
+        ...state,
+        error: '장바구니에 최대 10개까지만 담을 수 있습니다.',
+        isErrorVisible: true,
+      }
+    }
     default:
       break
   }
@@ -172,20 +179,27 @@ export const OrderModal = (props: Props) => {
     props.setSavedCount(state.count)
   }, [state.count])
 
-  const [addProductToCart] = useMutation<{}, AddProductToCartVars>(ADD_PRODUCT_TO_CART)
+  const [addProductToCart] = useMutation<{ addProductToCart: string }, AddProductToCartVars>(
+    ADD_PRODUCT_TO_CART
+  )
 
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     if (e.target === modalOverlayRef.current) props.setIsModalVisible(false)
   }
 
-  const clickOrderButtonHandler = () => {
-    addProductToCart({
+  const clickOrderButtonHandler = async () => {
+    const { data } = await addProductToCart({
       variables: { productId: id, quantity: state.count },
     })
-    props.setIsModalVisible(false)
-    props.setIsOrderPlaced(true)
-    props.setSavedCount(1)
+
+    if (data && parseInt(data.addProductToCart) >= 0) {
+      props.setIsModalVisible(false)
+      props.setIsOrderPlaced(true)
+      props.setSavedCount(1)
+    } else {
+      dispatch({ type: 'error' })
+    }
   }
 
   return (

@@ -1,7 +1,7 @@
 const pool = require('../../db')
 const { GetProductDTO } = require('../dto/get-product-dto')
 const { GetProductDetailDTO } = require('../dto/get-product-detail-dto')
-const { errorName } = require('../errors/error-type')
+const { ReasonPhrases } = require('http-status-codes')
 
 const productListByCategoryResolver = async (parent, args, context) => {
   const res = await context.res
@@ -9,7 +9,7 @@ const productListByCategoryResolver = async (parent, args, context) => {
   const { category, offset = 0, limit = 10, sorter = '' } = args
 
   if (offset < 0 || limit < 0) {
-    throw new Error(errorName.BAD_REQUEST)
+    throw new Error(ReasonPhrases.BAD_REQUEST)
   }
 
   const conn = await pool.getConnection()
@@ -39,7 +39,7 @@ const productListByCategoryResolver = async (parent, args, context) => {
 
     return result
   } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }
@@ -56,7 +56,25 @@ const productDetailImgResolver = async (parent, args) => {
 
     return result
   } catch {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
+  } finally {
+    conn.release()
+  }
+}
+
+const getOrderProductById = async (parent, args, context) => {
+  const { id } = parent
+  const conn = await pool.getConnection()
+
+  try {
+    const query = `SELECT * FROM product p JOIN order_product op 
+    ON p.id = op.product_id WHERE op.order_id = ?`
+    const [rows] = await conn.query(query, [id])
+    const result = rows.map((row) => new GetProductDTO(row))
+
+    return result
+  } catch {
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }
@@ -89,4 +107,5 @@ module.exports = {
   productListByCategoryResolver,
   productDetailImgResolver,
   likedProductListResolver,
+  getOrderProductById,
 }

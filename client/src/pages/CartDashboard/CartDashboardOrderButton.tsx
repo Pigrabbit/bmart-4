@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
-import { BAEDAL_TIP } from '../../utils/constants'
+import { BAEDAL_TIP, MIN_ORDER_PRICE } from '../../utils/constants'
 import { OrderButton } from '../../components/OrderButton'
+import { useMutation } from '@apollo/client'
+import { CHECKOUT_ORDER } from '../../apis/graphqlQuery'
 
 type Props = {
   summary: { totalPrice: number; totalCount: number }
@@ -22,10 +24,16 @@ const StyledOrderCount = styled.div`
 export const CartDashboardOrderButton = (props: Props) => {
   const { totalCount, totalPrice } = props.summary
 
-  const hurdle = totalCount === 0 || totalPrice < 5000
+  const hurdle = totalCount === 0 || totalPrice < MIN_ORDER_PRICE
+
+  const [checkoutOrder] = useMutation(CHECKOUT_ORDER)
+
+  const clickCheckoutButtonHandler = () => {
+    checkoutOrder()
+  }
 
   return (
-    <OrderButton hurdle={hurdle} clickHandler={() => {}}>
+    <OrderButton hurdle={hurdle} clickHandler={clickCheckoutButtonHandler}>
       <>
         {!hurdle && <StyledOrderCount className="order-count">{totalCount}</StyledOrderCount>}
         {!hurdle

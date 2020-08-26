@@ -202,3 +202,10 @@ export const DISLIKE_PRODUCT = gql`
     }
   }
 `
+export const CHECKOUT_ORDER = gql`
+  mutation CheckoutOrder {
+    checkoutOrder {
+      success
+    }
+  }
+`

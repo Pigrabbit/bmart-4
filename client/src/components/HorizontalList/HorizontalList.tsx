@@ -31,7 +31,8 @@ const StyledProductListWrap = styled.div`
 `
 
 export const HorizontalList = (props: Props) => {
-  const { title, productList, double = false } = props
+  const { productList, double = false } = props
+  let { title } = props
 
   const renderProductCardList = () => {
     const length = productList.length
@@ -45,6 +46,11 @@ export const HorizontalList = (props: Props) => {
     ) : (
       <ProductCardList productList={productList} />
     )
+  }
+
+  const firstname: string | null = localStorage.getItem('firstname')
+  if (firstname) {
+    title = title.replace('회원', firstname)
   }
 
   return (

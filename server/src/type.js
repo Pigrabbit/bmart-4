@@ -5,7 +5,9 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
+  GraphQLList,
 } = require('graphql')
+const { getOrderProductById } = require('./resolver/product-resolver')
 
 const ProductType = new GraphQLObjectType({
   name: 'Product',
@@ -49,10 +51,15 @@ const ProductDetailImgType = new GraphQLObjectType({
 })
 
 const OrderType = new GraphQLObjectType({
-  name: 'Order type',
+  name: 'Order',
   description: 'This represents an order',
   fields: () => ({
-
+    id: { type: GraphQLNonNull(GraphQLID) },
+    orderedAt: { type: GraphQLNonNull(GraphQLString) },
+    productList: {
+      type: GraphQLList(ProductType),
+      resolve: getOrderProductById,
+    },
   }),
 })
 

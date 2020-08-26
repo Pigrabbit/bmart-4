@@ -29,8 +29,22 @@ const checkoutOrderResolver = async (parent, args, context) => {
   }
 }
 
-const orderHistoryListResolver = (parent, args, context) => {
+const orderHistoryListResolver = async (parent, args, context) => {
+  const { res } = await context
+  const userId = res.locals.userId
 
+  const conn = await pool.getConnection()
+
+  try {
+    const query = 'SELECT * FROM `order` WHERE user_id = ? and is_paid = 1'
+    const [rows] = await conn.query(query, [userId])
+
+    return rows
+  } catch {
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
+  } finally {
+    conn.release()
+  }
 }
 
 module.exports = {

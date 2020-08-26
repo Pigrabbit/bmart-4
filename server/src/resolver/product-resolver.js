@@ -56,7 +56,26 @@ const productDetailImgResolver = async (parent, args) => {
   }
 }
 
+const getOrderProductById = async (parent, args, context) => {
+  const { id } = parent
+  const conn = await pool.getConnection()
+
+  try {
+    const query = `SELECT * FROM product p JOIN order_product op 
+    ON p.id = op.product_id WHERE op.order_id = ?`
+    const [rows] = await conn.query(query, [id])
+    const result = rows.map((row) => new GetProductDTO(row))
+
+    return result
+  } catch {
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
+  } finally {
+    conn.release()
+  }
+}
+
 module.exports = {
   productListByCategoryResolver,
   productDetailImgResolver,
+  getOrderProductById,
 }

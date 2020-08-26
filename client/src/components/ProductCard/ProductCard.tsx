@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
-import { StyledLink } from '../../styles/StyledLink'
 import { COLORS } from '../../utils/styleConstants'
 import { useMutation } from '@apollo/client'
 import {
@@ -11,6 +10,7 @@ import {
   LikeProductVars,
   DislikeProductData,
 } from '../../apis/graphqlQuery'
+import { useHistory } from 'react-router-dom'
 
 export type Props = {
   product: ProductCardType
@@ -64,7 +64,16 @@ const StyledContent = styled.div`
   }
 `
 
+const StyledLink = styled.a`
+  color: inherit;
+  display: block;
+  text-decoration: none;
+`
+
 export const ProductCard = (props: Props) => {
+  const history = useHistory()
+  let interval: any = null
+
   const { product, width = '50%', style } = props
   const { id, price, name, thumbnailSrc, coupangProductId, basePrice, discountRate } = product
 
@@ -74,7 +83,7 @@ export const ProductCard = (props: Props) => {
   const [dislikeProduct] = useMutation<DislikeProductData, LikeProductVars>(DISLIKE_PRODUCT)
 
   const toggleProductLike = async (e: React.MouseEvent) => {
-    e.preventDefault()
+    e.stopPropagation()
 
     const params = { variables: { productId: id } }
     if (isLiked) {
@@ -86,17 +95,25 @@ export const ProductCard = (props: Props) => {
     setIsLiked(!isLiked)
   }
 
+  const seperateClickEventHandler = (e: React.MouseEvent) => {
+    e.preventDefault()
+
+    if (interval) {
+      toggleProductLike(e)
+      clearTimeout(interval)
+      return
+    }
+
+    interval = setTimeout(() => {
+      history.push(`/product/${id}`, { ...product })
+      interval = null
+    }, 200)
+  }
+
   return (
     <StyledContainer className="product-card" width={width} style={style}>
-      <StyledLink
-        to={{
-          pathname: `/product/${id}`,
-          state: {
-            ...product,
-          },
-        }}
-      >
-        <StyledThumbnail>
+      <StyledLink onClick={seperateClickEventHandler}>
+        <StyledThumbnail onDoubleClick={seperateClickEventHandler}>
           <div className="icon-wrap" onClick={toggleProductLike}>
             {isLiked ? (
               <i className="icon like">heart_circle</i>

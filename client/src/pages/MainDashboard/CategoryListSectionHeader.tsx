@@ -14,7 +14,7 @@ const StyledHeader = styled.div`
   top: ${`calc(${HEADER_HEIGHT} - 1px)`};
   height: 50px;
   background: white;
-  z-index: 10;
+  z-index: 1000;
   border-bottom: 1px solid ${STYLES.borderColor};
   padding: 0 ${STYLES.padding};
   scroll-behavior: smooth;

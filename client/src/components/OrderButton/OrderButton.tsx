@@ -9,12 +9,12 @@ type Props = {
 }
 
 const StyledContainer = styled.div`
-  height: 50px;
+  height: 60px;
   width: 100%;
   background-color: transparent;
 `
 const StyledButtonWrap = styled.div`
-  height: 50px;
+  height: 60px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -30,7 +30,7 @@ const StyledOrderButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
+  height: 50px;
   border-radius: ${STYLES.smallRadius};
   color: white;
   background-color: ${COLORS.baemint};

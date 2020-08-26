@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { BAEDAL_TIP, MIN_ORDER_PRICE } from '../../utils/constants'
 import { OrderButton } from '../../components/OrderButton'
 import { useMutation } from '@apollo/client'
 import { CHECKOUT_ORDER, CheckoutOrderData } from '../../apis/graphqlQuery'
+import { useHistory } from 'react-router-dom'
 
 type Props = {
   summary: { totalPrice: number; totalCount: number }
@@ -26,11 +27,17 @@ export const CartDashboardOrderButton = (props: Props) => {
 
   const hurdle = totalCount === 0 || totalPrice < MIN_ORDER_PRICE
 
-  const [checkoutOrder] = useMutation<CheckoutOrderData>(CHECKOUT_ORDER)
+  const [checkoutOrder, { data }] = useMutation<CheckoutOrderData>(CHECKOUT_ORDER)
+  const history = useHistory()
 
   const clickCheckoutButtonHandler = () => {
     checkoutOrder()
   }
+
+  useEffect(() => {
+    console.log(data?.checkoutOrder.success)
+    if (data?.checkoutOrder.success) history.push('/history')
+  }, [data])
 
   return (
     <OrderButton hurdle={hurdle} clickHandler={clickCheckoutButtonHandler}>

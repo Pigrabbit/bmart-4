@@ -60,8 +60,9 @@ const StyledModalContent = styled.div`
   transform: translate(-50%, -50%);
   width: 80%;
   .checkout-complete-modal-alert {
-    font-size: 36px;
-    font-weight: 600;
+    font-family: 'BMHANNAPro';
+    font-size: 48px;
+    font-weight: 300;
     color: white;
     text-align: center;
   }
@@ -167,7 +168,7 @@ export const CartDashboard = (props: Props) => {
             onAnimationEnd={() => setIsCheckedOut(false)}
           >
             <StyledModalContent className="checkout-complete-modal-content">
-              <p className="checkout-complete-modal-alert">결 제 완 료</p>
+              <p className="checkout-complete-modal-alert">결제완료</p>
               <StyledRider
                 className="checkout-complete-modal-rider"
                 src={`${process.env.PUBLIC_URL}/images/bmart_rider.png`}

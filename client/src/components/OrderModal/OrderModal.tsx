@@ -2,11 +2,11 @@ import React, { useRef, MouseEvent, useReducer, useEffect } from 'react'
 import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 import { useMutation } from '@apollo/client'
-import { ADD_PRODUCT_TO_CART } from '../../apis/graphqlQuery'
+import { ADD_PRODUCT_TO_CART, AddProductToCartVars } from '../../apis/graphqlQuery'
 import { parseToLocalMoneyString } from '../../utils/parser'
 
 type Props = {
-  id: number
+  id: string
   name: string
   price: number
   thumbnailSrc: string
@@ -171,7 +171,7 @@ export const OrderModal = (props: Props) => {
     props.setSavedCount(state.count)
   }, [state.count])
 
-  const [addProductToCart, { data }] = useMutation(ADD_PRODUCT_TO_CART)
+  const [addProductToCart] = useMutation<{}, AddProductToCartVars>(ADD_PRODUCT_TO_CART)
 
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()

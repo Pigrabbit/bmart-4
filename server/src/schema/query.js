@@ -4,15 +4,18 @@ const {
   GraphQLString,
   GraphQLList,
   GraphQLNonNull,
+  GraphQLID,
 } = require('graphql')
 
-const { ProductType, CartProductType, ProductDetailImgType } = require('../type')
+const { ProductType, CartProductType, ProductDetailImgType, OrderType } = require('../type')
 
 const {
   productListByCategoryResolver,
   productDetailImgResolver,
+  likedProductListResolver,
 } = require('../resolver/product-resolver')
 const { productListInCartResolver } = require('../resolver/cart-resolver')
+const { orderHistoryListResolver } = require('../resolver/order-resolver')
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -38,9 +41,23 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(ProductDetailImgType),
       description: '상품 상세 이미지 src',
       args: {
-        coupangProductId: { type: GraphQLNonNull(GraphQLInt) },
+        coupangProductId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve: productDetailImgResolver,
+    },
+    likedProductList: {
+      type: new GraphQLList(ProductType),
+      description: '찜한 상품 리스트',
+      args: {
+        offset: { type: GraphQLInt },
+        limit: { type: GraphQLInt },
+      },
+      resolve: likedProductListResolver,
+    },
+    orderHistoryList: {
+      type: new GraphQLList(OrderType),
+      description: '',
+      resolve: orderHistoryListResolver,
     },
   }),
 })

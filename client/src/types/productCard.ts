@@ -6,4 +6,5 @@ export type ProductCardType = {
   coupangProductId: string
   basePrice: number
   discountRate: number
+  isLiked: boolean
 }

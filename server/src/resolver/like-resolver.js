@@ -1,8 +1,8 @@
 const pool = require('../../db')
-const { errorName } = require('../errors/error-type')
+const { ReasonPhrases } = require('http-status-codes')
 
 const likeProductResolver = async (parent, args, context) => {
-  const res = await context.res
+  const { res } = await context
   const userId = res.locals.userId
 
   const { productId } = args
@@ -17,7 +17,7 @@ const likeProductResolver = async (parent, args, context) => {
 
     return insertId
   } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }
@@ -38,7 +38,7 @@ const dislikeProductResolver = async (parent, args, context) => {
 
     return { success: affectedRows === 1 }
   } catch (err) {
-    throw new Error(errorName.INTERNAL_SERVER_ERROR)
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
   } finally {
     conn.release()
   }

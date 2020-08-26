@@ -3,6 +3,8 @@ import { ProductCardType } from '../../types/productCard'
 import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
 import { Sorter } from '../../components/Sorter'
+import { SortType } from '../../types/sort'
+import { PRODUCT_SORT_TYPE } from '../../utils/constants'
 import { useLocation } from 'react-router-dom'
 
 type Props = {}
@@ -13,18 +15,18 @@ type RouteState = {
 
 type State = {
   resultList: ProductCardType[]
-  sorter: number
+  sorter: SortType
 }
 
 type Action = {
   type: string
-  payload: any
+  payload: { sorter: SortType }
 }
 
-const searchResultReducer = (state: State, action: Action) => {
+const searchResultReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'sorterChange': {
-      if (action.payload.sorter === 'sellCountDesc') {
+      if (action.payload.sorter === '') {
         return {
           resultList: [...state.resultList].sort((a, b) => {
             if (a.id > b.id) return 1
@@ -50,29 +52,35 @@ const searchResultReducer = (state: State, action: Action) => {
         }
       }
     }
+    default:
+      return state
   }
-  return state
 }
 
 export const SearchResultDashboard = (props: Props) => {
   const location = useLocation<RouteState>()
   const { searchResultList } = location.state
 
-  const initialState = {
+  const initialState: State = {
     resultList: searchResultList,
-    sorter: 0,
+    sorter: '',
   }
 
   const [state, dispatch] = useReducer(searchResultReducer, initialState)
-  const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch({ type: 'sorterChange', payload: { sorter: event.target.value } })
+
+  const sorterChangeHandler = (sorter: SortType) => {
+    dispatch({ type: 'sorterChange', payload: { sorter } })
   }
 
   return (
-    <Dashboard title="" header={false}>
+    <Dashboard title="검색 결과">
       <>
-        <Sorter sorterChangeHandler={sorterChangeHandler} />
-        <VerticalList title="검색 결과" productList={state.resultList} />
+        <Sorter
+          selectedSorter={state.sorter}
+          sorterList={PRODUCT_SORT_TYPE}
+          sorterChangeHandler={sorterChangeHandler}
+        />
+        <VerticalList title="" productList={state.resultList} />
       </>
     </Dashboard>
   )

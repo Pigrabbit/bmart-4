@@ -1,6 +1,10 @@
 import React, { useRef, useCallback } from 'react'
 import { useQuery } from '@apollo/client'
-import { GET_PRODUCTLIST_BY_CATEGORY } from '../../apis/graphqlQuery'
+import {
+  GET_PRODUCTLIST_BY_CATEGORY,
+  ProductByCategoryData,
+  ProductByCategoryVars,
+} from '../../apis/graphqlQuery'
 import { VerticalList } from '../../components/VerticalList'
 import styled from 'styled-components'
 
@@ -56,16 +60,19 @@ export const CategoryList = (props: Props) => {
     previousRatio = currentRatio
   }
 
-  const { loading, data } = useQuery(GET_PRODUCTLIST_BY_CATEGORY, {
-    variables: { category, offset: 10, limit: 10, sorter: 'priceCountDesc' },
-  })
-  if (loading) return <p>Loading...</p>
-  const { productListByCategory } = data
+  const { loading, data } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
+    GET_PRODUCTLIST_BY_CATEGORY,
+    {
+      variables: { category, offset: 10, limit: 10, sorter: 'priceCountDesc' },
+    }
+  )
 
-  return (
+  return loading || !data ? (
+    <div>Loading...</div>
+  ) : (
     <div className={`category-${idx}`} ref={rootRef}>
       <StyledDetector ref={categoryListRef}></StyledDetector>
-      <VerticalList title={category} productList={productListByCategory} />
+      <VerticalList title={category} productList={data.productListByCategory} />
     </div>
   )
 }

@@ -8,50 +8,45 @@ import { Header } from '../../components/Header'
 
 type Props = {} & RouteComponentProps
 
-const StyledContainer = styled.div`
-  margin: auto;
-  width: 100%;
-`
-
-const StyledDashboard = styled.div`
+const StyledBackground = styled.div`
   width: 100vw;
   height: 100vh;
-  /* background: linear-gradient(275.27deg, #349ca3 0%, #61e7cf 100%); */
+  background-color: white;
 `
 
-const StyledImg = styled.img`
-  margin-left: auto;
-  margin-right: auto;
+const StyledContainer = styled.div`
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+const StyledRider = styled.img`
   display: block;
-  position: relative;
-  z-index: 2;
+  width: 100%;
+  max-width: 300px;
+  margin: 50% 0 20% 0%;
 `
 
 const StyledLoginButton = styled.img`
-  margin: auto;
   display: block;
-  transform: translateY(-17px);
-  z-index: 1;
   position: relative;
 `
 
 const StyledLogo = styled.img`
-  margin: 50px auto;
-  position: relative;
+  margin: auto;
+  width: 50%;
 `
-
 const StyledLink = styled.a`
-  width: 100%;
   margin: auto;
   display: block;
-  position: relative;
 `
 
-const StyledTitle = styled.div`
-  font-size: 50px;
-  margin: auto;
-  text-align: center;
-`
 export const LoginDashboard = (props: Props) => {
   const { isAuthenticated } = useContext(AuthStateContext)
   const dispatch = useContext(AuthDispatchContext)
@@ -73,17 +68,21 @@ export const LoginDashboard = (props: Props) => {
   }, [])
 
   return (
-    <StyledDashboard>
+    <StyledBackground>
       <StyledContainer>
+        <StyledLogo
+          className="google-login-btn"
+          src={`${process.env.PUBLIC_URL}/images/bmart-title.png`}
+          width="150px"
+        />
+        <StyledRider
+          className="bmart-rider"
+          src={`${process.env.PUBLIC_URL}/images/bmart_rider.png`}
+        />
         {isAuthenticated ? (
           <Redirect to={{ pathname: '/' }} />
         ) : (
           <StyledLink href={OAUTH_URI}>
-            <StyledImg
-              className="google-login-btn"
-              src={`${process.env.PUBLIC_URL}/images/pre.png`}
-              width="120"
-            />
             <StyledLoginButton
               className="google-login-btn"
               src={`${process.env.PUBLIC_URL}/images/signin.png`}
@@ -92,6 +91,6 @@ export const LoginDashboard = (props: Props) => {
           </StyledLink>
         )}
       </StyledContainer>
-    </StyledDashboard>
+    </StyledBackground>
   )
 }

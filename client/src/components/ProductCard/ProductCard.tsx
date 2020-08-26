@@ -11,6 +11,8 @@ import {
 } from '../../apis/graphqlQuery'
 import { useHistory } from 'react-router-dom'
 import { ProductCardThumbnail } from './ProductCardThumbnail'
+import { COLORS } from '../../utils/styleConstants'
+import { DISCOUNT_PERCENTAGE_CARD_LIMIT } from '../../utils/constants'
 
 export type Props = {
   width?: string
@@ -35,9 +37,22 @@ const StyledContent = styled.div`
   }
 `
 
+const StyledDiscount = styled.div`
+  font-size: 12px;
+  padding: 1px 4px;
+  background: ${COLORS.red};
+  border-radius: 4px;
+  color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+`
+
 const StyledLink = styled.a`
   color: inherit;
   display: block;
+  position: relative;
   text-decoration: none;
 `
 
@@ -93,6 +108,12 @@ export const ProductCard = (props: Props) => {
   return (
     <StyledContainer className="product-card" width={width} style={style}>
       <StyledLink onClick={seperateClickEventHandler}>
+        {discountRate >= DISCOUNT_PERCENTAGE_CARD_LIMIT && (
+          <StyledDiscount className="discount">
+            {`${discountRate}%`}
+            <i className="icon">arrow_down</i>
+          </StyledDiscount>
+        )}
         <ProductCardThumbnail
           lazyLoad={lazyLoad}
           isLiked={isLiked}

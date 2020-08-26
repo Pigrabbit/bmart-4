@@ -164,11 +164,12 @@ export type StateType = {
   coupangProductId: string
   basePrice: number
   discountRate: number
+  stockCount: number
 }
 
 export const ProductDetail = (props: Props) => {
   const location = useLocation<StateType>()
-  const { id, price, name, coupangProductId, basePrice, discountRate } = location.state
+  const { id, price, name, coupangProductId, basePrice, discountRate, stockCount } = location.state
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
@@ -184,6 +185,8 @@ export const ProductDetail = (props: Props) => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const isEmptyStock = stockCount === 0
 
   return loading || !data ? (
     <LoadingIndicator />
@@ -243,14 +246,15 @@ export const ProductDetail = (props: Props) => {
             ))}
           </StyledThumbnails>
         </StyledDetailInfo>
-        <OrderButton clickHandler={() => setIsModalVisible(true)}>
-          <>주문하기</>
+        <OrderButton disabled={isEmptyStock} clickHandler={() => setIsModalVisible(true)}>
+          <>{isEmptyStock ? '재고가 부족합니다' : '주문하기'}</>
         </OrderButton>
         {isModalVisible ? (
           <OrderModal
             id={id}
             name={name}
             price={price}
+            stockCount={stockCount}
             thumbnailSrc={data.productDetailImgList[0].src}
             savedCount={savedCount}
             setSavedCount={setSavedCount}

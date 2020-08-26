@@ -12,7 +12,7 @@ import { STYLES } from '../../utils/styleConstants'
 type Props = {
   idx: number
   category: string
-  categoryNumber: number
+  categoryId: number
   lazyLoad: boolean
   changeFocus: (category: string, flag: 'in' | 'out') => void
 }
@@ -45,7 +45,7 @@ const StyledMoreLink = styled.a`
 `
 
 export const CategoryList = (props: Props) => {
-  const { category, idx, lazyLoad, categoryNumber } = props
+  const { category, idx, lazyLoad, categoryId } = props
   const observer = useRef<IntersectionObserver | null>(null)
   const rootRef = useRef<HTMLDivElement>(null)
   const [imageLazyLoaded, setImageLazyLoaded] = useState<boolean>(false)
@@ -112,7 +112,7 @@ export const CategoryList = (props: Props) => {
         productList={data.productListByCategory}
       />
       <StyledMoreLinkRow>
-        <StyledMoreLink href={`/category/${categoryNumber}`}>
+        <StyledMoreLink href={`/category/${categoryId}`}>
           더 보기 <i className="icon">chevron_right</i>
         </StyledMoreLink>
       </StyledMoreLinkRow>

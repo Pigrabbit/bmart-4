@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
 import {
@@ -14,10 +14,14 @@ type Props = {}
 const StyledContainer = styled.div``
 
 export const LikedProductDashboard = (props: Props) => {
-  const { loading, data } = useQuery<LikedProductListData, LikedProductListVars>(
+  const { loading, data, refetch } = useQuery<LikedProductListData, LikedProductListVars>(
     GET_LIKED_PRODUCTLIST,
-    { variables: { offset: 1, limit: 10 } }
+    { variables: { offset: 0, limit: 10 } }
   )
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   return loading || !data ? (
     <p>loading...</p>

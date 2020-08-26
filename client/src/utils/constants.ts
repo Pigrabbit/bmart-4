@@ -101,6 +101,9 @@ export const PRODUCT_SORT_TYPE: { id: SortType; name: string }[] = [
   { id: 'priceDesc', name: '가격 높은순' },
 ]
 
+export const KR_WEEKDAY = [
+  '일', '월', '화', '수', '목', '금', '토'
+]
 // relate to CategoryListSection component's lazyloading implements
 // 현재 포커싱된 카테고리 이후 몇 개의 카테고리의 loading을 진행할 것인가에 대한 상수
 export const CATEGORY_SECTION_LAZYLOAD_ADDER = 2

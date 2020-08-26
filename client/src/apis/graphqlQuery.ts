@@ -202,10 +202,48 @@ export const DISLIKE_PRODUCT = gql`
     }
   }
 `
+
+export type CheckoutOrderData = {
+  checkoutOrder: SuccessData
+}
+
 export const CHECKOUT_ORDER = gql`
   mutation CheckoutOrder {
     checkoutOrder {
       success
+    }
+  }
+`
+
+export type OrderHistory = {
+  id: string
+  orderedAt: string
+  cartProductList: ProductInCart[]
+}
+
+export type OrderHistoryData = {
+  orderHistoryList: OrderHistory[]
+}
+
+export const GET_ORDER_HISTORY = gql`
+  query GetOrderHistory {
+    orderHistoryList {
+      id
+      orderedAt
+      cartProductList {
+        id
+        quantity
+        priceSum
+        product {
+          id
+          name
+          price
+          basePrice
+          discountRate
+          thumbnailSrc
+          coupangProductId
+        }
+      }
     }
   }
 `

@@ -7,7 +7,7 @@ const {
   GraphQLBoolean,
   GraphQLList,
 } = require('graphql')
-const { getOrderProductById } = require('./resolver/product-resolver')
+const { productListInOrderResolver } = require('./resolver/cart-resolver')
 
 const ProductType = new GraphQLObjectType({
   name: 'Product',
@@ -56,9 +56,9 @@ const OrderType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLNonNull(GraphQLID) },
     orderedAt: { type: GraphQLNonNull(GraphQLString) },
-    productList: {
-      type: GraphQLList(ProductType),
-      resolve: getOrderProductById,
+    cartProductList: {
+      type: GraphQLList(CartProductType),
+      resolve: productListInOrderResolver,
     },
   }),
 })

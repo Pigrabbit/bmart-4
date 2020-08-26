@@ -6,7 +6,7 @@ const { errorName } = require('../errors/error-type')
 const productListByCategoryResolver = async (parent, args, context) => {
   const res = await context.res
   const userId = res.locals.userId
-  const { category, offset = 0, limit = 10, sorter = 'sellCountDesc' } = args
+  const { category, offset = 0, limit = 10, sorter = '' } = args
 
   if (offset < 0 || limit < 0) {
     throw new Error(errorName.BAD_REQUEST)
@@ -14,19 +14,25 @@ const productListByCategoryResolver = async (parent, args, context) => {
 
   const conn = await pool.getConnection()
 
+  let orderByQuery = ''
+  switch (sorter) {
+    case 'priceAsc': {
+      orderByQuery = 'ORDER BY p.price ASC'
+      break
+    }
+    case 'priceDesc': {
+      orderByQuery = 'ORDER BY p.price DESC'
+      break
+    }
+  }
+
   try {
     const query = `
         SELECT
           CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
           THEN 'true' ELSE 'false' END as is_liked, p.*
         FROM product p 
-        WHERE category = ? ${
-          sorter === 'sellCountDesc'
-            ? ''
-            : sorter === 'priceAsc'
-            ? 'ORDER BY p.price ASC'
-            : 'ORDER BY p.price DESC'
-        } LIMIT ? OFFSET ?
+        WHERE category = ? ${orderByQuery} LIMIT ? OFFSET ?
         `
     const [rows] = await conn.query(query, [userId, category, limit, offset])
     const result = rows.map((row) => new GetProductDTO(row))

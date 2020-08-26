@@ -26,7 +26,7 @@ export const MainDashboard = (props: Props) => {
   const { loading, data } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
     GET_PRODUCTLIST_BY_CATEGORY,
     {
-      variables: { category: '과일', offset: 10, limit: 10, sorter: 'sellCountDesc' },
+      variables: { category: '과일', offset: 10, limit: 10, sorter: '' },
     }
   )
 

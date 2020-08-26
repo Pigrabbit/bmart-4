@@ -3,10 +3,11 @@ import { Header } from '../../components/Header'
 import { Footer } from '../../components/Footer'
 import { Sorter } from '../../components/Sorter'
 import { RouteComponentProps } from 'react-router-dom'
-import { CATEGORIES, ONE_PAGE_LENGTH } from '../../utils/constants'
+import { CATEGORIES, ONE_PAGE_LENGTH, PRODUCT_SORT_TYPE } from '../../utils/constants'
 import { CategoryDashboardRouteProps } from '../../types/routeProps'
 import { replaceSlashesWithCommas } from '../../utils/parser'
 import { ProductBlock } from './ProductBlock'
+import { SortType } from '../../types/sort'
 
 type Props = {} & RouteComponentProps<CategoryDashboardRouteProps>
 
@@ -17,11 +18,7 @@ export const CategoryDashboard = (props: Props) => {
   const currentPage = useRef<number>(1)
   const noMoreProducts = useRef<boolean>(false)
   const [pageList, setPageList] = useState<number[]>([0])
-  const [sorter, setSorter] = useState('sellCountDesc')
-
-  const sorterChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSorter(event.target.value)
-  }
+  const [sorter, setSorter] = useState<SortType>('')
 
   const endOfScreenRef = useRef<HTMLDivElement>(null)
 
@@ -46,10 +43,19 @@ export const CategoryDashboard = (props: Props) => {
     }
   }, [endOfScreenRef])
 
+  const sorterChangeHandler = (sorter: SortType) => {
+    setPageList([0])
+    setSorter(sorter)
+  }
+
   return (
     <div>
       <Header title={`${replaceSlashesWithCommas(category.name)}`} />
-      <Sorter sorterChangeHandler={sorterChangeHandler} />
+      <Sorter
+        selectedSorter={sorter}
+        sorterList={PRODUCT_SORT_TYPE}
+        sorterChangeHandler={sorterChangeHandler}
+      />
       {pageList.map((el, idx) => {
         return (
           <ProductBlock

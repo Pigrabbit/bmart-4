@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { SorterContext } from './SorterContext'
 import { HEADER_HEIGHT } from '../../utils/styleConstants'
+import { SortType } from '../../types/sort'
 
 type Props = {
-  sorterChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  selectedSorter: SortType
+  sorterList: { id: SortType; name: string }[]
+  sorterChangeHandler: (sorter: SortType) => void
 }
 
 const StyledSorter = styled.div`
@@ -18,32 +20,38 @@ const StyledSorter = styled.div`
   margin-top: 8px;
   border-bottom: 1px solid #ddd;
 `
-const StyledSelectWrap = styled.div`
+const StyledSelectWrap = styled.label`
   position: relative;
+  padding-right: 24px;
 `
 
 const StyledSelect = styled.select`
   appearance: none;
+  background: white;
   border: none;
   height: 26px;
-  padding-right: 20px;
 `
 const StyledIcon = styled.i`
   color: black;
   font-size: 14px;
   position: absolute;
-  right: 0;
+  right: 5px;
   top: 50%;
   transform: translateY(-50%);
 `
 
 export const Sorter = (props: Props) => {
-  const sorters = useContext(SorterContext)
+  const { sorterList, selectedSorter } = props
+
+  const sorterChangeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    props.sorterChangeHandler(e.target.value as SortType)
+  }
+
   return (
     <StyledSorter>
       <StyledSelectWrap>
-        <StyledSelect onChange={props.sorterChangeHandler}>
-          {sorters.map((sorter, idx) => (
+        <StyledSelect onChange={sorterChangeHandler} value={selectedSorter}>
+          {sorterList.map((sorter, idx) => (
             <option value={sorter.id} key={idx}>
               {sorter.name}
             </option>

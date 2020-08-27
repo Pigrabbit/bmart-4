@@ -4,7 +4,7 @@ import { NAVIGATIONS } from '../../utils/constants'
 import { StyledLink } from '../../styles/StyledLink'
 import { CartStateContext } from '../../context/CartContext'
 import { COLORS } from '../../utils/styleConstants'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 
 type Props = {}
 
@@ -78,26 +78,38 @@ const StyledIcon = styled.div`
 export const Navbar = (props: Props) => {
   const iconList = NAVIGATIONS
   const match = useRouteMatch()
+  const history = useHistory()
 
   const { count } = useContext(CartStateContext)
 
   return (
     <StyledContainer className="navbar">
-      {iconList.map(({ name, displayName, path, icon, focusedIcon }, idx) => (
-        <StyledLink key={idx} to={{ pathname: path }}>
-          <StyledIcon className={`navbar-item ${match.path === path ? 'selected' : ''}`}>
-            {name === 'cart' && count > 0 && (
-              <div className="cart-count">
-                <div className="count">
-                  <p>{count}</p>
+      {iconList.map(({ name, displayName, path, icon, focusedIcon }, idx) => {
+        const pathMatched = match.path === path
+        return (
+          <StyledLink
+            key={idx}
+            to={{ pathname: path }}
+            onClick={(e) => {
+              e.preventDefault()
+              if (pathMatched) return
+              history.push({ pathname: path })
+            }}
+          >
+            <StyledIcon className={`navbar-item ${pathMatched ? 'selected' : ''}`}>
+              {name === 'cart' && count > 0 && (
+                <div className="cart-count">
+                  <div className="count">
+                    <p>{count}</p>
+                  </div>
                 </div>
-              </div>
-            )}
-            <i className="icon">{match.path === path ? focusedIcon : icon}</i>
-            <p className="display-name">{displayName}</p>
-          </StyledIcon>
-        </StyledLink>
-      ))}
+              )}
+              <i className="icon">{pathMatched ? focusedIcon : icon}</i>
+              <p className="display-name">{displayName}</p>
+            </StyledIcon>
+          </StyledLink>
+        )
+      })}
     </StyledContainer>
   )
 }

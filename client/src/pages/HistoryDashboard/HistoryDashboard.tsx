@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@apollo/client'
+import { useQuery, NetworkStatus } from '@apollo/client'
 import { OrderHistoryData, GET_ORDER_HISTORY } from '../../apis/graphqlQuery'
 import { Dashboard } from '../../components/Dashboard'
 import { STYLES } from '../../utils/styleConstants'
@@ -13,8 +13,10 @@ const StyledContainer = styled.div`
 `
 
 export const HistoryDashboard = (props: Props) => {
-  const { loading, data, refetch } = useQuery<OrderHistoryData>(GET_ORDER_HISTORY)
-
+  const { loading, data, refetch, networkStatus } = useQuery<OrderHistoryData>(GET_ORDER_HISTORY, {
+    notifyOnNetworkStatusChange: true,
+  })
+  
   useEffect(() => {
     refetch()
   }, [])
@@ -22,9 +24,11 @@ export const HistoryDashboard = (props: Props) => {
   return (
     <Dashboard title="주문내역">
       <StyledContainer className="history-list">
-        {data?.orderHistoryList.map((history, idx) => (
-          <HistoryCard key={idx} orderHistory={history} />
-        ))}
+        {loading || networkStatus === NetworkStatus.refetch
+          ? ''
+          : data?.orderHistoryList.map((history, idx) => (
+              <HistoryCard key={idx} orderHistory={history} />
+            ))}
       </StyledContainer>
     </Dashboard>
   )

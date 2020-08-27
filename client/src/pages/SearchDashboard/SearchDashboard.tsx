@@ -10,24 +10,9 @@ import { AutoSuggestQueryList } from './AutoSuggestQueryList'
 type Props = {}
 
 const StyledContainer = styled.div`
-  padding: ${STYLES.padding};
-  display: grid;
-  grid-template-rows: repeat(auto-fill, minmax(40px, 1fr));
-  justify-items: center;
-
-  .search-alert {
-    color: ${COLORS.red};
-  }
-
-  .search-suggestion {
-    height: 30px;
-    width: 90%;
-    padding: 8px 12px;
-    background-color: #fff;
-    justify-self: start;
-    overflow: hidden;
-    text-overflow: ellipses;
-  }
+  width: 100%;
+  min-height: calc(100vh - 51px - ${STYLES.margin});
+  background-color: white;
 `
 
 export type AutoSuggestType = {

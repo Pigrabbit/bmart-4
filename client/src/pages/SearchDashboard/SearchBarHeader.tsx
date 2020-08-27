@@ -20,6 +20,7 @@ const StyledContainer = styled.header`
   background: white;
   z-index: 1000;
   border-bottom: 1px solid ${STYLES.borderColor};
+  margin-bottom: ${STYLES.margin};
 `
 const StyledHeader = styled.div`
   display: flex;

@@ -1,4 +1,18 @@
-# Bmart 4
+<h1 align="center">bmart ⚡️ 4</h1>
+<p align="center">🚚 초소량 번쩍배달 B마트를 소개합니다 💨</b></p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/license/woowa-techcamp-2020/bmart-4" />
+  <a href="https://github.com/woowa-techcamp-2020/bmart-4/actions">
+    <img src="https://github.com/woowa-techcamp-2020/bmart-4/workflows/CI/badge.svg" />
+  </a>
+   <a href="https://github.com/woowa-techcamp-2020/bmart-4/actions">
+    <img src="https://github.com/woowa-techcamp-2020/bmart-4/workflows/CD/badge.svg" />
+  </a>
+  <a href="https://github.com/woowa-techcamp-2020/bmart-4/releases">
+    <img src="https://img.shields.io/github/v/release/woowa-techcamp-2020/bmart-4?label=version" />
+  </a>
+</p>
 
 ## Tech Stacks
 

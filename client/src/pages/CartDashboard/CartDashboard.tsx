@@ -194,7 +194,6 @@ export const CartDashboard = (props: Props) => {
   }
 
   useEffect(() => {
-    console.log(checkoutData)
     if (checkoutData.data?.checkoutOrder.success && !isCheckedOut) history.push('/history')
   }, [checkoutData.data, isCheckedOut])
 

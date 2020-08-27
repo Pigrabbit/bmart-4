@@ -87,6 +87,7 @@ const searchReducer = (state: State, action: Action) => {
     }
     case 'input': {
       if (SPECIAL_CHAR_REGEX.test(action.payload.query)) return { ...state }
+      if (action.payload.query.length === 0) return { ...state, query: '', autoSuggestList: [] }
       if (action.payload.query.length > MAX_SEARCH_QUERY_LENGTH)
         return { ...state, isQueryLengthOverLimit: true }
       return {
@@ -96,7 +97,6 @@ const searchReducer = (state: State, action: Action) => {
       }
     }
     case 'suggest': {
-      console.log(action.payload.autoSuggestList)
       return {
         ...state,
         autoSuggestList: action.payload.autoSuggestList,
@@ -106,6 +106,8 @@ const searchReducer = (state: State, action: Action) => {
       return {
         ...state,
         query: action.payload.query,
+        hasQueried: true,
+        searchResultList: action.payload.searchResultList,
         autoSuggestList: [],
       }
     }
@@ -129,9 +131,7 @@ export const SearchDashboard = (props: Props) => {
     inputRef.current?.focus()
   }, [])
 
-  const submitHandler = async (e: FormEvent) => {
-    e.preventDefault()
-
+  const fetchSearchResult = async () => {
     const result = await fetch(SEARCH_URI as RequestInfo, {
       method: 'POST',
       headers: {
@@ -140,27 +140,45 @@ export const SearchDashboard = (props: Props) => {
       body: JSON.stringify({ query: state.query }),
     })
     const data = await result.json()
+    return data
+  }
 
+  const submitHandler = async (e: FormEvent) => {
+    e.preventDefault()
+
+    const data = await fetchSearchResult()
     dispatch({ type: 'submit', payload: { searchResultList: data } })
   }
 
+  let interval: any = useRef(-1)
+
   const inputHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: 'input', payload: { query: e.target.value } })
+    const query = e.target.value
+    dispatch({ type: 'input', payload: { query } })
 
-    const result = await fetch(AUTO_SUGGEST_URI as RequestInfo, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ query: e.target.value }),
-    })
-    const data = await result.json()
+    if (interval.current !== 0) {
+      clearTimeout(interval.current)
+    }
 
-    dispatch({ type: 'suggest', payload: { autoSuggestList: data } })
+    interval.current = setTimeout(async () => {
+      if (query.trim().length === 0) return
+      const result = await fetch(AUTO_SUGGEST_URI as RequestInfo, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      })
+      const data = await result.json()
+
+      dispatch({ type: 'suggest', payload: { autoSuggestList: data } })
+    }, 250)
   }
 
-  const clickSuggestHandler = (e: MouseEvent) => {
-    dispatch({ type: 'selectSuggest', payload: { query: e.currentTarget.textContent } })
+  const clickSuggestHandler = async (e: MouseEvent) => {
+    const query = e.currentTarget.textContent
+    const data = await fetchSearchResult()
+    dispatch({ type: 'selectSuggest', payload: { query, searchResultList: data } })
   }
 
   return (

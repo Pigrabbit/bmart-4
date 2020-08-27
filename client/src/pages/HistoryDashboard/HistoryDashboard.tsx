@@ -23,19 +23,24 @@ export const HistoryDashboard = (props: Props) => {
     refetch()
   }, [])
 
-  return !loading && data && data.orderHistoryList.length > 0 ? (
-    <Dashboard title="주문내역">
-      <StyledContainer className="history-list">
-        {loading || networkStatus === NetworkStatus.refetch
-          ? ''
-          : data?.orderHistoryList.map((history, idx) => (
-              <HistoryCard key={idx} orderHistory={history} />
-            ))}
-      </StyledContainer>
-    </Dashboard>
-  ) : (
-    <Dashboard title="주문내역" footer={false}>
-      <CenteredImg description={TUNG_MESSAGE.EMPTY_HISTORY} />
-    </Dashboard>
+  return (
+    <>
+      {!loading && data && data.orderHistoryList.length > 0 && (
+        <Dashboard title="주문내역">
+          <StyledContainer className="history-list">
+            {loading || networkStatus === NetworkStatus.refetch
+              ? ''
+              : data?.orderHistoryList.map((history, idx) => (
+                  <HistoryCard key={idx} orderHistory={history} />
+                ))}
+          </StyledContainer>
+        </Dashboard>
+      )}
+      {!loading && data && data.orderHistoryList.length === 0 && (
+        <Dashboard title="주문내역" footer={false}>
+          <CenteredImg description={TUNG_MESSAGE.EMPTY_HISTORY} />
+        </Dashboard>
+      )}
+    </>
   )
 }

@@ -22,7 +22,6 @@ import { LoginDashboard } from './pages/LoginDashboard'
 import { LikedProductDashboard } from './pages/LikedProductDashboard'
 import { AuthProvider } from './context/AuthContext'
 import { PrivateRoute } from './routes/PrivateRoute'
-import { NotFoundDashboard } from './pages/NotFoundDashboard'
 
 function App() {
   return (

@@ -91,7 +91,7 @@ export const SearchResultDashboard = (props: Props) => {
   return (
     <div>
       {resultExists() ? (
-        <Dashboard title={`"${query}"에 대한 검색 결과`}>
+        <Dashboard title={query}>
           <div>
             <Sorter
               selectedSorter={state.sorter}
@@ -103,7 +103,7 @@ export const SearchResultDashboard = (props: Props) => {
         </Dashboard>
       ) : (
         <div>
-          <Header title={`"${query}"에 대한 검색 결과`} />
+          <Header title={query} />
           <CenteredImg />
           <Navbar />
         </div>

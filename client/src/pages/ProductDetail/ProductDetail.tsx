@@ -47,7 +47,6 @@ const StyledSlider = styled.div`
   bottom: 0;
   right: 0;
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +55,7 @@ const StyledSlider = styled.div`
   .confirm-slider-content {
     width: 70%;
     text-align: center;
-    background-color: ${COLORS.gray};
+    background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
     font-size: 16px;
     padding: 5px 0;
@@ -168,6 +167,7 @@ export type StateType = {
   coupangProductId: string
   basePrice: number
   discountRate: number
+  stockCount: number
 }
 
 export const ProductDetail = (props: Props) => {
@@ -194,6 +194,8 @@ export const ProductDetail = (props: Props) => {
     product.refetch()
     detailImg.refetch()
   }, [])
+
+  const isEmptyStock = stockCount === 0
 
   return (detailImg.loading || !detailImg.data || product.loading || !product.data) ? (
     <LoadingIndicator />
@@ -253,14 +255,15 @@ export const ProductDetail = (props: Props) => {
             ))}
           </StyledThumbnails>
         </StyledDetailInfo>
-        <OrderButton clickHandler={() => setIsModalVisible(true)}>
-          <>주문하기</>
+        <OrderButton disabled={isEmptyStock} clickHandler={() => setIsModalVisible(true)}>
+          <>{isEmptyStock ? '재고가 부족합니다' : '주문하기'}</>
         </OrderButton>
         {isModalVisible ? (
           <OrderModal
             id={id}
             name={product.data.productById.name}
             price={product.data.productById.price}
+            stockCount={product.data.productById.stockCount}
             thumbnailSrc={detailImg.data.productDetailImgList[0].src}
             savedCount={savedCount}
             setSavedCount={setSavedCount}

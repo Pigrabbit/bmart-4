@@ -99,6 +99,10 @@ const addProductToCartResolver = async (parent, args, context) => {
 
     // 이미 장바구니에 있는 상품이라면
     if (existProduct.length) {
+      if (existProduct[0].quantity + quantity > 10) {
+        return -1
+      }
+
       const query = `UPDATE order_product SET quantity = ?, price_sum = ? 
         WHERE id = ?`
 

@@ -23,7 +23,6 @@ import { LikedProductDashboard } from './pages/LikedProductDashboard'
 import { AuthProvider } from './context/AuthContext'
 import { PrivateRoute } from './routes/PrivateRoute'
 import { HistoryDashboard } from './pages/HistoryDashboard'
-import { NotFoundDashboard } from './pages/NotFoundDashboard'
 
 function App() {
   return (
@@ -44,7 +43,7 @@ function App() {
               />
               <PrivateRoute exact={true} path="/cart" component={CartDashboard} />
               <PrivateRoute exact={true} path="/favorite" component={LikedProductDashboard} />
-              <PrivateRoute exact={true} path="/history" component={HistoryDashboard}/>
+              <PrivateRoute exact={true} path="/history" component={HistoryDashboard} />
               <PrivateRoute exact={true} path="/search" component={SearchDashboard} />
               <PrivateRoute exact={true} path="/search-result" component={SearchResultDashboard} />
               <PrivateRoute exact={true} path="/" component={MainDashboard} />

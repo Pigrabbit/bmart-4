@@ -9,6 +9,7 @@ export type ProductByCategory = {
   thumbnailSrc: string
   coupangProductId: string
   isLiked: boolean
+  stockCount: number
 }
 
 export type ProductByCategoryData = {
@@ -38,6 +39,7 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
       thumbnailSrc
       coupangProductId
       isLiked
+      stockCount
     }
   }
 `
@@ -80,6 +82,7 @@ export const GET_LIKED_PRODUCTLIST = gql`
       thumbnailSrc
       coupangProductId
       isLiked
+      stockCount
     }
   }
 `
@@ -119,6 +122,7 @@ export type ProductInCart = {
     basePrice: number
     discountRate: number
     thumbnailSrc: string
+    stockCount: number
   }
 }
 
@@ -142,6 +146,7 @@ export const GET_PRODUCTLIST_IN_CART = gql`
         discountRate
         thumbnailSrc
         coupangProductId
+        stockCount
       }
     }
   }

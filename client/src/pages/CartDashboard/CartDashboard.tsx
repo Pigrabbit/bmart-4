@@ -194,7 +194,10 @@ export const CartDashboard = (props: Props) => {
   }
 
   const confirmHandler = (isConfirmed: boolean) => {
-    if (!isConfirmed) setIsConfirmVisbile(false)
+    if (!isConfirmed) {
+      setIsConfirmVisbile(false)
+      return
+    }
     checkoutOrder({
       variables: {
         orderProductList: checkedProductList

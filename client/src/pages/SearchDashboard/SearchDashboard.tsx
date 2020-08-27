@@ -2,7 +2,7 @@ import React, { useState, useRef, FormEvent, useReducer } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Dashboard } from '../../components/Dashboard'
 import styled from 'styled-components'
-import { SEARCH_URI, SPECIAL_CHAR_REGEX } from '../../utils/constants'
+import { SEARCH_URI, SPECIAL_CHAR_REGEX, MAX_SEARCH_QUERY_LENGTH } from '../../utils/constants'
 import { ProductCardType } from '../../types/productCard'
 
 type Props = {}
@@ -36,6 +36,7 @@ const StyledSubmitBtn = styled.button`
 type State = {
   query: string
   hasQueried: boolean
+  isQueryLengthOverLimit: boolean
   searchResultList: ProductCardType[]
 }
 
@@ -48,6 +49,7 @@ const searchReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'submit': {
       return {
+        ...state,
         query: '',
         hasQueried: true,
         searchResultList: action.payload.searchResultList,
@@ -55,9 +57,12 @@ const searchReducer = (state: State, action: Action) => {
     }
     case 'input': {
       if (SPECIAL_CHAR_REGEX.test(action.payload.query)) return { ...state }
+      if (action.payload.query.length > MAX_SEARCH_QUERY_LENGTH)
+        return { ...state, isQueryLengthOverLimit: true }
       return {
         ...state,
         query: action.payload.query,
+        isQueryLengthOverLimit: false,
       }
     }
   }
@@ -67,6 +72,7 @@ const searchReducer = (state: State, action: Action) => {
 const initialState = {
   query: '',
   hasQueried: false,
+  isQueryLengthOverLimit: false,
   searchResultList: [],
 }
 
@@ -104,10 +110,15 @@ export const SearchDashboard = (props: Props) => {
               name="query"
               onChange={(e) => dispatch({ type: 'input', payload: { query: e.target.value } })}
             />
-            <StyledSubmitBtn className="search-submit-btn" type="submit">
+            <StyledSubmitBtn
+              className="search-submit-btn"
+              type="submit"
+              disabled={state.isQueryLengthOverLimit}
+            >
               <img src={`${process.env.PUBLIC_URL}/images/navbar-icon/search.svg`} />
             </StyledSubmitBtn>
           </form>
+          {state.isQueryLengthOverLimit ? <p>검색어는 30자 이하로 입력해주세요</p> : ''}
         </StyledContainer>
       )}
     </Dashboard>

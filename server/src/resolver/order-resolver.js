@@ -13,7 +13,7 @@ const checkoutOrderResolver = async (parent, args, context) => {
     const findUnpaidOrderQuery = 'SELECT * FROM `order` WHERE user_id = ? and is_paid = 0'
 
     const [orders] = await conn.query(findUnpaidOrderQuery, [userId])
-    if (!orders.length) throw new Error(ReasonPhrases.BAD_REQUEST)
+    if (!orders.length) return new Error(ReasonPhrases.BAD_REQUEST)
 
     const checkoutOrderQuery = 'UPDATE `order` SET is_paid = 1 WHERE id = ?'
 

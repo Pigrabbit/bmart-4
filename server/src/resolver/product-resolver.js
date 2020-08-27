@@ -32,7 +32,7 @@ const productListByCategoryResolver = async (parent, args, context) => {
   const { category, offset = 0, limit = 10, sorter = '' } = args
 
   if (offset < 0 || limit < 0) {
-    throw new Error(ReasonPhrases.BAD_REQUEST)
+    return new Error(ReasonPhrases.BAD_REQUEST)
   }
 
   const conn = await pool.getConnection()

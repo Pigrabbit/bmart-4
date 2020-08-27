@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { getStatusCode } = require('http-status-codes')
 const { isLoggedIn } = require('../util/auth')
 const authRouter = require('./auth-router')
 router.use('/auth', authRouter)
@@ -15,6 +16,12 @@ router.post(
       schema,
       graphiql: false,
       context: { req, res },
+      customFormatErrorFn: (error) => {
+        return {
+          message: error.message,
+          status: getStatusCode(error.message)
+        }
+      }
     }
   })
 )

@@ -28,6 +28,6 @@
 
 ## 📱 그 기술들은 이렇게 연결되어 있어요
 
-[![](docs/images/lossy-abstract.PNG)](docs/images/abstract.PNG)
+[![](docs/images/lossy-abstract.png)](docs/images/abstract.png)
 
 ## 🏃‍♂️Getting Started

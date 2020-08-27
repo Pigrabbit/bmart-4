@@ -161,7 +161,11 @@ export const CartDashboard = (props: Props) => {
 
     cartContextDispatch({
       type: 'removeProduct',
-      payload: { count: variables.orderProductIds.length },
+      payload: {
+        productIdList: variables.orderProductIds.map(
+          (orderId) => orderList.find((order) => order.id === orderId)?.product.id || '0'
+        ),
+      },
     })
     setOrderList(newOrderList)
     setCheckedProductList(newCheckedProductList)

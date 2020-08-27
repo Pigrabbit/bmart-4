@@ -15,10 +15,7 @@ const {
   getDetailImgSrcByProductId,
   likedProductListResolver,
 } = require('../resolver/product-resolver')
-const {
-  productListInCartResolver,
-  productCountInCartResolver,
-} = require('../resolver/cart-resolver')
+const { productListInCartResolver, productIdsInCartResolver } = require('../resolver/cart-resolver')
 const { orderHistoryListResolver } = require('../resolver/order-resolver')
 
 const RootQueryType = new GraphQLObjectType({
@@ -49,10 +46,10 @@ const RootQueryType = new GraphQLObjectType({
       description: '장바구니 상품 리스트',
       resolve: productListInCartResolver,
     },
-    productCountInCart: {
-      type: new GraphQLNonNull(GraphQLInt),
+    productIdsInCart: {
+      type: new GraphQLList(GraphQLID),
       description: '장바구니 상품 갯수',
-      resolve: productCountInCartResolver,
+      resolve: productIdsInCartResolver,
     },
     productDetailImgList: {
       type: new GraphQLList(ProductDetailImgType),

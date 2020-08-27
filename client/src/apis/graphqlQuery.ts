@@ -154,12 +154,12 @@ export const GET_PRODUCTLIST_IN_CART = gql`
 `
 
 export type GetProuctCountInCartData = {
-  productCountInCart: number
+  productIdsInCart: string[]
 }
 
-export const GET_PRODUCT_COUNT_IN_CART = gql`
-  query ProductCountInCart {
-    productCountInCart
+export const GET_PRODUCT_IDS_IN_CART = gql`
+  query ProductIdsInCart {
+    productIdsInCart
   }
 `
 

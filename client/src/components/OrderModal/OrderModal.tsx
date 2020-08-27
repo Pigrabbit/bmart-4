@@ -199,7 +199,7 @@ export const OrderModal = (props: Props) => {
     if (data && parseInt(data.addProductToCart) >= 0) {
       props.setIsModalVisible(false)
       props.setIsOrderPlaced(true)
-      cartContextDispatch({ type: 'addProduct', payload: { count: 1 } })
+      cartContextDispatch({ type: 'addProduct', payload: { productIdList: [id] } })
       props.setSavedCount(1)
     } else {
       dispatch({ type: 'error' })

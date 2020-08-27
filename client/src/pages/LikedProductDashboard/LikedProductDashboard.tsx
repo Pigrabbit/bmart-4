@@ -30,7 +30,7 @@ export const LikedProductDashboard = (props: Props) => {
     <div>
       <Header title="찜한상품" />
       {data.likedProductList.length === 0 ? (
-        <CenteredImg src="images/tung.png" />
+        <CenteredImg />
       ) : (
         <VerticalList title="" productList={data.likedProductList} />
       )}

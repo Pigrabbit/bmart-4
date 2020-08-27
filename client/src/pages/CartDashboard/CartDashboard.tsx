@@ -19,6 +19,7 @@ import { CartDashboardOrderButton } from './CartDashboardOrderButton'
 import { CartDashboardFooter } from './CartDashboardFooter'
 import { CartDashboardBill } from './CartDashboardBill'
 import { CenteredImg } from '../../components/CenteredImg'
+import { TUNG_MESSAGE } from '../../utils/constants'
 
 type Props = {}
 
@@ -199,7 +200,7 @@ export const CartDashboard = (props: Props) => {
           />
         </StyledContainer>
       ) : (
-        <CenteredImg src="images/cart-tung.png" />
+        <CenteredImg description={TUNG_MESSAGE.EMPTY_CART} />
       )}
     </Dashboard>
   )

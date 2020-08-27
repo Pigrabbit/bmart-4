@@ -104,7 +104,7 @@ export const SearchResultDashboard = (props: Props) => {
       ) : (
         <div>
           <Header title={`"${query}"에 대한 검색 결과`} />
-          <CenteredImg src="images/tung.png"></CenteredImg>
+          <CenteredImg />
           <Navbar />
         </div>
       )}

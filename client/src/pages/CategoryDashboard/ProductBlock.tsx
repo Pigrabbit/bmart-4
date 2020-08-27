@@ -17,7 +17,7 @@ type Props = {
 
 export const ProductBlock = (props: Props) => {
   const { page, onePageLength, sorter, categoryName } = props
-  const { loading, data } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
+  const { loading, data, refetch } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
     GET_PRODUCTLIST_BY_CATEGORY,
     {
       variables: {
@@ -28,7 +28,9 @@ export const ProductBlock = (props: Props) => {
       },
     }
   )
-
+  useEffect(() => {
+    refetch()
+  }, [])
   useEffect(() => {
     if (data && data.productListByCategory && data.productListByCategory.length < onePageLength) {
       props.noMoreProducts.current = true

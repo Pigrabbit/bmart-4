@@ -18,6 +18,7 @@ import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
 import { OrderButton } from '../../components/OrderButton'
 import { Dashboard } from '../../components/Dashboard'
 import { ProductDetailRouteProps } from '../../types/routeProps'
+import { LikeButton } from '../../components/LikeButton'
 
 type Props = {}
 
@@ -38,6 +39,12 @@ const StyledContainer = styled.div`
       transform: translateY(-100%);
     }
   }
+`
+
+const StyledLikeButtonWrapper = styled.div`
+  position: absolute;
+  right: ${STYLES.padding};
+  bottom: ${STYLES.padding};
 `
 
 const StyledSlider = styled.div`
@@ -120,8 +127,7 @@ const StyledDetailInfo = styled.div`
   }
 `
 const StyledDetails = styled.div`
-  padding: 20px ${STYLES.padding};
-  padding-bottom: 40px;
+  padding: ${STYLES.padding} ${STYLES.padding} 40px ${STYLES.padding};
 
   .row {
     display: flex;
@@ -146,6 +152,7 @@ const StyledDetails = styled.div`
 const StyledInformations = styled.div`
   padding: 20px ${STYLES.padding};
   padding-top: 40px;
+  position: relative;
 `
 const StyledCarouselWrap = styled.div`
   position: sticky;
@@ -217,7 +224,7 @@ export const ProductDetail = (props: Props) => {
           <CarouselBasic bannerList={detailImg.data.productDetailImgList} />
         </StyledCarouselWrap>
         <StyledDetailInfo className="product-detail-info">
-          <StyledInformations>
+          <StyledInformations className="product-informations">
             <p className="product-detail-name">{product.data.productById.name}</p>
             {product.data.productById.discountRate > 0 ? (
               <div className="product-detail-discount">
@@ -234,6 +241,16 @@ export const ProductDetail = (props: Props) => {
             <p className="product-detail-price">
               {parseToLocalMoneyString(product.data.productById.price)}원
             </p>
+            <StyledLikeButtonWrapper>
+              {product.variables && product.variables.id ? (
+                <LikeButton
+                  isLiked={product.data.productById.isLiked}
+                  productId={product.variables.id}
+                />
+              ) : (
+                ''
+              )}
+            </StyledLikeButtonWrapper>
           </StyledInformations>
           <StyledDetails>
             <div className="row">

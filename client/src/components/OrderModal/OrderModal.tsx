@@ -16,6 +16,26 @@ type Props = {
   setIsOrderPlaced: (flag: boolean) => void
 }
 
+const StyledExitButton = styled.div`
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 30px;
+  border-radius: 50%;
+  color: #888;
+  background-color: #eee;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  user-select: none;
+  i {
+    margin: auto auto;
+  }
+  &:focused {
+    background-color: #ccc;
+  }
+`
+
 const StyledContainer = styled.div`
   position: fixed;
   top: 0;
@@ -45,16 +65,13 @@ const StyledModalContent = styled.div`
   position: absolute;
   bottom: 0;
   padding: 16px;
-
+  display: flex;
   width: 100%;
   height: 40%;
   background-color: white;
   border-radius: 20px 20px 0 0;
   animation: 0.3s ease-in slideUpModal;
 
-  display: grid;
-  grid-template-columns: 3fr 6fr 3fr;
-  grid-template-rows: 40% 40%;
   justify-items: stretch;
   align-items: center;
 
@@ -63,9 +80,9 @@ const StyledModalContent = styled.div`
   }
 
   .order-modal-content-data {
-    margin: 0 15px;
+    margin: 0px 15px 0 15px;
     p {
-      font-size: 12px;
+      font-size: 2em;
     }
     .order-modal-content-name {
       font-weight: 600;
@@ -84,6 +101,10 @@ const StyledModalError = styled.p`
   text-align: center;
 `
 
+const StyledWrapper = styled.div`
+  margin: 0 0 0 20px;
+`
+
 const StyledModalOrderButton = styled.button`
   position: fixed;
   bottom: 15px;
@@ -97,16 +118,18 @@ const StyledModalOrderButton = styled.button`
 `
 
 const StyledController = styled.div`
+  margin: 10px 15px 0px 15px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 30%;
+  height: 50px;
   border-radius: 20px;
   background-color: #bbb;
-  font-size: 16px;
+  font-size: 30px;
   color: #fff;
 
   button {
+    font-size: 30px;
     width: 100%;
     height: 100%;
   }
@@ -173,6 +196,10 @@ export const OrderModal = (props: Props) => {
 
   const [addProductToCart] = useMutation<{}, AddProductToCartVars>(ADD_PRODUCT_TO_CART)
 
+  const exitButtonHandler = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    props.setIsModalVisible(false)
+  }
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     if (e.target === modalOverlayRef.current) props.setIsModalVisible(false)
@@ -191,30 +218,35 @@ export const OrderModal = (props: Props) => {
     <StyledContainer className="order-modal" onClick={clickOutsideModalHandler}>
       <div className="order-modal-overlay" ref={modalOverlayRef} />
       <StyledModalContent className="order-modal-content">
+        <StyledExitButton onClick={exitButtonHandler}>
+          <i className="icon">multiply</i>
+        </StyledExitButton>
         <img
           className="order-modal-content-thumbnail"
           src={thumbnailSrc}
           alt={`order-modal-thumbnail-${id}`}
         />
-        <div className="order-modal-content-data">
-          <p className="order-modal-content-name">{name}</p>
-          <p className="order-modal-content-price">{parseToLocalMoneyString(price)}원</p>
-        </div>
-        <StyledController className="order-modal-controller">
-          <button
-            className="order-modal-controller-decrement-btn"
-            onClick={() => dispatch({ type: 'decrement' })}
-          >
-            -
-          </button>
-          <p className="order-modal-controller-quantity">{state.count}</p>
-          <button
-            className="order-modal-controller-increment-btn"
-            onClick={() => dispatch({ type: 'increment' })}
-          >
-            +
-          </button>
-        </StyledController>
+        <StyledWrapper>
+          <div className="order-modal-content-data">
+            <p className="order-modal-content-name">{name}</p>
+            <p className="order-modal-content-price">{parseToLocalMoneyString(price)}원</p>
+          </div>
+          <StyledController className="order-modal-controller">
+            <button
+              className="order-modal-controller-decrement-btn"
+              onClick={() => dispatch({ type: 'decrement' })}
+            >
+              -
+            </button>
+            <p className="order-modal-controller-quantity">{state.count}</p>
+            <button
+              className="order-modal-controller-increment-btn"
+              onClick={() => dispatch({ type: 'increment' })}
+            >
+              +
+            </button>
+          </StyledController>
+        </StyledWrapper>
         {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
         <StyledModalOrderButton
           className="order-modal-content-order-btn"

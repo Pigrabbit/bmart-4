@@ -1,21 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { COLORS } from '../../utils/styleConstants'
-import { LikeButton } from '../LikeButton'
 
 type Props = {
   isLiked: boolean
-  productId: string
   lazyLoad?: boolean
   isSoldOut: boolean
   thumbnailSrc: string
+  toggleProductLike: (e: React.MouseEvent) => void
   seperateClickEventHandler: (e: React.MouseEvent) => void
 }
 
 const StyledThumbnail = styled.div`
   position: relative;
   font-size: 0;
-
   .icon-wrap {
     font-size: 24px;
     line-height: 24px;
@@ -25,17 +23,14 @@ const StyledThumbnail = styled.div`
     right: 4px;
     bottom: 4px;
     z-index: 10;
-
     .icon {
       color: #eee;
       border-radius: 50%;
-
       &.like {
         color: ${COLORS.red};
       }
     }
   }
-
   .thumbnail-wrap {
     width: 100%;
     height: 100%;
@@ -43,14 +38,12 @@ const StyledThumbnail = styled.div`
     filter: brightness(0.96);
     overflow: hidden;
     position: relative;
-
     &.alt::before {
       content: '';
       display: block;
       padding: 50%;
       background-color: #fafafa;
     }
-
     &.sold-out::before {
       content: 'sold out';
       display: block;
@@ -68,7 +61,6 @@ const StyledThumbnail = styled.div`
       justify-content: center;
       align-items: center;
     }
-
     .thumbnail {
       width: 100%;
       height: 100%;
@@ -78,7 +70,7 @@ const StyledThumbnail = styled.div`
 `
 
 export const ProductCardThumbnail = (props: Props) => {
-  const { thumbnailSrc, lazyLoad, isLiked, isSoldOut, productId } = props
+  const { thumbnailSrc, lazyLoad, isLiked, isSoldOut } = props
 
   const renderThumbnail = () => {
     if (lazyLoad === undefined) {
@@ -107,7 +99,13 @@ export const ProductCardThumbnail = (props: Props) => {
   return (
     <StyledThumbnail onDoubleClick={props.seperateClickEventHandler}>
       {(lazyLoad === undefined || lazyLoad) && (
-        <LikeButton isLiked={isLiked} productId={productId} />
+        <div className="icon-wrap" onClick={props.toggleProductLike}>
+          {isLiked ? (
+            <i className="icon like">heart_circle_fill</i>
+          ) : (
+            <i className="icon">heart_circle_fill</i>
+          )}
+        </div>
       )}
       {renderThumbnail()}
     </StyledThumbnail>

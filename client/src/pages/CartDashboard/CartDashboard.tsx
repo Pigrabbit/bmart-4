@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Dashboard } from '../../components/Dashboard'
 import { useQuery, useMutation } from '@apollo/client'
@@ -20,6 +20,7 @@ import { CartDashboardFooter } from './CartDashboardFooter'
 import { CartDashboardBill } from './CartDashboardBill'
 import { CenteredImg } from '../../components/CenteredImg'
 import { TUNG_MESSAGE } from '../../utils/constants'
+import { CartDispatchContext } from '../../context/CartContext'
 
 type Props = {}
 
@@ -92,6 +93,8 @@ export const CartDashboard = (props: Props) => {
   const [checkedProductList, setCheckedProductList] = useState<CheckedProduct[]>([])
   const [isCheckedOut, setIsCheckedOut] = useState<boolean>(false)
 
+  const cartContextDispatch = useContext(CartDispatchContext)
+
   useEffect(() => {
     refetch()
   }, [])
@@ -156,6 +159,10 @@ export const CartDashboard = (props: Props) => {
       }
     })
 
+    cartContextDispatch({
+      type: 'removeProduct',
+      payload: { count: variables.orderProductIds.length },
+    })
     setOrderList(newOrderList)
     setCheckedProductList(newCheckedProductList)
   }

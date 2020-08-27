@@ -21,9 +21,7 @@ const cartReducer = (state: CartStateType, action: CartActionType): CartStateTyp
     case 'addProduct':
       return { ...state, count: state.count + action.payload.count }
     case 'removeProduct':
-      return { ...state, count: state.count + action.payload.count }
-    case 'removeAllProduct':
-      return { ...state, count: 0 }
+      return { ...state, count: state.count - action.payload.count }
   }
 }
 

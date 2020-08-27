@@ -1,13 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import { COLORS } from '../../utils/styleConstants'
+import { LikeButton } from '../LikeButton'
 
 type Props = {
   isLiked: boolean
+  productId: string
   lazyLoad?: boolean
   isSoldOut: boolean
   thumbnailSrc: string
-  toggleProductLike: (e: React.MouseEvent) => void
   seperateClickEventHandler: (e: React.MouseEvent) => void
 }
 
@@ -77,7 +78,7 @@ const StyledThumbnail = styled.div`
 `
 
 export const ProductCardThumbnail = (props: Props) => {
-  const { thumbnailSrc, lazyLoad, isLiked, isSoldOut } = props
+  const { thumbnailSrc, lazyLoad, isLiked, isSoldOut, productId } = props
 
   const renderThumbnail = () => {
     if (lazyLoad === undefined) {
@@ -106,13 +107,7 @@ export const ProductCardThumbnail = (props: Props) => {
   return (
     <StyledThumbnail onDoubleClick={props.seperateClickEventHandler}>
       {(lazyLoad === undefined || lazyLoad) && (
-        <div className="icon-wrap" onClick={props.toggleProductLike}>
-          {isLiked ? (
-            <i className="icon like">heart_circle_fill</i>
-          ) : (
-            <i className="icon">heart_circle_fill</i>
-          )}
-        </div>
+        <LikeButton isLiked={isLiked} productId={productId} />
       )}
       {renderThumbnail()}
     </StyledThumbnail>

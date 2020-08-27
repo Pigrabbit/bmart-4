@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom'
 import { ProductCardThumbnail } from './ProductCardThumbnail'
 import { COLORS } from '../../utils/styleConstants'
 import { DISCOUNT_PERCENTAGE_CARD_LIMIT } from '../../utils/constants'
+import { LikeButton } from '../LikeButton'
 
 export type Props = {
   width?: string
@@ -61,41 +62,16 @@ export const ProductCard = (props: Props) => {
   let interval: any = null
 
   const { product, width = '50%', style, lazyLoad } = props
-  const {
-    id,
-    price,
-    name,
-    thumbnailSrc,
-    stockCount,
-    discountRate,
-  } = product
-
-  const [isLiked, setIsLiked] = useState(props.product.isLiked)
-
-  const [likeProduct] = useMutation<{}, LikeProductVars>(LIKE_PRODUCT)
-  const [dislikeProduct] = useMutation<DislikeProductData, LikeProductVars>(DISLIKE_PRODUCT)
-
-  const toggleProductLike = async (e: React.MouseEvent) => {
-    e.stopPropagation()
-
-    const params = { variables: { productId: id } }
-    if (isLiked) {
-      await dislikeProduct(params)
-    } else {
-      await likeProduct(params)
-    }
-
-    setIsLiked(!isLiked)
-  }
+  const { id, price, name, thumbnailSrc, stockCount, discountRate } = product
 
   const seperateClickEventHandler = (e: React.MouseEvent) => {
     e.preventDefault()
 
-    if (interval) {
-      toggleProductLike(e)
-      clearTimeout(interval)
-      return
-    }
+    // if (interval) {
+    //   toggleProductLike(e)
+    //   clearTimeout(interval)
+    //   return
+    // }
 
     interval = setTimeout(() => {
       history.push(`/product/${id}`)
@@ -114,10 +90,10 @@ export const ProductCard = (props: Props) => {
         )}
         <ProductCardThumbnail
           lazyLoad={lazyLoad}
-          isLiked={isLiked}
+          isLiked={props.product.isLiked}
+          productId={props.product.id}
           isSoldOut={stockCount === 0}
           thumbnailSrc={thumbnailSrc}
-          toggleProductLike={toggleProductLike}
           seperateClickEventHandler={seperateClickEventHandler}
         />
         <StyledContent>

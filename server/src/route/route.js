@@ -31,7 +31,7 @@ router.get(
   })
 )
 
-const searchInIndex = require('../elasticsearch-controller')
+const { searchInIndex, getSuggestion } = require('../elasticsearch-controller')
 router.post('/search', searchInIndex)
-
+router.post('/autosuggest', getSuggestion)
 module.exports = router

@@ -144,9 +144,16 @@ export const SearchDashboard = (props: Props) => {
               <img src={`${process.env.PUBLIC_URL}/images/navbar-icon/search.svg`} />
             </StyledSubmitBtn>
           </StyledForm>
-          <div className="search-suggestion">{state.query}</div>
-          <div className="search-suggestion">{state.query + " 1개"}</div>
-          <div className="search-suggestion">{state.query + " 어린이"}</div>
+          {state.query.length > 0 ? (
+            <>
+              <div className="search-suggestion">{state.query}</div>
+              <div className="search-suggestion">{state.query + ' 1개'}</div>
+              <div className="search-suggestion">{state.query + ' 어린이'}</div>
+            </>
+          ) : (
+            ''
+          )}
+
           {state.isQueryLengthOverLimit ? (
             <p className="search-alert">검색어는 30자 이하로 입력해주세요</p>
           ) : (

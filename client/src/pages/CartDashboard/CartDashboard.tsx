@@ -38,18 +38,15 @@ export type CheckedProduct = {
 
 const StyledContainer = styled.div`
   .checkout-complete-modal[data-is-checkedout=\'true\'] {
-    animation: 1.8s ease-in-out slideUp;
+    animation: 1.6s ease-in-out slideUp forwards;
   }
 
   @keyframes slideUp {
     25% {
       transform: translateY(0);
     }
-    75% {
-      transform: translateY(0);
-    }
     100% {
-      transform: translateY(-100%);
+      transform: translateY(0);
     }
   }
 `

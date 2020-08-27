@@ -105,7 +105,7 @@ const StyledDetailInfo = styled.div`
   }
 
   .product-detail-price {
-    margin-top: 6px;
+    margin-top: 16px;
     font-size: 22px;
     font-weight: 700;
   }

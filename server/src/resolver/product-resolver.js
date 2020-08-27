@@ -45,12 +45,17 @@ const productListByCategoryResolver = async (parent, args, context) => {
   }
 }
 
-const productDetailImgResolver = async (parent, args) => {
-  const { coupangProductId } = args
+const getDetailImgSrcByProductId = async (parent, args) => {
+  const { id } = args
   const conn = await pool.getConnection()
   try {
-    const query = 'SELECT * FROM product_detail_image WHERE coupang_product_id=?'
-    const [rows] = await conn.query(query, [coupangProductId])
+    const query = `
+      SELECT i.* FROM product_detail_image i
+      JOIN product p
+      ON i.coupang_product_id = p.coupang_product_id
+      WHERE p.id= ?
+    `
+    const [rows] = await conn.query(query, [id])
 
     const result = rows.map((row) => new GetProductDetailDTO(row))
 
@@ -107,7 +112,7 @@ const likedProductListResolver = async (parent, args, context) => {
 
 module.exports = {
   productListByCategoryResolver,
-  productDetailImgResolver,
+  getDetailImgSrcByProductId,
   likedProductListResolver,
   getOrderProductById,
 }

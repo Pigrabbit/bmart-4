@@ -71,7 +71,7 @@ const StyledModalContent = styled.div`
   padding: 16px;
   display: flex;
   width: 100%;
-  height: 50%;
+  min-height: 400px;
   background-color: white;
   border-radius: 20px 20px 0 0;
   animation: 0.3s ease-in slideUpModal;

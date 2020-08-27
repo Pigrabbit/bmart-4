@@ -46,9 +46,11 @@ const StyledOrderButton = styled.button`
 export const OrderButton = (props: Props) => {
   const { children, disabled = false } = props
   return (
-    <StyledContainer className="cart-dashboard-submit" onClick={props.clickHandler}>
+    <StyledContainer className="cart-dashboard-submit">
       <StyledButtonWrap>
-        <StyledOrderButton disabled={disabled}>{children}</StyledOrderButton>
+        <StyledOrderButton onClick={props.clickHandler} disabled={disabled}>
+          {children}
+        </StyledOrderButton>
       </StyledButtonWrap>
     </StyledContainer>
   )

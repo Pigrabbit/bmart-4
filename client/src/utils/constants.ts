@@ -9,6 +9,7 @@ export const AUTO_SUGGEST_URI = process.env.REACT_APP_AUTO_SUGGEST_URI
 export const OAUTH_URI = process.env.REACT_APP_GOOGLE_OAUTH_URI
 export const BAEDAL_TIP = 1000
 export const MIN_ORDER_PRICE = 5000
+export const SKELETON_CARD_COUNT = 10
 export const CATEGORIES = [
   {
     id: 0,
@@ -118,4 +119,5 @@ export const SPECIAL_CHAR_REGEX = /[~!@#$%^&*()_+|<>?:{}]/
 export const MAX_SEARCH_QUERY_LENGTH = 30
 export const TUNG_MESSAGE = {
   EMPTY_CART: '장바구니가 텅 비어있어요',
+  EMPTY_HISTORY: '주문 내역이 없어요ㅠ',
 }

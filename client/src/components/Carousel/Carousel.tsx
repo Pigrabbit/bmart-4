@@ -105,9 +105,7 @@ export const Carousel = (props: Props) => {
         <StyledContainer ref={sliderRef}>
           {itemList.map((item, idx) => (
             <StyledSlider key={idx} className="carousel-slide">
-              <a href={item.href} target="_blank" rel="noopener noreferrer">
-                <img src={item.src} alt="" />
-              </a>
+              <img src={item.src} alt="" />
             </StyledSlider>
           ))}
         </StyledContainer>

@@ -37,9 +37,11 @@ export const ProductBlock = (props: Props) => {
     }
   }, [data])
 
-  return loading || !data ? (
-    <div>Loading...</div>
-  ) : (
-    <VerticalList title="" productList={data.productListByCategory} />
+  return (
+    <VerticalList
+      title=""
+      loading={loading && !data?.productListByCategory}
+      productList={data?.productListByCategory || []}
+    />
   )
 }

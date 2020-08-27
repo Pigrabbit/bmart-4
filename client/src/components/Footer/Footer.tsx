@@ -27,15 +27,8 @@ const StyledRow = styled.p`
 `
 
 export const Footer = (props: Props) => {
-  const returnButtonClickHandler = () => {
-    alert('반품·교환 하시겠어요?')
-  }
-
   return (
     <StyledContainer className="footer" data-testid="footer">
-      <StyledButton className="footer-return-button" onClick={returnButtonClickHandler}>
-        반품·교환하기
-      </StyledButton>
       <StyledRow className="footer-phone">
         <span className="footer-phone-label">고객센터 | </span>
         <strong className="footer-phone-value">{CS_PHONE}</strong>

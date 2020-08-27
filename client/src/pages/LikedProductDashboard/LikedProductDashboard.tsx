@@ -1,14 +1,21 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
-import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
 import { Header } from '../../components/Header'
 import { CenteredImg } from '../../components/CenteredImg'
 import { Navbar } from '../../components/Navbar'
 import { LikedProductListData, LikedProductListVars, GET_LIKED_PRODUCTLIST } from '../../apis/like'
+import { STYLES } from '../../utils/styleConstants'
 
 type Props = {}
+
+const StyledContainer = styled.div`
+  padding-bottom: 70px;
+`
+const StyledListWrap = styled.div`
+  margin-top: ${STYLES.margin};
+`
 
 export const LikedProductDashboard = (props: Props) => {
   const { loading, data, refetch } = useQuery<LikedProductListData, LikedProductListVars>(
@@ -20,17 +27,18 @@ export const LikedProductDashboard = (props: Props) => {
     refetch()
   }, [])
 
-  return loading || !data ? (
-    <p>loading...</p>
-  ) : (
-    <div>
+  return (
+    <StyledContainer>
       <Header title="찜한상품" />
-      {data.likedProductList.length === 0 ? (
-        <CenteredImg />
-      ) : (
-        <VerticalList title="" productList={data.likedProductList} />
-      )}
+      {!loading && data && data.likedProductList.length === 0 && <CenteredImg />}
+      <StyledListWrap>
+        <VerticalList
+          title=""
+          loading={loading && !data?.likedProductList}
+          productList={data?.likedProductList || []}
+        />
+      </StyledListWrap>
       <Navbar />
-    </div>
+    </StyledContainer>
   )
 }

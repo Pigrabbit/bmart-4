@@ -38,18 +38,15 @@ export type CheckedProduct = {
 
 const StyledContainer = styled.div`
   .checkout-complete-modal[data-is-checkedout=\'true\'] {
-    animation: 1.8s ease-in-out slideUp;
+    animation: 1.6s ease-in-out slideUp forwards;
   }
 
   @keyframes slideUp {
     25% {
       transform: translateY(0);
     }
-    75% {
-      transform: translateY(0);
-    }
     100% {
-      transform: translateY(-100%);
+      transform: translateY(0);
     }
   }
 `
@@ -215,7 +212,7 @@ export const CartDashboard = (props: Props) => {
       payload: {
         productIdList: checkedProductList
           .filter((c) => c.checked)
-          .map(({ productId }) => ( productId ))
+          .map(({ productId }) => productId),
       },
     })
     setIsConfirmVisbile(false)
@@ -230,53 +227,54 @@ export const CartDashboard = (props: Props) => {
 
   return (
     <Dashboard title="장바구니" footer={false} navbar={false}>
-      {orderList.length > 0 ? (
-        <StyledContainer className="cart-dashboard">
-          {isConfirmVisible ? (
-            <Confirm
-              content="결제 하시겠어요?"
-              cancelMessage="조금 더 볼게요"
-              okMessage="결제할래요"
-              getResult={confirmHandler}
+      <>
+        {isConfirmVisible && (
+          <Confirm
+            content="결제 하시겠어요?"
+            cancelMessage="조금 더 볼게요"
+            okMessage="결제할래요"
+            getResult={confirmHandler}
+          />
+        )}
+        {!loading && data && data.productListInCart.length > 0 && (
+          <StyledContainer className="cart-dashboard">
+            <StyledCheckoutCompleteModal
+              className="checkout-complete-modal"
+              data-is-checkedout={isCheckedOut}
+              onAnimationEnd={() => setIsCheckedOut(false)}
+            >
+              <StyledModalContent className="checkout-complete-modal-content">
+                <p className="checkout-complete-modal-alert">결제완료</p>
+                <StyledRider
+                  className="checkout-complete-modal-rider"
+                  src={`${process.env.PUBLIC_URL}/images/bmart_rider.png`}
+                />
+              </StyledModalContent>
+            </StyledCheckoutCompleteModal>
+            <CartDashboardHeader
+              checkedProductList={checkedProductList}
+              setCheckedProductList={setCheckedProductList}
+              deleteProductFromCartHandler={deleteProductFromCartHandler}
             />
-          ) : (
-            ''
-          )}
-          <StyledCheckoutCompleteModal
-            className="checkout-complete-modal"
-            data-is-checkedout={isCheckedOut}
-            onAnimationEnd={() => setIsCheckedOut(false)}
-          >
-            <StyledModalContent className="checkout-complete-modal-content">
-              <p className="checkout-complete-modal-alert">결제완료</p>
-              <StyledRider
-                className="checkout-complete-modal-rider"
-                src={`${process.env.PUBLIC_URL}/images/bmart_rider.png`}
-              />
-            </StyledModalContent>
-          </StyledCheckoutCompleteModal>
-          <CartDashboardHeader
-            checkedProductList={checkedProductList}
-            setCheckedProductList={setCheckedProductList}
-            deleteProductFromCartHandler={deleteProductFromCartHandler}
-          />
-          <CartDashboardOrderList
-            orderList={orderList}
-            checkedProductList={checkedProductList}
-            setCheckedProductList={setCheckedProductList}
-            modifyProductQuantityHandler={modifyProductQuantityHandler}
-            deleteProductFromCartHandler={deleteProductFromCartHandler}
-          />
-          <CartDashboardBill summary={getSummary()} />
-          <CartDashboardFooter />
-          <CartDashboardOrderButton
-            summary={getSummary()}
-            clickCheckoutButtonHandler={clickCheckoutButtonHandler}
-          />
-        </StyledContainer>
-      ) : (
-        <CenteredImg description={TUNG_MESSAGE.EMPTY_CART} />
-      )}
+            <CartDashboardOrderList
+              orderList={orderList}
+              checkedProductList={checkedProductList}
+              setCheckedProductList={setCheckedProductList}
+              modifyProductQuantityHandler={modifyProductQuantityHandler}
+              deleteProductFromCartHandler={deleteProductFromCartHandler}
+            />
+            <CartDashboardBill summary={getSummary()} />
+            <CartDashboardFooter />
+            <CartDashboardOrderButton
+              summary={getSummary()}
+              clickCheckoutButtonHandler={clickCheckoutButtonHandler}
+            />
+          </StyledContainer>
+        )}
+        {!loading && data && data.productListInCart.length === 0 && (
+          <CenteredImg description={TUNG_MESSAGE.EMPTY_CART} />
+        )}
+      </>
     </Dashboard>
   )
 }

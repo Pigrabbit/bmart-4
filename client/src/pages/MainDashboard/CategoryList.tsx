@@ -105,15 +105,14 @@ export const CategoryList = (props: Props) => {
     refetch()
   }, [])
 
-  return loading || !data ? (
-    <div>Loading...</div>
-  ) : (
+  return (
     <div id={`category-${idx}`} ref={rootRef}>
       <StyledDetector ref={categoryListRef}></StyledDetector>
       <VerticalList
         title={category}
         lazyLoad={imageLazyLoaded}
-        productList={data.productListByCategory}
+        loading={loading && !data?.productListByCategory}
+        productList={data?.productListByCategory || []}
       />
       <StyledMoreLinkRow>
         <StyledMoreLink href={`/category/${categoryId}`}>

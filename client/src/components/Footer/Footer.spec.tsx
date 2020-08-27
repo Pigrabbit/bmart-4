@@ -13,11 +13,6 @@ describe('<Footer />', () => {
     expect(wrapper.is('.footer')).to.equal(true)
   })
 
-  it('반품·교환 버튼이 노출된다', () => {
-    const wrapper = shallow(<Footer />)
-    expect(wrapper.exists('.footer-return-button')).to.equal(true)
-  })
-
   it('고객센터 연락처와 이메일 정보가 노출된다', () => {
     const wrapper = shallow(<Footer />)
     expect(wrapper.find('.footer-phone-value').text()).to.equal(CS_PHONE)

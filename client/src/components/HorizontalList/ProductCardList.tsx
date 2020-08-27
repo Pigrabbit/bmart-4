@@ -2,8 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { ProductCard } from '../ProductCard'
 import { ProductCardType } from '../../types/productCard'
+import { SkeletonCard } from '../SkeletonCard'
+import { SKELETON_CARD_COUNT } from '../../utils/constants'
 
 type Props = {
+  loading: boolean
   productList: ProductCardType[]
 }
 
@@ -18,13 +21,17 @@ const StyledSpacer = styled.div`
 `
 
 export const ProductCardList = (props: Props) => {
-  const { productList } = props
+  const { productList, loading } = props
 
   return (
     <StyledProductList className="product-list">
-      {productList.map((product, idx) => (
-        <ProductCard key={idx} product={product} width="36%" style={{ marginRight: '10px' }} />
-      ))}
+      {loading
+        ? Array(SKELETON_CARD_COUNT)
+            .fill('')
+            .map((_, idx) => <SkeletonCard key={idx} width="36%" style={{ marginRight: '10px' }} />)
+        : productList.map((product, idx) => (
+            <ProductCard key={idx} product={product} width="36%" style={{ marginRight: '10px' }} />
+          ))}
       <StyledSpacer></StyledSpacer>
     </StyledProductList>
   )

@@ -14,18 +14,35 @@ const StyledContainer = styled.div<StyledContainerProp>`
 
   .thumbnail {
     padding: 50%;
-    background-color: #eee;
+    background-color: #f5f5f5;
     border-radius: 8px;
     animation: blink 1000ms ease infinite;
+    position: relative;
+
+    .like {
+      font-size: 24px;
+      line-height: 24px;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      z-index: 10;
+      color: #e5e5e5;
+    }
   }
 
   .description {
     width: 100%;
     height: 20px;
-    background-color: #eee;
+    background-color: #f5f5f5;
     border-radius: 4px;
     margin-top: 4px;
     animation: blink 1000ms ease infinite;
+
+    &:last-child {
+      width: 40%;
+    }
   }
 
   @keyframes blink {
@@ -46,7 +63,9 @@ export const SkeletonCard = (props: Props) => {
 
   return (
     <StyledContainer className="product-card" width={width} style={style}>
-      <div className="thumbnail"></div>
+      <div className="thumbnail">
+        <i className="icon like">heart_circle_fill</i>
+      </div>
       <div className="description"></div>
       <div className="description"></div>
     </StyledContainer>

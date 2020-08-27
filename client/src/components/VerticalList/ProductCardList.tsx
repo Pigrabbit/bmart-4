@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { ProductCardType } from '../../types/productCard'
 import { ProductCard } from '../ProductCard'
+import { SkeletonCard } from '../SkeletonCard'
 
 type Props = {
+  loading: boolean
   lazyLoad?: boolean
   productList: ProductCardType[]
 }
@@ -17,19 +19,25 @@ const StyledProductList = styled.div`
 `
 
 export const ProductCardList = (props: Props) => {
-  const { productList, lazyLoad } = props
+  const { productList, lazyLoad, loading } = props
 
   return (
     <StyledProductList className="product-list">
-      {productList.map((product, idx) => (
-        <ProductCard
-          key={idx}
-          product={product}
-          lazyLoad={lazyLoad}
-          width="calc(50% - 5px)"
-          style={{ marginBottom: '10px' }}
-        />
-      ))}
+      {loading
+        ? Array(10)
+            .fill('')
+            .map((_, idx) => (
+              <SkeletonCard key={idx} width="calc(50% - 5px)" style={{ marginBottom: '10px' }} />
+            ))
+        : productList.map((product, idx) => (
+            <ProductCard
+              key={idx}
+              product={product}
+              lazyLoad={lazyLoad}
+              width="calc(50% - 5px)"
+              style={{ marginBottom: '10px' }}
+            />
+          ))}
     </StyledProductList>
   )
 }

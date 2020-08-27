@@ -59,16 +59,14 @@ export const MainDashboard = (props: Props) => {
           double={true}
         />
         <Carousel bannerList={smallBannerList} />
-        {promotion.data && promotion.data.productListByDiscountRate && (
-          <HorizontalList
-            loading={
-              (promotion.loading || promotion.networkStatus === NetworkStatus.refetch) &&
-              !promotion.data?.productListByDiscountRate
-            }
-            title="번쩍 ⚡ 할인 상품"
-            productList={promotion.data.productListByDiscountRate}
-          />
-        )}
+        <HorizontalList
+          loading={
+            (promotion.loading || promotion.networkStatus === NetworkStatus.refetch) &&
+            !promotion.data?.productListByDiscountRate
+          }
+          title="번쩍 ⚡ 할인 상품"
+          productList={promotion.data?.productListByDiscountRate || []}
+        />
         <CategoryListSection />
       </StyledContainer>
     </Dashboard>

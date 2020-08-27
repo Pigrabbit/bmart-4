@@ -152,6 +152,17 @@ export const GET_PRODUCTLIST_IN_CART = gql`
     }
   }
 `
+
+export type GetProuctCountInCartData = {
+  productCountInCart: number
+}
+
+export const GET_PRODUCT_COUNT_IN_CART = gql`
+  query ProductCountInCart {
+    productCountInCart
+  }
+`
+
 type SuccessData = {
   success: boolean
 }

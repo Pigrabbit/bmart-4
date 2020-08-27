@@ -6,6 +6,17 @@ import {
   DislikeProductData,
 } from '../../apis/graphqlQuery'
 import { useMutation } from '@apollo/client'
+import styled from 'styled-components'
+import { COLORS } from '../../utils/styleConstants'
+const StyledLikedButton = styled.div`
+  .icon {
+    color: #eee;
+    border-radius: 50%;
+    &.like {
+      color: ${COLORS.red};
+    }
+  }
+`
 
 type Props = {
   isLiked: boolean
@@ -19,6 +30,7 @@ export const LikeButton = (props: Props) => {
   const toggleProductLike = async (e: React.MouseEvent) => {
     e.stopPropagation()
     const params = { variables: { productId: props.productId } }
+    console.log(params)
     if (isLiked) {
       await dislikeProduct(params)
     } else {
@@ -27,12 +39,12 @@ export const LikeButton = (props: Props) => {
     setIsLiked(!isLiked)
   }
   return (
-    <div className="icon-wrap" onClick={toggleProductLike}>
+    <StyledLikedButton className="icon-wrap" onClick={toggleProductLike}>
       {isLiked ? (
         <i className="icon like">heart_circle_fill</i>
       ) : (
         <i className="icon">heart_circle_fill</i>
       )}
-    </div>
+    </StyledLikedButton>
   )
 }

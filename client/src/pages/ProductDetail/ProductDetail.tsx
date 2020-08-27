@@ -18,6 +18,7 @@ import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
 import { OrderButton } from '../../components/OrderButton'
 import { Dashboard } from '../../components/Dashboard'
 import { ProductDetailRouteProps } from '../../types/routeProps'
+import { LikeButton } from '../../components/LikeButton'
 
 type Props = {}
 
@@ -195,6 +196,8 @@ export const ProductDetail = (props: Props) => {
     detailImg.refetch()
   }, [])
 
+  console.log(product)
+
   return detailImg.loading || !detailImg.data || product.loading || !product.data ? (
     <LoadingIndicator />
   ) : (
@@ -251,6 +254,14 @@ export const ProductDetail = (props: Props) => {
               <div className="description">하단 상세 내용 참고</div>
             </div>
           </StyledDetails>
+          {product.variables && product.variables.id ? (
+            <LikeButton
+              isLiked={product.data.productById.isLiked}
+              productId={product.variables.id}
+            />
+          ) : (
+            ''
+          )}
           <StyledThumbnails>
             {detailImg.data.productDetailImgList.map((item, idx) => (
               <div className="detail-thumbnail" key={idx}>

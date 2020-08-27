@@ -202,8 +202,6 @@ export const ProductDetail = (props: Props) => {
     detailImg.refetch()
   }, [])
 
-  console.log(product)
-
   return detailImg.loading || !detailImg.data || product.loading || !product.data ? (
     <LoadingIndicator />
   ) : (

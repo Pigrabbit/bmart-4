@@ -23,12 +23,12 @@ const StyledExitButton = styled.div`
   position: absolute;
   right: 15px;
   top: 15px;
-  font-size: 30px;
+  font-size: 2em;
   border-radius: 50%;
-  color: #888;
+  color: #444;
   background-color: #eee;
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
   text-align: center;
   user-select: none;
   i {
@@ -48,7 +48,7 @@ const StyledContainer = styled.div`
   height: 100%;
 
   .order-modal-overlay {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -86,7 +86,7 @@ const StyledModalContent = styled.div`
   .order-modal-content-data {
     margin: 0px 15px 0 15px;
     p {
-      font-size: 1.5em;
+      font-size: 1.2em;
     }
     .order-modal-content-name {
       font-weight: 600;
@@ -105,16 +105,14 @@ const StyledModalContent = styled.div`
 `
 const StyledModalError = styled.p`
   position: absolute;
-  top: 50%;
+  top: calc(60% + 10px);
   left: 50%;
   width: 300px;
   font-size: 1.5em;
   padding: 10px;
-  border-radius: 30px;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%);
   align-self: start;
   color: ${COLORS.red};
-  background: #fff;
   text-align: center;
 `
 
@@ -122,27 +120,14 @@ const StyledWrapper = styled.div`
   margin: 0 0 0 20px;
 `
 
-const StyledModalOrderButton = styled.button`
-  position: fixed;
-  bottom: 15px;
-  left: 5%;
-  z-index: 2000;
-  width: 90%;
-  border: 1px solid #bbb;
-  border-radius: 5px;
-  padding: 15px 0;
-  background-color: #fff;
-`
-
 const StyledController = styled.div`
-  margin: 10px 15px 0px 15px;
+  margin: 10px 5px 0px 5px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   height: 50px;
   border-radius: 25px;
   background-color: #fff;
-  border: 1px solid #eee;
   font-size: 30px;
   color: #000;
 
@@ -150,12 +135,13 @@ const StyledController = styled.div`
     font-size: 25px;
     width: 100%;
     height: 100%;
-    &:disabled {
-      color: #ccc;
-    }
     i {
+      &.disabled {
+        color: #bbb;
+      }
       padding: 5px;
-      background: #eee;
+      background-color: #eee;
+      color: #444;
       border-radius: 50%;
     }
   }
@@ -273,17 +259,18 @@ export const OrderModal = (props: Props) => {
           </div>
           <StyledController className="order-modal-controller">
             <button
-              className="order-modal-controller-decrement-btn"
+              className={`order-modal-controller-decrement-btn`}
               onClick={() => dispatch({ type: 'decrement' })}
             >
-              <i className="icon">minus</i>
+              <i className={`icon ${state.count <= 1 ? 'disabled' : ''}`}>minus</i>
             </button>
+
             <p className="order-modal-controller-quantity">{state.count}</p>
             <button
-              className="order-modal-controller-increment-btn"
+              className={`order-modal-controller-increment-btn`}
               onClick={() => dispatch({ type: 'increment' })}
             >
-              <i className="icon">plus</i>
+              <i className={`icon ${state.count >= 10 ? 'disabled' : ''}`}>plus</i>
             </button>
           </StyledController>
         </StyledWrapper>

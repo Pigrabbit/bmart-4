@@ -4,7 +4,7 @@ import {
   GET_PRODUCTLIST_BY_CATEGORY,
   ProductByCategoryData,
   ProductByCategoryVars,
-} from '../../apis/graphqlQuery'
+} from '../../apis/product'
 import { VerticalList } from '../../components/VerticalList'
 import styled from 'styled-components'
 import { STYLES } from '../../utils/styleConstants'

@@ -2,20 +2,7 @@ import React, { useCallback, useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Dashboard } from '../../components/Dashboard'
 import { useQuery, useMutation } from '@apollo/client'
-import {
-  GET_PRODUCTLIST_IN_CART,
-  DELETE_PRODUCT_FROM_CART,
-  MODIFY_PRODUCT_QUANTITY,
-  ModifyProductQuantityVars,
-  DeleteProductFromCartVars,
-  ProductInCart,
-  ProductInCartData,
-  ModifyProductQuantityData,
-  DeleteProductFromCartData,
-  CHECKOUT_ORDER,
-  CheckoutOrderData,
-  CheckoutOrderVars,
-} from '../../apis/graphqlQuery'
+
 import { CartDashboardHeader } from './CartDashboardHeader'
 import { CartDashboardOrderList } from './CartDashboardOrderList'
 import { CartDashboardOrderButton } from './CartDashboardOrderButton'
@@ -25,6 +12,8 @@ import { CenteredImg } from '../../components/CenteredImg'
 import { TUNG_MESSAGE } from '../../utils/constants'
 import { CartDispatchContext } from '../../context/CartContext'
 import { useHistory } from 'react-router-dom'
+import { ProductInCartData, GET_PRODUCTLIST_IN_CART, ModifyProductQuantityData, ModifyProductQuantityVars, MODIFY_PRODUCT_QUANTITY, DeleteProductFromCartData, DeleteProductFromCartVars, DELETE_PRODUCT_FROM_CART, ProductInCart } from '../../apis/cart'
+import { CheckoutOrderData, CheckoutOrderVars, CHECKOUT_ORDER } from '../../apis/order'
 
 type Props = {}
 

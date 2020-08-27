@@ -10,7 +10,7 @@ import {
   ProductByIdData,
   ProductByIdVars,
   GET_PRODUCT_BY_ID,
-} from '../../apis/graphqlQuery'
+} from '../../apis/product'
 import { useQuery } from '@apollo/client'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
 import { parseToLocalMoneyString } from '../../utils/parser'

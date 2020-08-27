@@ -26,6 +26,35 @@ const getProductById = async (parent, args, context) => {
   }
 }
 
+const getProductListDiscountRateDesc = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+
+  const { offset = 0, limit = 10 } = args
+  if (offset < 0 || limit < 0) {
+    return new Error(ReasonPhrases.BAD_REQUEST)
+  }
+  const conn = await pool.getConnection()
+  try {
+    const query = `
+      SELECT
+        CASE WHEN (SELECT 1 FROM wishlist w WHERE w.product_id = p.id AND w.user_id = ?) = 1
+        THEN 'true' ELSE 'false' END as is_liked, p.*
+      FROM product p 
+      ORDER BY p.discount_rate DESC
+      LIMIT ? OFFSET ?
+    `
+    const [rows] = await conn.query(query, [userId, limit, offset])
+    const result = rows.map((row) => new GetProductDTO(row))
+
+    return result
+  } catch {
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
+  } finally {
+    conn.release()
+  }
+}
+
 const productListByCategoryResolver = async (parent, args, context) => {
   const res = await context.res
   const userId = res.locals.userId
@@ -135,6 +164,7 @@ const likedProductListResolver = async (parent, args, context) => {
 
 module.exports = {
   getProductById,
+  getProductListDiscountRateDesc,
   productListByCategoryResolver,
   getDetailImgSrcByProductId,
   likedProductListResolver,

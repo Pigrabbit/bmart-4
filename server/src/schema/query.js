@@ -14,6 +14,7 @@ const {
   getProductById,
   getDetailImgSrcByProductId,
   likedProductListResolver,
+  getProductListDiscountRateDesc,
 } = require('../resolver/product-resolver')
 const { productListInCartResolver, productIdsInCartResolver } = require('../resolver/cart-resolver')
 const { orderHistoryListResolver } = require('../resolver/order-resolver')
@@ -40,6 +41,15 @@ const RootQueryType = new GraphQLObjectType({
         sorter: { type: GraphQLString },
       },
       resolve: productListByCategoryResolver,
+    },
+    productListByDiscountRate: {
+      type: new GraphQLList(ProductType),
+      description: '상품리스트 할인율 내림차순',
+      args: {
+        offset: { type: GraphQLInt },
+        limit: { type: GraphQLInt },
+      },
+      resolve: getProductListDiscountRateDesc,
     },
     productListInCart: {
       type: new GraphQLList(CartProductType),

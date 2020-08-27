@@ -2,12 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { OrderCard } from './OrderCard'
 import { STYLES } from '../../utils/styleConstants'
-import {
-  ModifyProductQuantityVars,
-  DeleteProductFromCartVars,
-  ProductInCart,
-} from '../../apis/graphqlQuery'
+
 import { CheckedProduct } from './CartDashboard'
+import { ProductInCart, ModifyProductQuantityVars, DeleteProductFromCartVars } from '../../apis/cart'
 
 type Props = {
   orderList: ProductInCart[]

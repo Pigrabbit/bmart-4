@@ -2,14 +2,11 @@ import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { STYLES, COLORS } from '../../utils/styleConstants'
-import {
-  ModifyProductQuantityVars,
-  DeleteProductFromCartVars,
-  ProductInCart,
-} from '../../apis/graphqlQuery'
+
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 import { StyledLink } from '../../styles/StyledLink'
 import { Checkbox } from '../../components/Checkbox'
+import { ProductInCart, ModifyProductQuantityVars, DeleteProductFromCartVars } from '../../apis/cart'
 
 type Props = {
   order: ProductInCart

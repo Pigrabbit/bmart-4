@@ -195,9 +195,7 @@ export const ProductDetail = (props: Props) => {
     detailImg.refetch()
   }, [])
 
-  const isEmptyStock = stockCount === 0
-
-  return (detailImg.loading || !detailImg.data || product.loading || !product.data) ? (
+  return detailImg.loading || !detailImg.data || product.loading || !product.data ? (
     <LoadingIndicator />
   ) : (
     <Dashboard title="상세정보" navbar={false} footer={false}>
@@ -223,13 +221,19 @@ export const ProductDetail = (props: Props) => {
             <p className="product-detail-name">{product.data.productById.name}</p>
             {product.data.productById.discountRate > 0 ? (
               <div className="product-detail-discount">
-                <p className="product-detail-base-price">{parseToLocalMoneyString(product.data.productById.basePrice)}원</p>
-                <p className="product-detail-discount-rate">{product.data.productById.discountRate}% ↓</p>
+                <p className="product-detail-base-price">
+                  {parseToLocalMoneyString(product.data.productById.basePrice)}원
+                </p>
+                <p className="product-detail-discount-rate">
+                  {product.data.productById.discountRate}% ↓
+                </p>
               </div>
             ) : (
               ''
             )}
-            <p className="product-detail-price">{parseToLocalMoneyString(product.data.productById.price)}원</p>
+            <p className="product-detail-price">
+              {parseToLocalMoneyString(product.data.productById.price)}원
+            </p>
           </StyledInformations>
           <StyledDetails>
             <div className="row">
@@ -255,8 +259,11 @@ export const ProductDetail = (props: Props) => {
             ))}
           </StyledThumbnails>
         </StyledDetailInfo>
-        <OrderButton disabled={isEmptyStock} clickHandler={() => setIsModalVisible(true)}>
-          <>{isEmptyStock ? '재고가 부족합니다' : '주문하기'}</>
+        <OrderButton
+          disabled={product.data.productById.stockCount === 0}
+          clickHandler={() => setIsModalVisible(true)}
+        >
+          <>{product.data.productById.stockCount === 0 ? '재고가 부족합니다' : '주문하기'}</>
         </OrderButton>
         {isModalVisible ? (
           <OrderModal

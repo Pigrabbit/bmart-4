@@ -55,9 +55,10 @@ export type ProductByIdData = {
 export const GET_PRODUCT_BY_ID = gql`
   query GetProductById($id: ID!) {
     productById(id: $id) {
-      name,
-      price,
+      name
+      price
       isLiked
+      stockCount
     }
   }
 `

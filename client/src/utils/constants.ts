@@ -106,6 +106,9 @@ export const KR_WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
 // 현재 포커싱된 카테고리 이후 몇 개의 카테고리의 loading을 진행할 것인가에 대한 상수
 export const CATEGORY_SECTION_LAZYLOAD_ADDER = 2
 export const DISCOUNT_PERCENTAGE_CARD_LIMIT = 30
+
+export const CAROUSEL_BASIC_INTERSECTION_RATIO_THRESHOLD = 0.9
+export const CAROUSEL_BASIC_INTERSECTION_THRESHOLD = 0.9
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1
 export const ONE_PAGE_LENGTH = 10

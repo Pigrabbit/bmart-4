@@ -27,12 +27,13 @@ passport.use(
         done(null, registeredUser)
       } else {
         // 없으면, 새로 만들어주기
-        const newUser = await new User(db, {
+        await new User(db, {
           firstname: profile.name.givenName,
           lastname: profile.name.familyName,
           email: profile.emails[0].value,
           google_id: profile.id,
         }).create()
+        const newUser = await new User(db, { google_id: profile.id }).findByGoogleId()
         done(null, newUser)
       }
       // 로그인 시켜주기

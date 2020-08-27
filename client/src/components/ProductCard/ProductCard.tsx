@@ -67,8 +67,6 @@ export const ProductCard = (props: Props) => {
     name,
     thumbnailSrc,
     stockCount,
-    coupangProductId,
-    basePrice,
     discountRate,
   } = product
 
@@ -100,7 +98,7 @@ export const ProductCard = (props: Props) => {
     }
 
     interval = setTimeout(() => {
-      history.push(`/product/${id}`, { ...product })
+      history.push(`/product/${id}`)
       interval = null
     }, 200)
   }

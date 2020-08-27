@@ -3,6 +3,29 @@ const { GetProductDTO } = require('../dto/get-product-dto')
 const { GetProductDetailDTO } = require('../dto/get-product-detail-dto')
 const { ReasonPhrases } = require('http-status-codes')
 
+const getProductById = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+  const { id } = args
+
+  const conn = await pool.getConnection()
+  try {
+    const query = `
+      SELECT
+      CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
+      THEN 'true' ELSE 'false' END as is_liked, p.*
+      FROM product p WHERE id = ?
+    `
+    const [rows] = await conn.query(query, [userId, id])
+
+    return new GetProductDTO(rows[0])
+  } catch {
+    throw new Error(ReasonPhrases.NOT_FOUND)
+  } finally {
+    conn.release()
+  }
+}
+
 const productListByCategoryResolver = async (parent, args, context) => {
   const res = await context.res
   const userId = res.locals.userId
@@ -45,12 +68,17 @@ const productListByCategoryResolver = async (parent, args, context) => {
   }
 }
 
-const productDetailImgResolver = async (parent, args) => {
-  const { coupangProductId } = args
+const getDetailImgSrcByProductId = async (parent, args) => {
+  const { id } = args
   const conn = await pool.getConnection()
   try {
-    const query = 'SELECT * FROM product_detail_image WHERE coupang_product_id=?'
-    const [rows] = await conn.query(query, [coupangProductId])
+    const query = `
+      SELECT i.* FROM product_detail_image i
+      JOIN product p
+      ON i.coupang_product_id = p.coupang_product_id
+      WHERE p.id= ?
+    `
+    const [rows] = await conn.query(query, [id])
 
     const result = rows.map((row) => new GetProductDetailDTO(row))
 
@@ -106,8 +134,9 @@ const likedProductListResolver = async (parent, args, context) => {
 }
 
 module.exports = {
+  getProductById,
   productListByCategoryResolver,
-  productDetailImgResolver,
+  getDetailImgSrcByProductId,
   likedProductListResolver,
   getOrderProductById,
 }

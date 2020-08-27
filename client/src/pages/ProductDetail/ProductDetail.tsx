@@ -41,6 +41,12 @@ const StyledContainer = styled.div`
   }
 `
 
+const StyledLikeButtonWrapper = styled.div`
+  position: absolute;
+  right: ${STYLES.padding};
+  bottom: ${STYLES.padding};
+`
+
 const StyledSlider = styled.div`
   position: fixed;
   left: 0;
@@ -121,8 +127,7 @@ const StyledDetailInfo = styled.div`
   }
 `
 const StyledDetails = styled.div`
-  padding: 20px ${STYLES.padding};
-  padding-bottom: 40px;
+  padding: ${STYLES.padding} ${STYLES.padding} 40px ${STYLES.padding};
 
   .row {
     display: flex;
@@ -147,6 +152,7 @@ const StyledDetails = styled.div`
 const StyledInformations = styled.div`
   padding: 20px ${STYLES.padding};
   padding-top: 40px;
+  position: relative;
 `
 const StyledCarouselWrap = styled.div`
   position: sticky;
@@ -220,7 +226,7 @@ export const ProductDetail = (props: Props) => {
           <CarouselBasic bannerList={detailImg.data.productDetailImgList} />
         </StyledCarouselWrap>
         <StyledDetailInfo className="product-detail-info">
-          <StyledInformations>
+          <StyledInformations className="product-informations">
             <p className="product-detail-name">{product.data.productById.name}</p>
             {product.data.productById.discountRate > 0 ? (
               <div className="product-detail-discount">
@@ -237,6 +243,16 @@ export const ProductDetail = (props: Props) => {
             <p className="product-detail-price">
               {parseToLocalMoneyString(product.data.productById.price)}원
             </p>
+            <StyledLikeButtonWrapper>
+              {product.variables && product.variables.id ? (
+                <LikeButton
+                  isLiked={product.data.productById.isLiked}
+                  productId={product.variables.id}
+                />
+              ) : (
+                ''
+              )}
+            </StyledLikeButtonWrapper>
           </StyledInformations>
           <StyledDetails>
             <div className="row">
@@ -254,14 +270,6 @@ export const ProductDetail = (props: Props) => {
               <div className="description">하단 상세 내용 참고</div>
             </div>
           </StyledDetails>
-          {product.variables && product.variables.id ? (
-            <LikeButton
-              isLiked={product.data.productById.isLiked}
-              productId={product.variables.id}
-            />
-          ) : (
-            ''
-          )}
           <StyledThumbnails>
             {detailImg.data.productDetailImgList.map((item, idx) => (
               <div className="detail-thumbnail" key={idx}>

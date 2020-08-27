@@ -12,6 +12,7 @@ const StyledLikedButton = styled.div`
   .icon {
     color: #eee;
     border-radius: 50%;
+    font-size: 3em;
     &.like {
       color: ${COLORS.red};
     }

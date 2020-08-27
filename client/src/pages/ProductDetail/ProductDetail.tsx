@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { CarouselBasic } from '../../components/CarouselBasic'
 import { OrderModal } from '../../components/OrderModal'
@@ -19,6 +19,7 @@ import { OrderButton } from '../../components/OrderButton'
 import { Dashboard } from '../../components/Dashboard'
 import { ProductDetailRouteProps } from '../../types/routeProps'
 import { LikeButton } from '../../components/LikeButton'
+import { Confirm } from '../../components/Confirm'
 
 type Props = {}
 
@@ -45,45 +46,6 @@ const StyledLikeButtonWrapper = styled.div`
   position: absolute;
   right: ${STYLES.padding};
   bottom: ${STYLES.padding};
-`
-
-const StyledSlider = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translateY(100%);
-
-  .confirm-slider-content {
-    width: 70%;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    font-size: 16px;
-    padding: 5px 0;
-    border-radius: ${STYLES.smallRadius};
-    opacity: 0;
-  }
-  .confirm-slider-content[data-is-order-placed=\'true\'] {
-    animation: 1s ease-in-out showContent;
-  }
-
-  @keyframes showContent {
-    1% {
-      opacity: 1;
-    }
-    99% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
 `
 
 const StyledDetailInfo = styled.div`
@@ -180,10 +142,11 @@ export type StateType = {
 export const ProductDetail = (props: Props) => {
   const match = useRouteMatch<ProductDetailRouteProps>()
   const id = match.params.productId
+  const history = useHistory()
 
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [savedCount, setSavedCount] = useState(1)
-  const [isOrderPlaced, setIsOrderPlaced] = useState(false)
+  const [isOrderPlaced, setIsOrderPlaced] = useState<boolean>(false)
 
   const product = useQuery<ProductByIdData, ProductByIdVars>(GET_PRODUCT_BY_ID, {
     variables: { id },
@@ -207,19 +170,20 @@ export const ProductDetail = (props: Props) => {
   ) : (
     <Dashboard title="상세정보" navbar={false} footer={false}>
       <StyledContainer className="product-detail">
-        <StyledSlider
-          className="confirm-slider"
-          data-is-order-placed={isOrderPlaced}
-          onAnimationEnd={() => setIsOrderPlaced(false)}
-        >
-          <div
-            className="confirm-slider-content"
-            data-is-order-placed={isOrderPlaced}
-            onAnimationEnd={() => setIsOrderPlaced(false)}
-          >
-            장바구니에 상품이 담겼습니다
-          </div>
-        </StyledSlider>
+        {isOrderPlaced && (
+          <Confirm
+            content="장바구니에 상품이 담겼습니다"
+            cancelMessage="조금 더 담을래요"
+            okMessage="결제하러 가기"
+            getResult={(result: boolean) => {
+              if (result) {
+                history.push(`/cart`)
+              } else {
+                history.goBack()
+              }
+            }}
+          />
+        )}
         <StyledCarouselWrap>
           <CarouselBasic bannerList={detailImg.data.productDetailImgList} />
         </StyledCarouselWrap>

@@ -4,6 +4,7 @@ import { NAVIGATIONS } from '../../utils/constants'
 import { StyledLink } from '../../styles/StyledLink'
 import { CartStateContext } from '../../context/CartContext'
 import { COLORS } from '../../utils/styleConstants'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 
 type Props = {}
 
@@ -29,10 +30,14 @@ const StyledIcon = styled.div`
   align-items: center;
   position: relative;
 
-  .navbar-item-icon {
-    width: 30px;
-    filter: invert(30%);
+  &.selected {
+    color: ${COLORS.baemint};
   }
+
+  .icon {
+    font-size: 26px;
+  }
+
   .display-name {
     text-align: center;
     font-size: 10px;
@@ -72,31 +77,39 @@ const StyledIcon = styled.div`
 
 export const Navbar = (props: Props) => {
   const iconList = NAVIGATIONS
+  const match = useRouteMatch()
+  const history = useHistory()
 
   const { count } = useContext(CartStateContext)
 
   return (
     <StyledContainer className="navbar">
-      {iconList.map(({ name, displayName, path }, idx) => (
-        <StyledLink key={idx} to={{ pathname: path }}>
-          <StyledIcon className="navbar-item">
-            {name === 'cart' && count > 0 && (
-              <div className="cart-count">
-                <div className="count">
-                  <p>{count}</p>
+      {iconList.map(({ name, displayName, path, icon, focusedIcon }, idx) => {
+        const pathMatched = match.path === path
+        return (
+          <StyledLink
+            key={idx}
+            to={{ pathname: path }}
+            onClick={(e) => {
+              e.preventDefault()
+              if (pathMatched) return
+              history.push({ pathname: path })
+            }}
+          >
+            <StyledIcon className={`navbar-item ${pathMatched ? 'selected' : ''}`}>
+              {name === 'cart' && count > 0 && (
+                <div className="cart-count">
+                  <div className="count">
+                    <p>{count}</p>
+                  </div>
                 </div>
-              </div>
-            )}
-            <img
-              src={`${process.env.PUBLIC_URL}/images/navbar-icon/${name}.svg`}
-              alt={`${name}-icon`}
-              className="navbar-item-icon"
-              id={`navbar-item-icon-${name}`}
-            />
-            <p className="display-name">{displayName}</p>
-          </StyledIcon>
-        </StyledLink>
-      ))}
+              )}
+              <i className="icon">{pathMatched ? focusedIcon : icon}</i>
+              <p className="display-name">{displayName}</p>
+            </StyledIcon>
+          </StyledLink>
+        )
+      })}
     </StyledContainer>
   )
 }

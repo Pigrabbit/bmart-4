@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { STYLES, COLORS } from '../../utils/styleConstants'
 
@@ -29,7 +29,7 @@ const StyledContainer = styled.div`
   border-radius: ${STYLES.smallRadius};
   background-color: white;
   font-size: 14px;
-  box-shadow: 0 1px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
 
   .content {
     height: 80px;
@@ -71,17 +71,26 @@ const StyledContainer = styled.div`
 `
 
 export const Confirm = (props: Props) => {
-  const { content, cancelMessage = "취소", okMessage = "확인" } = props
+  const { content, cancelMessage = '취소', okMessage = '확인' } = props
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+  }, [])
+
+  const getResult = (result: boolean) => {
+    document.body.style.overflow = 'inherit'
+    props.getResult(result)
+  }
 
   return (
     <StyledWrap className="confirm-wrap">
       <StyledContainer className="confirm">
         <div className="content">{content}</div>
         <div className="confirm-btns">
-          <button className="confirm-btn cancel" onClick={() => props.getResult(false)}>
+          <button className="confirm-btn cancel" onClick={() => getResult(false)}>
             {cancelMessage}
           </button>
-          <button className="confirm-btn ok" onClick={() => props.getResult(true)}>
+          <button className="confirm-btn ok" onClick={() => getResult(true)}>
             {okMessage}
           </button>
         </div>

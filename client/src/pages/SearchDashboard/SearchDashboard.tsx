@@ -127,6 +127,7 @@ export const SearchDashboard = (props: Props) => {
       <StyledContainer className="search-dashboard">
         {state.query.length > 0 && state.autoSuggestList.length > 0 && (
           <AutoSuggestQueryList
+            query={state.query}
             autoSuggestList={state.autoSuggestList}
             clickSuggestHandler={clickSuggestHandler}
           />

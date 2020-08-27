@@ -104,6 +104,7 @@ export type ProductInCart = {
     basePrice: number
     discountRate: number
     thumbnailSrc: string
+    stockCount: number
   }
 }
 

@@ -25,7 +25,7 @@ const StyledDetector = styled.div`
 const StyledMoreLinkRow = styled.div`
   margin: 0 0 5px 0;
   padding: 10px 0 10px 0;
-  font-size: 1.5em;
+  font-size: 1.2em;
   text-decoration: none;
   background: white;
   height: 50px;
@@ -117,7 +117,7 @@ export const CategoryList = (props: Props) => {
       />
       <StyledMoreLinkRow>
         <StyledMoreLink href={`/category/${categoryId}`}>
-          더 보기 <i className="icon">chevron_right</i>
+          {category} 더보기 <i className="icon">chevron_right</i>
         </StyledMoreLink>
       </StyledMoreLinkRow>
     </div>

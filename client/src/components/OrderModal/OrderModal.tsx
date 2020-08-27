@@ -20,6 +20,26 @@ type Props = {
   setIsOrderPlaced: (flag: boolean) => void
 }
 
+const StyledExitButton = styled.div`
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 2em;
+  border-radius: 50%;
+  color: #444;
+  background-color: #eee;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  user-select: none;
+  i {
+    margin: auto auto;
+  }
+  &:focused {
+    background-color: #ccc;
+  }
+`
+
 const StyledContainer = styled.div`
   position: fixed;
   top: 0;
@@ -29,7 +49,7 @@ const StyledContainer = styled.div`
   height: 100%;
 
   .order-modal-overlay {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
     width: 100%;
     height: 100%;
     position: absolute;
@@ -49,28 +69,25 @@ const StyledModalContent = styled.div`
   position: absolute;
   bottom: 0;
   padding: 16px;
-
+  display: flex;
   width: 100%;
-  height: 40%;
+  height: 50%;
   background-color: white;
   border-radius: 20px 20px 0 0;
   animation: 0.3s ease-in slideUpModal;
 
-  display: grid;
-  grid-template-columns: 3fr 6fr 3fr;
-  grid-template-rows: 40% 40%;
   justify-items: stretch;
   align-items: center;
 
   .order-modal-content-thumbnail {
-    width: 100%;
+    max-width: 40%;
     border-radius: 6px;
   }
 
   .order-modal-content-data {
-    margin: 0 15px;
+    margin: 0px 15px 0 15px;
     p {
-      font-size: 12px;
+      font-size: 1.2em;
     }
     .order-modal-content-name {
       font-weight: 600;
@@ -88,28 +105,45 @@ const StyledModalContent = styled.div`
   }
 `
 const StyledModalError = styled.p`
-  grid-column: 1/13;
+  position: absolute;
+  top: calc(50% + 10px);
+  left: 50%;
+  width: 300px;
+  font-size: 1.5em;
+  padding: 10px;
+  transform: translate(-50%);
   align-self: start;
   color: ${COLORS.red};
-  font-size: 12px;
   text-align: center;
 `
 
+const StyledWrapper = styled.div`
+  margin: 0 0 0 20px;
+`
+
 const StyledController = styled.div`
+  margin: 10px 5px 0px 5px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 30%;
-  border-radius: 20px;
-  border: 1px solid #aaa;
-  font-size: 16px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #fff;
+  font-size: 30px;
+  color: #000;
 
   button {
+    font-size: 25px;
     width: 100%;
     height: 100%;
-
-    &:disabled {
-      color: #ccc;
+    i {
+      &.disabled {
+        color: #bbb;
+      }
+      padding: 5px;
+      background-color: #eee;
+      color: #444;
+      border-radius: 50%;
     }
   }
 `
@@ -186,6 +220,10 @@ export const OrderModal = (props: Props) => {
     ADD_PRODUCT_TO_CART
   )
 
+  const exitButtonHandler = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    props.setIsModalVisible(false)
+  }
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
     if (e.target === modalOverlayRef.current) props.setIsModalVisible(false)
@@ -210,40 +248,45 @@ export const OrderModal = (props: Props) => {
     <StyledContainer className="order-modal" onClick={clickOutsideModalHandler}>
       <div className="order-modal-overlay" ref={modalOverlayRef} />
       <StyledModalContent className="order-modal-content">
+        <StyledExitButton onClick={exitButtonHandler}>
+          <i className="icon">multiply</i>
+        </StyledExitButton>
         <img
           className="order-modal-content-thumbnail"
           src={thumbnailSrc}
           alt={`order-modal-thumbnail-${id}`}
         />
-        <div className="order-modal-content-data">
-          <p className="order-modal-content-name">{name}</p>
-          <p className="order-modal-content-price">{parseToLocalMoneyString(price)}원</p>
-          {stockCount <= MAX_PRODUCT_PURCHASE_LIMIT && (
-            <p className="stock-count">{`상품이 ${stockCount}개 남았습니다.`}</p>
-          )}
-        </div>
-        <StyledController className="order-modal-controller">
-          <button
-            className="order-modal-controller-decrement-btn"
-            disabled={state.count <= MIN_PRODUCT_PURCHASE_LIMIT}
-            onClick={() => dispatch({ type: 'decrement' })}
-          >
-            -
-          </button>
-          <p className="order-modal-controller-quantity">{state.count}</p>
-          <button
-            className="order-modal-controller-increment-btn"
-            disabled={state.count >= MAX_PRODUCT_PURCHASE_LIMIT || state.count >= stockCount}
-            onClick={() => dispatch({ type: 'increment' })}
-          >
-            +
-          </button>
-        </StyledController>
-        {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
-        <OrderButton clickHandler={clickOrderButtonHandler}>
-          <>장바구니에 담기</>
-        </OrderButton>
+        <StyledWrapper>
+          <div className="order-modal-content-data">
+            <p className="order-modal-content-name">{name}</p>
+            <p className="order-modal-content-price">{parseToLocalMoneyString(price)}원</p>
+          </div>
+          <StyledController className="order-modal-controller">
+            <button
+              className={`order-modal-controller-decrement-btn`}
+              onClick={() => dispatch({ type: 'decrement' })}
+            >
+              <i className={`icon ${state.count <= MIN_PRODUCT_PURCHASE_LIMIT ? 'disabled' : ''}`}>
+                minus
+              </i>
+            </button>
+
+            <p className="order-modal-controller-quantity">{state.count}</p>
+            <button
+              className={`order-modal-controller-increment-btn`}
+              onClick={() => dispatch({ type: 'increment' })}
+            >
+              <i className={`icon ${state.count >= MAX_PRODUCT_PURCHASE_LIMIT ? 'disabled' : ''}`}>
+                plus
+              </i>
+            </button>
+          </StyledController>
+        </StyledWrapper>
       </StyledModalContent>
+      {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
+      <OrderButton clickHandler={clickOrderButtonHandler}>
+        <>장바구니에 담기</>
+      </OrderButton>
     </StyledContainer>
   )
 }

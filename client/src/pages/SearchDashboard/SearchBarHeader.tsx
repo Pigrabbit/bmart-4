@@ -33,6 +33,16 @@ const StyledButton = styled.button`
   font-size: 22px;
   line-height: 22px;
   color: black;
+
+  &.clear-btn {
+    position: absolute;
+    color: #555;
+    font-size: 18px;
+    line-height: 18px;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `
 
 const StyledForm = styled.form`
@@ -43,20 +53,14 @@ const StyledForm = styled.form`
 `
 
 const StyledInput = styled.input`
-  width: 90%;
+  width: 100%;
   border: none;
   background-color: white;
   height: 40px;
   border-radius: 8px;
   padding-left: 12px;
   font-size: 16px;
-`
-
-const StyledSubmitBtn = styled.button`
-  margin-top: 2px;
-  img {
-    width: 24px;
-  }
+  padding-right: 38px;
 `
 
 export const SearchBarHeader = (props: Props) => {
@@ -74,6 +78,8 @@ export const SearchBarHeader = (props: Props) => {
     props.submitHandler()
   }
 
+  const clearInput = () => props.changeInputHandler('')
+
   const changeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.changeInputHandler(e.target.value)
   }
@@ -81,9 +87,14 @@ export const SearchBarHeader = (props: Props) => {
   return (
     <StyledContainer className="header" data-testid="header">
       <StyledHeader>
-        <StyledButton className="header-back-button" onClick={() => history.goBack()}>
+        <StyledButton onClick={() => history.goBack()}>
           <i className="icon">arrow_left</i>
         </StyledButton>
+        {query && (
+          <StyledButton className="clear-btn" onClick={clearInput}>
+            <i className="icon">xmark_circle_fill</i>
+          </StyledButton>
+        )}
         <StyledForm className="search-form" onSubmit={submitHandler}>
           <StyledInput
             className="search-input"

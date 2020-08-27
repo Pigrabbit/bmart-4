@@ -94,12 +94,16 @@ export const CategoryList = (props: Props) => {
     previousRatio = currentRatio
   }
 
-  const { loading, data } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
+  const { loading, data, refetch } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
     GET_PRODUCTLIST_BY_CATEGORY,
     {
       variables: { category, offset: 10, limit: 10, sorter: 'priceCountDesc' },
     }
   )
+
+  useEffect(() => {
+    refetch()
+  }, [])
 
   return loading || !data ? (
     <div>Loading...</div>

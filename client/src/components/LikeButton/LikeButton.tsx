@@ -31,7 +31,6 @@ export const LikeButton = (props: Props) => {
   const toggleProductLike = async (e: React.MouseEvent) => {
     e.stopPropagation()
     const params = { variables: { productId: props.productId } }
-    console.log(params)
     if (isLiked) {
       await dislikeProduct(params)
     } else {

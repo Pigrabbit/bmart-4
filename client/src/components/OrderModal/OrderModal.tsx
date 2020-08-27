@@ -216,17 +216,26 @@ export const OrderModal = (props: Props) => {
     props.setSavedCount(state.count)
   }, [state.count])
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+  }, [])
+
   const [addProductToCart] = useMutation<{ addProductToCart: string }, AddProductToCartVars>(
     ADD_PRODUCT_TO_CART
   )
 
+  const closeModal = () => {
+    document.body.style.overflow = 'inherit'
+    props.setIsModalVisible(false)
+  }
+
   const exitButtonHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
-    props.setIsModalVisible(false)
+    closeModal()
   }
   const clickOutsideModalHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
-    if (e.target === modalOverlayRef.current) props.setIsModalVisible(false)
+    if (e.target === modalOverlayRef.current) closeModal()
   }
 
   const clickOrderButtonHandler = async () => {
@@ -235,10 +244,11 @@ export const OrderModal = (props: Props) => {
     })
 
     if (data && parseInt(data.addProductToCart) >= 0) {
-      props.setIsModalVisible(false)
       props.setIsOrderPlaced(true)
       cartContextDispatch({ type: 'addProduct', payload: { productIdList: [id] } })
       props.setSavedCount(1)
+
+      closeModal()
     } else {
       dispatch({ type: 'error' })
     }

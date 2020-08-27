@@ -11,6 +11,7 @@ const { ProductType, CartProductType, ProductDetailImgType, OrderType } = requir
 
 const {
   productListByCategoryResolver,
+  getProductById,
   getDetailImgSrcByProductId,
   likedProductListResolver,
 } = require('../resolver/product-resolver')
@@ -21,6 +22,14 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
+    productById: {
+      type: ProductType,
+      description: 'Single product',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) }
+      },
+      resolve: getProductById
+    },
     productListByCategory: {
       type: new GraphQLList(ProductType),
       description: 'List of products',

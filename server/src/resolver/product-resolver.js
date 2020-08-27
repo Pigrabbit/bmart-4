@@ -3,6 +3,21 @@ const { GetProductDTO } = require('../dto/get-product-dto')
 const { GetProductDetailDTO } = require('../dto/get-product-detail-dto')
 const { ReasonPhrases } = require('http-status-codes')
 
+const getProductById = async (parent, args, context) => {
+  const { id } = args
+  const conn = await pool.getConnection()
+  try {
+    const query = 'SELECT * FROM product WHERE id = ?'
+    const [rows] = await conn.query(query, [id])
+
+    return new GetProductDTO(rows[0])
+  } catch {
+    throw new Error(ReasonPhrases.NOT_FOUND)
+  } finally {
+    conn.release()
+  }
+}
+
 const productListByCategoryResolver = async (parent, args, context) => {
   const res = await context.res
   const userId = res.locals.userId
@@ -111,6 +126,7 @@ const likedProductListResolver = async (parent, args, context) => {
 }
 
 module.exports = {
+  getProductById,
   productListByCategoryResolver,
   getDetailImgSrcByProductId,
   likedProductListResolver,

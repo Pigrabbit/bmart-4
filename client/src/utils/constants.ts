@@ -116,3 +116,6 @@ export const ONE_PAGE_LENGTH = 10
 export const SPECIAL_CHAR_REGEX = /[~!@#$%^&*()_+|<>?:{}]/
 
 export const MAX_SEARCH_QUERY_LENGTH = 30
+export const TUNG_MESSAGE = {
+  EMPTY_CART: '장바구니가 텅 비어있어요',
+}

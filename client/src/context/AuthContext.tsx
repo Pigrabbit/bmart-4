@@ -6,7 +6,9 @@ type AuthStateType = {
 
 type AuthActionType = { type: 'signIn' | 'signOut'; payload: AuthStateType }
 
-const defaultAuthValue = { isAuthenticated: localStorage.getItem('token') ? true : false }
+const defaultAuthValue: AuthStateType = {
+  isAuthenticated: localStorage.getItem('token') ? true : false,
+}
 
 export const AuthStateContext = React.createContext<AuthStateType>(defaultAuthValue)
 export const AuthDispatchContext = React.createContext<Dispatch<AuthActionType>>(() => {})

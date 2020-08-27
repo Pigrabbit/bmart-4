@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { Dashboard } from '../../components/Dashboard'
 import { useQuery, useMutation } from '@apollo/client'
@@ -22,7 +22,8 @@ import { CartDashboardOrderButton } from './CartDashboardOrderButton'
 import { CartDashboardFooter } from './CartDashboardFooter'
 import { CartDashboardBill } from './CartDashboardBill'
 import { CenteredImg } from '../../components/CenteredImg'
-import { StringValueNode } from 'graphql'
+import { TUNG_MESSAGE } from '../../utils/constants'
+import { CartDispatchContext } from '../../context/CartContext'
 import { useHistory } from 'react-router-dom'
 
 type Props = {}
@@ -105,6 +106,7 @@ export const CartDashboard = (props: Props) => {
   const [checkedProductList, setCheckedProductList] = useState<CheckedProduct[]>([])
   const [isCheckedOut, setIsCheckedOut] = useState<boolean>(false)
 
+  const cartContextDispatch = useContext(CartDispatchContext)
   const history = useHistory()
 
   useEffect(() => {
@@ -174,6 +176,14 @@ export const CartDashboard = (props: Props) => {
       }
     })
 
+    cartContextDispatch({
+      type: 'removeProduct',
+      payload: {
+        productIdList: variables.orderProductIds.map(
+          (orderId) => orderList.find((order) => order.id === orderId)?.product.id || '0'
+        ),
+      },
+    })
     setOrderList(newOrderList)
     setCheckedProductList(newCheckedProductList)
   }
@@ -236,7 +246,7 @@ export const CartDashboard = (props: Props) => {
           />
         </StyledContainer>
       ) : (
-        <CenteredImg src="images/cart-tung.png" />
+        <CenteredImg description={TUNG_MESSAGE.EMPTY_CART} />
       )}
     </Dashboard>
   )

@@ -1,4 +1,4 @@
-import React, { useRef, MouseEvent, useReducer, useEffect } from 'react'
+import React, { useRef, MouseEvent, useReducer, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 import { useMutation } from '@apollo/client'
@@ -6,6 +6,7 @@ import { ADD_PRODUCT_TO_CART, AddProductToCartVars } from '../../apis/graphqlQue
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { OrderButton } from '../OrderButton'
 import { COLORS } from '../../utils/styleConstants'
+import { CartDispatchContext } from '../../context/CartContext'
 
 type Props = {
   id: string
@@ -172,6 +173,8 @@ export const OrderModal = (props: Props) => {
     error: '',
     isErrorVisible: false,
   }
+
+  const cartContextDispatch = useContext(CartDispatchContext)
   const [state, dispatch] = useReducer(modalReducer, initialState)
   const modalOverlayRef = useRef<HTMLDivElement>(null)
 
@@ -196,6 +199,7 @@ export const OrderModal = (props: Props) => {
     if (data && parseInt(data.addProductToCart) >= 0) {
       props.setIsModalVisible(false)
       props.setIsOrderPlaced(true)
+      cartContextDispatch({ type: 'addProduct', payload: { productIdList: [id] } })
       props.setSavedCount(1)
     } else {
       dispatch({ type: 'error' })

@@ -101,7 +101,7 @@ export const ProductCardThumbnail = (props: Props) => {
       {(lazyLoad === undefined || lazyLoad) && (
         <div className="icon-wrap" onClick={props.toggleProductLike}>
           {isLiked ? (
-            <i className="icon like">heart_circle_fill</i>
+            <i className="icon like">heart_circle</i>
           ) : (
             <i className="icon">heart_circle_fill</i>
           )}

@@ -262,7 +262,9 @@ export const OrderModal = (props: Props) => {
               className={`order-modal-controller-decrement-btn`}
               onClick={() => dispatch({ type: 'decrement' })}
             >
-              <i className={`icon ${state.count <= 1 ? 'disabled' : ''}`}>minus</i>
+              <i className={`icon ${state.count <= MIN_PRODUCT_PURCHASE_LIMIT ? 'disabled' : ''}`}>
+                minus
+              </i>
             </button>
 
             <p className="order-modal-controller-quantity">{state.count}</p>
@@ -270,7 +272,9 @@ export const OrderModal = (props: Props) => {
               className={`order-modal-controller-increment-btn`}
               onClick={() => dispatch({ type: 'increment' })}
             >
-              <i className={`icon ${state.count >= 10 ? 'disabled' : ''}`}>plus</i>
+              <i className={`icon ${state.count >= MAX_PRODUCT_PURCHASE_LIMIT ? 'disabled' : ''}`}>
+                plus
+              </i>
             </button>
           </StyledController>
         </StyledWrapper>

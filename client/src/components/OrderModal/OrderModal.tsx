@@ -79,7 +79,7 @@ const StyledModalContent = styled.div`
   align-items: center;
 
   .order-modal-content-thumbnail {
-    width: 40%;
+    max-width: 40%;
     border-radius: 6px;
   }
 

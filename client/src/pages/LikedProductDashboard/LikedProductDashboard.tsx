@@ -9,7 +9,7 @@ import {
 import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
 import { Header } from '../../components/Header'
-import { Empty } from '../../components/Empty'
+import { CenteredImg } from '../../components/CenteredImg'
 import { Navbar } from '../../components/Navbar'
 
 type Props = {}
@@ -28,7 +28,7 @@ export const LikedProductDashboard = (props: Props) => {
     <div>
       <Header title="찜한상품" />
       {data.likedProductList.length === 0 ? (
-        <Empty src="image/tung.png" />
+        <CenteredImg src="images/tung.png" />
       ) : (
         <VerticalList title="" productList={data.likedProductList} />
       )}

@@ -9,17 +9,9 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { Header } from '../../components/Header'
 import { Navbar } from '../../components/Navbar'
+import { CenteredImg } from '../../components/CenteredImg'
 
 type Props = {}
-
-const StyledContainer = styled.div`
-  background-image: url("${process.env.PUBLIC_URL}/images/tung.png");
-  height: calc(100vh - 50px);
-  background-position: center;
-  background-size: 50%;
-  background-repeat: no-repeat;
-  background-color: white;
-`
 
 type RouteState = {
   searchResultList: ProductCardType[]
@@ -113,7 +105,7 @@ export const SearchResultDashboard = (props: Props) => {
       ) : (
         <div>
           <Header title={`"${query}"에 대한 검색 결과`} />
-          <StyledContainer></StyledContainer>
+          <CenteredImg src="images/tung.png"></CenteredImg>
           <Navbar />
         </div>
       )}

@@ -16,9 +16,9 @@ import {
 import { CartDashboardHeader } from './CartDashboardHeader'
 import { CartDashboardOrderList } from './CartDashboardOrderList'
 import { CartDashboardOrderButton } from './CartDashboardOrderButton'
-import { NotFound } from './NotFound'
 import { CartDashboardFooter } from './CartDashboardFooter'
 import { CartDashboardBill } from './CartDashboardBill'
+import { CenteredImg } from '../../components/CenteredImg'
 
 type Props = {}
 
@@ -129,7 +129,7 @@ export const CartDashboard = (props: Props) => {
           <CartDashboardOrderButton summary={getSummary()} />
         </StyledContainer>
       ) : (
-        <NotFound />
+        <CenteredImg src="images/cart-tung.png" />
       )}
     </Dashboard>
   )

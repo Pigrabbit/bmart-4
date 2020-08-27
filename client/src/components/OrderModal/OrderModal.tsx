@@ -71,7 +71,7 @@ const StyledModalContent = styled.div`
   padding: 16px;
   display: flex;
   width: 100%;
-  height: 40%;
+  height: 50%;
   background-color: white;
   border-radius: 20px 20px 0 0;
   animation: 0.3s ease-in slideUpModal;
@@ -106,7 +106,7 @@ const StyledModalContent = styled.div`
 `
 const StyledModalError = styled.p`
   position: absolute;
-  top: calc(60% + 10px);
+  top: calc(50% + 10px);
   left: 50%;
   width: 300px;
   font-size: 1.5em;

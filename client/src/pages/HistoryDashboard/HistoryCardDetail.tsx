@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProductInCart } from '../../apis/graphqlQuery'
 import { parseToLocalMoneyString } from '../../utils/parser'
+import { ProductInCart } from '../../apis/cart'
 
 type Props = {
   cartProduct: ProductInCart

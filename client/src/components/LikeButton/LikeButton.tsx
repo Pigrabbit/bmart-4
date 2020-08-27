@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
-import {
-  LIKE_PRODUCT,
-  DISLIKE_PRODUCT,
-  LikeProductVars,
-  DislikeProductData,
-} from '../../apis/graphqlQuery'
 import { useMutation } from '@apollo/client'
 import styled from 'styled-components'
 import { COLORS } from '../../utils/styleConstants'
+import { LikeProductVars, LIKE_PRODUCT, DislikeProductData, DISLIKE_PRODUCT } from '../../apis/like'
 const StyledLikedButton = styled.div`
   .icon {
     color: #eee;

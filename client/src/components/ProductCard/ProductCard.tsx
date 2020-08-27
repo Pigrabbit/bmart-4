@@ -3,16 +3,11 @@ import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
 import { useMutation } from '@apollo/client'
-import {
-  LIKE_PRODUCT,
-  DISLIKE_PRODUCT,
-  LikeProductVars,
-  DislikeProductData,
-} from '../../apis/graphqlQuery'
 import { useHistory } from 'react-router-dom'
 import { ProductCardThumbnail } from './ProductCardThumbnail'
 import { COLORS } from '../../utils/styleConstants'
 import { DISCOUNT_PERCENTAGE_CARD_LIMIT } from '../../utils/constants'
+import { LikeProductVars, LIKE_PRODUCT, DislikeProductData, DISLIKE_PRODUCT } from '../../apis/like'
 
 export type Props = {
   width?: string

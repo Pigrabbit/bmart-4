@@ -26,7 +26,7 @@ const getProductById = async (parent, args, context) => {
   }
 }
 
-const getProductListDiscoutRateDesc = async (parent, args, context) => {
+const getProductListDiscountRateDesc = async (parent, args, context) => {
   const res = await context.res
   const userId = res.locals.userId
 
@@ -164,7 +164,7 @@ const likedProductListResolver = async (parent, args, context) => {
 
 module.exports = {
   getProductById,
-  getProductListDiscoutRateDesc,
+  getProductListDiscountRateDesc,
   productListByCategoryResolver,
   getDetailImgSrcByProductId,
   likedProductListResolver,

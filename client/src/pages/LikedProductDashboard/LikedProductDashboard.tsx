@@ -1,16 +1,12 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@apollo/client'
-import {
-  LikedProductListData,
-  GET_LIKED_PRODUCTLIST,
-  LikedProductListVars,
-} from '../../apis/graphqlQuery'
 import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
 import { Header } from '../../components/Header'
 import { CenteredImg } from '../../components/CenteredImg'
 import { Navbar } from '../../components/Navbar'
+import { LikedProductListData, LikedProductListVars, GET_LIKED_PRODUCTLIST } from '../../apis/like'
 
 type Props = {}
 

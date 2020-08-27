@@ -1,6 +1,6 @@
 import React, { useReducer, Dispatch, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
-import { GET_PRODUCT_IDS_IN_CART, GetProuctCountInCartData } from '../apis/graphqlQuery'
+import { GetProuctCountInCartData, GET_PRODUCT_IDS_IN_CART } from '../apis/cart'
 
 type CartStateType = {
   count: number

@@ -2,9 +2,10 @@ import React, { useMemo, ChangeEvent, useState } from 'react'
 import styled from 'styled-components'
 import { STYLES, COLORS } from '../../utils/styleConstants'
 import { CheckedProduct } from './CartDashboard'
-import { DeleteProductFromCartVars } from '../../apis/graphqlQuery'
 import { Confirm } from '../../components/Confirm'
 import { Checkbox } from '../../components/Checkbox'
+import { DeleteProductFromCartVars } from '../../apis/cart'
+
 
 type Props = {
   checkedProductList: CheckedProduct[]

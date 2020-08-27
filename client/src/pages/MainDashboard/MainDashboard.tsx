@@ -15,7 +15,7 @@ import {
   GET_PRODUCTLIST_BY_CATEGORY,
   ProductByCategoryData,
   ProductByCategoryVars,
-} from '../../apis/graphqlQuery'
+} from '../../apis/product'
 
 type Props = {}
 

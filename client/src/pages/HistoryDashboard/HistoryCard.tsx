@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { OrderHistory } from '../../apis/graphqlQuery'
 import { STYLES, COLORS } from '../../utils/styleConstants'
 import { toLocalDateString, parseToLocalMoneyString } from '../../utils/parser'
 import { HistoryCardDetail } from './HistoryCardDetail'
+import { OrderHistory } from '../../apis/order'
 
 type Props = {
   orderHistory: OrderHistory

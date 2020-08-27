@@ -14,7 +14,7 @@ const {
   getProductById,
   getDetailImgSrcByProductId,
   likedProductListResolver,
-  getProductListDiscoutRateDesc,
+  getProductListDiscountRateDesc,
 } = require('../resolver/product-resolver')
 const { productListInCartResolver, productIdsInCartResolver } = require('../resolver/cart-resolver')
 const { orderHistoryListResolver } = require('../resolver/order-resolver')
@@ -49,7 +49,7 @@ const RootQueryType = new GraphQLObjectType({
         offset: { type: GraphQLInt },
         limit: { type: GraphQLInt },
       },
-      resolve: getProductListDiscoutRateDesc,
+      resolve: getProductListDiscountRateDesc,
     },
     productListInCart: {
       type: new GraphQLList(CartProductType),

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { StyledWrapper } from '../../styles/StyledWrapper'
-import { ProductDetailImg } from '../../apis/graphqlQuery'
+import { ProductDetailImg } from '../../apis/product'
 import {
   CAROUSEL_BASIC_INTERSECTION_RATIO_THRESHOLD,
   CAROUSEL_BASIC_INTERSECTION_THRESHOLD,

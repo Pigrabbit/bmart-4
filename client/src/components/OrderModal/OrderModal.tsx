@@ -2,11 +2,11 @@ import React, { useRef, MouseEvent, useReducer, useEffect, useContext } from 're
 import styled from 'styled-components'
 import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../utils/constants'
 import { useMutation } from '@apollo/client'
-import { ADD_PRODUCT_TO_CART, AddProductToCartVars } from '../../apis/graphqlQuery'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { OrderButton } from '../OrderButton'
 import { COLORS } from '../../utils/styleConstants'
 import { CartDispatchContext } from '../../context/CartContext'
+import { AddProductToCartVars, ADD_PRODUCT_TO_CART } from '../../apis/cart'
 
 type Props = {
   id: string

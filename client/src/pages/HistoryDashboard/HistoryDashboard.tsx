@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useQuery, NetworkStatus } from '@apollo/client'
-import { OrderHistoryData, GET_ORDER_HISTORY } from '../../apis/graphqlQuery'
 import { Dashboard } from '../../components/Dashboard'
 import { STYLES } from '../../utils/styleConstants'
 import { HistoryCard } from './HistoryCard'
+import { OrderHistoryData, GET_ORDER_HISTORY } from '../../apis/order'
 
 type Props = {}
 

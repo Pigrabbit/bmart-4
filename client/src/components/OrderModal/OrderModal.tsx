@@ -79,14 +79,14 @@ const StyledModalContent = styled.div`
   align-items: center;
 
   .order-modal-content-thumbnail {
-    width: 100%;
+    width: 40%;
     border-radius: 6px;
   }
 
   .order-modal-content-data {
     margin: 0px 15px 0 15px;
     p {
-      font-size: 2em;
+      font-size: 1.5em;
     }
     .order-modal-content-name {
       font-weight: 600;
@@ -104,10 +104,17 @@ const StyledModalContent = styled.div`
   }
 `
 const StyledModalError = styled.p`
-  grid-column: 1/13;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  font-size: 1.5em;
+  padding: 10px;
+  border-radius: 30px;
+  transform: translate(-50%, -50%);
   align-self: start;
   color: ${COLORS.red};
-  font-size: 12px;
+  background: #fff;
   text-align: center;
 `
 
@@ -133,18 +140,23 @@ const StyledController = styled.div`
   justify-content: space-around;
   align-items: center;
   height: 50px;
-  border-radius: 20px;
-  background-color: #bbb;
+  border-radius: 25px;
+  background-color: #fff;
+  border: 1px solid #eee;
   font-size: 30px;
-  color: #fff;
+  color: #000;
 
   button {
-    font-size: 30px;
+    font-size: 25px;
     width: 100%;
     height: 100%;
-
     &:disabled {
       color: #ccc;
+    }
+    i {
+      padding: 5px;
+      background: #eee;
+      border-radius: 50%;
     }
   }
 `
@@ -264,46 +276,22 @@ export const OrderModal = (props: Props) => {
               className="order-modal-controller-decrement-btn"
               onClick={() => dispatch({ type: 'decrement' })}
             >
-              -
+              <i className="icon">minus</i>
             </button>
             <p className="order-modal-controller-quantity">{state.count}</p>
             <button
               className="order-modal-controller-increment-btn"
               onClick={() => dispatch({ type: 'increment' })}
             >
-              +
+              <i className="icon">plus</i>
             </button>
           </StyledController>
         </StyledWrapper>
-        <div className="order-modal-content-data">
-          <p className="order-modal-content-name">{name}</p>
-          <p className="order-modal-content-price">{parseToLocalMoneyString(price)}원</p>
-          {stockCount <= MAX_PRODUCT_PURCHASE_LIMIT && (
-            <p className="stock-count">{`상품이 ${stockCount}개 남았습니다.`}</p>
-          )}
-        </div>
-        <StyledController className="order-modal-controller">
-          <button
-            className="order-modal-controller-decrement-btn"
-            disabled={state.count <= MIN_PRODUCT_PURCHASE_LIMIT}
-            onClick={() => dispatch({ type: 'decrement' })}
-          >
-            -
-          </button>
-          <p className="order-modal-controller-quantity">{state.count}</p>
-          <button
-            className="order-modal-controller-increment-btn"
-            disabled={state.count >= MAX_PRODUCT_PURCHASE_LIMIT || state.count >= stockCount}
-            onClick={() => dispatch({ type: 'increment' })}
-          >
-            +
-          </button>
-        </StyledController>
-        {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
-        <OrderButton clickHandler={clickOrderButtonHandler}>
-          <>장바구니에 담기</>
-        </OrderButton>
       </StyledModalContent>
+      {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
+      <OrderButton clickHandler={clickOrderButtonHandler}>
+        <>장바구니에 담기</>
+      </OrderButton>
     </StyledContainer>
   )
 }

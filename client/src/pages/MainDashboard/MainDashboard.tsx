@@ -22,14 +22,14 @@ type Props = {}
 const StyledContainer = styled.main``
 
 export const MainDashboard = (props: Props) => {
-  const { loading, data, refetch, networkStatus } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
-    GET_PRODUCTLIST_BY_CATEGORY,
-    {
-      variables: { category: '과일', offset: 10, limit: 10, sorter: '' },
-      notifyOnNetworkStatusChange: true,
-    }
-  )
-  
+  const { loading, data, refetch, networkStatus } = useQuery<
+    ProductByCategoryData,
+    ProductByCategoryVars
+  >(GET_PRODUCTLIST_BY_CATEGORY, {
+    variables: { category: '과일', offset: 10, limit: 10, sorter: '' },
+    notifyOnNetworkStatusChange: true,
+  })
+
   useEffect(() => {
     refetch()
   }, [])

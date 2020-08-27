@@ -1,0 +1,1 @@
+export { CenteredImg } from './CenteredImg'

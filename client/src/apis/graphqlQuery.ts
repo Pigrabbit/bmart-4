@@ -9,6 +9,7 @@ export type ProductByCategory = {
   thumbnailSrc: string
   coupangProductId: string
   isLiked: boolean
+  stockCount: number
 }
 
 export type ProductByCategoryData = {
@@ -38,6 +39,26 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
       thumbnailSrc
       coupangProductId
       isLiked
+      stockCount
+    }
+  }
+`
+
+export type ProductByIdVars = {
+  id: string
+}
+
+export type ProductByIdData = {
+  productById: ProductByCategory
+}
+
+export const GET_PRODUCT_BY_ID = gql`
+  query GetProductById($id: ID!) {
+    productById(id: $id) {
+      name
+      price
+      isLiked
+      stockCount
     }
   }
 `
@@ -62,6 +83,7 @@ export const GET_LIKED_PRODUCTLIST = gql`
       thumbnailSrc
       coupangProductId
       isLiked
+      stockCount
     }
   }
 `
@@ -77,12 +99,12 @@ export type ProductDetailImgData = {
 }
 
 export type ProductDetailImgVars = {
-  coupangProductId: string
+  id: string
 }
 
 export const GET_PRODUCT_DETAIL_IMG_SRC_LIST = gql`
-  query GetProductDetailImg($coupangProductId: ID!) {
-    productDetailImgList(coupangProductId: $coupangProductId) {
+  query GetProductDetailImg($id: ID!) {
+    productDetailImgList(id: $id) {
       id
       coupangProductId
       src
@@ -101,6 +123,7 @@ export type ProductInCart = {
     basePrice: number
     discountRate: number
     thumbnailSrc: string
+    stockCount: number
   }
 }
 
@@ -124,6 +147,7 @@ export const GET_PRODUCTLIST_IN_CART = gql`
         discountRate
         thumbnailSrc
         coupangProductId
+        stockCount
       }
     }
   }
@@ -202,10 +226,48 @@ export const DISLIKE_PRODUCT = gql`
     }
   }
 `
+
+export type CheckoutOrderData = {
+  checkoutOrder: SuccessData
+}
+
 export const CHECKOUT_ORDER = gql`
   mutation CheckoutOrder {
     checkoutOrder {
       success
+    }
+  }
+`
+
+export type OrderHistory = {
+  id: string
+  orderedAt: string
+  cartProductList: ProductInCart[]
+}
+
+export type OrderHistoryData = {
+  orderHistoryList: OrderHistory[]
+}
+
+export const GET_ORDER_HISTORY = gql`
+  query GetOrderHistory {
+    orderHistoryList {
+      id
+      orderedAt
+      cartProductList {
+        id
+        quantity
+        priceSum
+        product {
+          id
+          name
+          price
+          basePrice
+          discountRate
+          thumbnailSrc
+          coupangProductId
+        }
+      }
     }
   }
 `

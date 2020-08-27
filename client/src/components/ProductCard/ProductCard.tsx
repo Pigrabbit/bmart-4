@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { ProductCardType } from '../../types/productCard'
-import { COLORS } from '../../utils/styleConstants'
 import { useMutation } from '@apollo/client'
 import {
   LIKE_PRODUCT,
@@ -11,10 +10,14 @@ import {
   DislikeProductData,
 } from '../../apis/graphqlQuery'
 import { useHistory } from 'react-router-dom'
+import { ProductCardThumbnail } from './ProductCardThumbnail'
+import { COLORS } from '../../utils/styleConstants'
+import { DISCOUNT_PERCENTAGE_CARD_LIMIT } from '../../utils/constants'
 
 export type Props = {
-  product: ProductCardType
   width?: string
+  lazyLoad?: boolean
+  product: ProductCardType
   style?: React.CSSProperties
 }
 
@@ -24,49 +27,31 @@ const StyledContainer = styled.div<StyledContainerProp>`
   width: ${(props) => props.width};
   flex: 0 0 auto;
 `
-const StyledThumbnail = styled.div`
-  position: relative;
-  font-size: 0;
 
-  .icon-wrap {
-    font-size: 24px;
-    line-height: 24px;
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    right: 4px;
-    bottom: 4px;
-    z-index: 10;
-
-    .icon {
-      color: #eee;
-      border-radius: 50%;
-
-      &.like {
-        color: ${COLORS.red};
-      }
-    }
-  }
-
-  .thumbnail {
-    width: 100%;
-    height: 100%;
-    border-radius: 6px;
-    filter: brightness(0.96);
-  }
-`
 const StyledContent = styled.div`
   line-height: 20px;
   margin-top: 4px;
-
   .price {
     font-weight: 700;
   }
 `
 
+const StyledDiscount = styled.div`
+  font-size: 12px;
+  padding: 1px 4px;
+  background: ${COLORS.red};
+  border-radius: 4px;
+  color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+`
+
 const StyledLink = styled.a`
   color: inherit;
   display: block;
+  position: relative;
   text-decoration: none;
 `
 
@@ -74,8 +59,8 @@ export const ProductCard = (props: Props) => {
   const history = useHistory()
   let interval: any = null
 
-  const { product, width = '50%', style } = props
-  const { id, price, name, thumbnailSrc, coupangProductId, basePrice, discountRate } = product
+  const { product, width = '50%', style, lazyLoad } = props
+  const { id, price, name, thumbnailSrc, stockCount, discountRate } = product
 
   const [isLiked, setIsLiked] = useState(props.product.isLiked)
 
@@ -105,7 +90,7 @@ export const ProductCard = (props: Props) => {
     }
 
     interval = setTimeout(() => {
-      history.push(`/product/${id}`, { ...product })
+      history.push(`/product/${id}`)
       interval = null
     }, 200)
   }
@@ -113,16 +98,20 @@ export const ProductCard = (props: Props) => {
   return (
     <StyledContainer className="product-card" width={width} style={style}>
       <StyledLink onClick={seperateClickEventHandler}>
-        <StyledThumbnail onDoubleClick={seperateClickEventHandler}>
-          <div className="icon-wrap" onClick={toggleProductLike}>
-            {isLiked ? (
-              <i className="icon like">heart_circle</i>
-            ) : (
-              <i className="icon">heart_circle_fill</i>
-            )}
-          </div>
-          <img className="thumbnail" src={thumbnailSrc} alt="" />
-        </StyledThumbnail>
+        {discountRate >= DISCOUNT_PERCENTAGE_CARD_LIMIT && (
+          <StyledDiscount className="discount">
+            {`${discountRate}%`}
+            <i className="icon">arrow_down</i>
+          </StyledDiscount>
+        )}
+        <ProductCardThumbnail
+          lazyLoad={lazyLoad}
+          isLiked={isLiked}
+          isSoldOut={stockCount === 0}
+          thumbnailSrc={thumbnailSrc}
+          toggleProductLike={toggleProductLike}
+          seperateClickEventHandler={seperateClickEventHandler}
+        />
         <StyledContent>
           <div className="product-name">{name}</div>
           <div className="price">{parseToLocalMoneyString(price)}원</div>

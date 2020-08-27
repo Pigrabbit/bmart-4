@@ -10,7 +10,7 @@ const { Client } = require('@elastic/elasticsearch')
 const client = new Client({
   node: process.env.ELASTICSEARCH_ENDPOINT,
   auth: {
-    apiKey: process.env.ELASTICSEARCH_API_KEY
+    apiKey: process.env.ELASTICSEARCH_API_KEY_NEW
   },
   compression: 'gzip'
 })

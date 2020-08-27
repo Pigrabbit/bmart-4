@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps, useLocation } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { CarouselBasic } from '../../components/CarouselBasic'
 import { OrderModal } from '../../components/OrderModal'
@@ -7,6 +7,9 @@ import {
   GET_PRODUCT_DETAIL_IMG_SRC_LIST,
   ProductDetailImgData,
   ProductDetailImgVars,
+  ProductByIdData,
+  ProductByIdVars,
+  GET_PRODUCT_BY_ID,
 } from '../../apis/graphqlQuery'
 import { useQuery } from '@apollo/client'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
@@ -14,6 +17,8 @@ import { parseToLocalMoneyString } from '../../utils/parser'
 import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
 import { OrderButton } from '../../components/OrderButton'
 import { Dashboard } from '../../components/Dashboard'
+import { ProductDetailRouteProps } from '../../types/routeProps'
+import { LikeButton } from '../../components/LikeButton'
 
 type Props = {}
 
@@ -36,6 +41,12 @@ const StyledContainer = styled.div`
   }
 `
 
+const StyledLikeButtonWrapper = styled.div`
+  position: absolute;
+  right: ${STYLES.padding};
+  bottom: ${STYLES.padding};
+`
+
 const StyledSlider = styled.div`
   position: fixed;
   left: 0;
@@ -43,7 +54,6 @@ const StyledSlider = styled.div`
   bottom: 0;
   right: 0;
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,7 +62,7 @@ const StyledSlider = styled.div`
   .confirm-slider-content {
     width: 70%;
     text-align: center;
-    background-color: ${COLORS.gray};
+    background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
     font-size: 16px;
     padding: 5px 0;
@@ -117,8 +127,7 @@ const StyledDetailInfo = styled.div`
   }
 `
 const StyledDetails = styled.div`
-  padding: 20px ${STYLES.padding};
-  padding-bottom: 40px;
+  padding: ${STYLES.padding} ${STYLES.padding} 40px ${STYLES.padding};
 
   .row {
     display: flex;
@@ -143,6 +152,7 @@ const StyledDetails = styled.div`
 const StyledInformations = styled.div`
   padding: 20px ${STYLES.padding};
   padding-top: 40px;
+  position: relative;
 `
 const StyledCarouselWrap = styled.div`
   position: sticky;
@@ -164,28 +174,35 @@ export type StateType = {
   coupangProductId: string
   basePrice: number
   discountRate: number
+  stockCount: number
 }
 
 export const ProductDetail = (props: Props) => {
-  const location = useLocation<StateType>()
-  const { id, price, name, coupangProductId, basePrice, discountRate } = location.state
+  const match = useRouteMatch<ProductDetailRouteProps>()
+  const id = match.params.productId
 
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [savedCount, setSavedCount] = useState(1)
   const [isOrderPlaced, setIsOrderPlaced] = useState(false)
 
-  const { loading, data } = useQuery<ProductDetailImgData, ProductDetailImgVars>(
+  const product = useQuery<ProductByIdData, ProductByIdVars>(GET_PRODUCT_BY_ID, {
+    variables: { id },
+  })
+
+  const detailImg = useQuery<ProductDetailImgData, ProductDetailImgVars>(
     GET_PRODUCT_DETAIL_IMG_SRC_LIST,
     {
-      variables: { coupangProductId },
+      variables: { id },
     }
   )
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    product.refetch()
+    detailImg.refetch()
   }, [])
 
-  return loading || !data ? (
+  return detailImg.loading || !detailImg.data || product.loading || !product.data ? (
     <LoadingIndicator />
   ) : (
     <Dashboard title="상세정보" navbar={false} footer={false}>
@@ -204,20 +221,36 @@ export const ProductDetail = (props: Props) => {
           </div>
         </StyledSlider>
         <StyledCarouselWrap>
-          <CarouselBasic bannerList={data.productDetailImgList} />
+          <CarouselBasic bannerList={detailImg.data.productDetailImgList} />
         </StyledCarouselWrap>
         <StyledDetailInfo className="product-detail-info">
-          <StyledInformations>
-            <p className="product-detail-name">{name}</p>
-            {discountRate > 0 ? (
+          <StyledInformations className="product-informations">
+            <p className="product-detail-name">{product.data.productById.name}</p>
+            {product.data.productById.discountRate > 0 ? (
               <div className="product-detail-discount">
-                <p className="product-detail-base-price">{parseToLocalMoneyString(basePrice)}원</p>
-                <p className="product-detail-discount-rate">{discountRate}% ↓</p>
+                <p className="product-detail-base-price">
+                  {parseToLocalMoneyString(product.data.productById.basePrice)}원
+                </p>
+                <p className="product-detail-discount-rate">
+                  {product.data.productById.discountRate}% ↓
+                </p>
               </div>
             ) : (
               ''
             )}
-            <p className="product-detail-price">{parseToLocalMoneyString(price)}원</p>
+            <p className="product-detail-price">
+              {parseToLocalMoneyString(product.data.productById.price)}원
+            </p>
+            <StyledLikeButtonWrapper>
+              {product.variables && product.variables.id ? (
+                <LikeButton
+                  isLiked={product.data.productById.isLiked}
+                  productId={product.variables.id}
+                />
+              ) : (
+                ''
+              )}
+            </StyledLikeButtonWrapper>
           </StyledInformations>
           <StyledDetails>
             <div className="row">
@@ -236,22 +269,26 @@ export const ProductDetail = (props: Props) => {
             </div>
           </StyledDetails>
           <StyledThumbnails>
-            {data.productDetailImgList.map((item, idx) => (
+            {detailImg.data.productDetailImgList.map((item, idx) => (
               <div className="detail-thumbnail" key={idx}>
                 <img src={item.src} alt="" />
               </div>
             ))}
           </StyledThumbnails>
         </StyledDetailInfo>
-        <OrderButton clickHandler={() => setIsModalVisible(true)}>
-          <>주문하기</>
+        <OrderButton
+          disabled={product.data.productById.stockCount === 0}
+          clickHandler={() => setIsModalVisible(true)}
+        >
+          <>{product.data.productById.stockCount === 0 ? '재고가 부족합니다' : '주문하기'}</>
         </OrderButton>
         {isModalVisible ? (
           <OrderModal
             id={id}
-            name={name}
-            price={price}
-            thumbnailSrc={data.productDetailImgList[0].src}
+            name={product.data.productById.name}
+            price={product.data.productById.price}
+            stockCount={product.data.productById.stockCount}
+            thumbnailSrc={detailImg.data.productDetailImgList[0].src}
             savedCount={savedCount}
             setSavedCount={setSavedCount}
             setIsModalVisible={setIsModalVisible}

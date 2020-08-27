@@ -4,11 +4,14 @@ import { MAX_PRODUCT_PURCHASE_LIMIT, MIN_PRODUCT_PURCHASE_LIMIT } from '../../ut
 import { useMutation } from '@apollo/client'
 import { ADD_PRODUCT_TO_CART, AddProductToCartVars } from '../../apis/graphqlQuery'
 import { parseToLocalMoneyString } from '../../utils/parser'
+import { OrderButton } from '../OrderButton'
+import { COLORS } from '../../utils/styleConstants'
 
 type Props = {
   id: string
   name: string
   price: number
+  stockCount: number
   thumbnailSrc: string
   savedCount: number
   setSavedCount: (count: number) => void
@@ -77,6 +80,7 @@ const StyledModalContent = styled.div`
 
   .order-modal-content-thumbnail {
     width: 100%;
+    border-radius: 6px;
   }
 
   .order-modal-content-data {
@@ -89,14 +93,20 @@ const StyledModalContent = styled.div`
       margin-bottom: 5px;
     }
     .order-modal-content-price {
-      font-weight: 300;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .stock-count {
+      height: 24px;
+      padding-top: 10px;
+      color: ${COLORS.red};
     }
   }
 `
 const StyledModalError = styled.p`
   grid-column: 1/13;
   align-self: start;
-  color: red;
+  color: ${COLORS.red};
   font-size: 12px;
   text-align: center;
 `
@@ -132,6 +142,10 @@ const StyledController = styled.div`
     font-size: 30px;
     width: 100%;
     height: 100%;
+
+    &:disabled {
+      color: #ccc;
+    }
   }
 `
 
@@ -173,6 +187,13 @@ const modalReducer = (state: State, action: Action) => {
             count: state.count - 1,
           }
     }
+    case 'error': {
+      return {
+        ...state,
+        error: '장바구니에 최대 10개까지만 담을 수 있습니다.',
+        isErrorVisible: true,
+      }
+    }
     default:
       break
   }
@@ -180,7 +201,7 @@ const modalReducer = (state: State, action: Action) => {
 }
 
 export const OrderModal = (props: Props) => {
-  const { id, name, price, thumbnailSrc, savedCount } = props
+  const { id, name, price, thumbnailSrc, savedCount, stockCount } = props
 
   const initialState: State = {
     count: savedCount,
@@ -194,7 +215,9 @@ export const OrderModal = (props: Props) => {
     props.setSavedCount(state.count)
   }, [state.count])
 
-  const [addProductToCart] = useMutation<{}, AddProductToCartVars>(ADD_PRODUCT_TO_CART)
+  const [addProductToCart] = useMutation<{ addProductToCart: string }, AddProductToCartVars>(
+    ADD_PRODUCT_TO_CART
+  )
 
   const exitButtonHandler = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -205,13 +228,18 @@ export const OrderModal = (props: Props) => {
     if (e.target === modalOverlayRef.current) props.setIsModalVisible(false)
   }
 
-  const clickOrderButtonHandler = () => {
-    addProductToCart({
+  const clickOrderButtonHandler = async () => {
+    const { data } = await addProductToCart({
       variables: { productId: id, quantity: state.count },
     })
-    props.setIsModalVisible(false)
-    props.setIsOrderPlaced(true)
-    props.setSavedCount(1)
+
+    if (data && parseInt(data.addProductToCart) >= 0) {
+      props.setIsModalVisible(false)
+      props.setIsOrderPlaced(true)
+      props.setSavedCount(1)
+    } else {
+      dispatch({ type: 'error' })
+    }
   }
 
   return (
@@ -247,13 +275,34 @@ export const OrderModal = (props: Props) => {
             </button>
           </StyledController>
         </StyledWrapper>
+        <div className="order-modal-content-data">
+          <p className="order-modal-content-name">{name}</p>
+          <p className="order-modal-content-price">{parseToLocalMoneyString(price)}원</p>
+          {stockCount <= MAX_PRODUCT_PURCHASE_LIMIT && (
+            <p className="stock-count">{`상품이 ${stockCount}개 남았습니다.`}</p>
+          )}
+        </div>
+        <StyledController className="order-modal-controller">
+          <button
+            className="order-modal-controller-decrement-btn"
+            disabled={state.count <= MIN_PRODUCT_PURCHASE_LIMIT}
+            onClick={() => dispatch({ type: 'decrement' })}
+          >
+            -
+          </button>
+          <p className="order-modal-controller-quantity">{state.count}</p>
+          <button
+            className="order-modal-controller-increment-btn"
+            disabled={state.count >= MAX_PRODUCT_PURCHASE_LIMIT || state.count >= stockCount}
+            onClick={() => dispatch({ type: 'increment' })}
+          >
+            +
+          </button>
+        </StyledController>
         {state.isErrorVisible ? <StyledModalError>{state.error}</StyledModalError> : ''}
-        <StyledModalOrderButton
-          className="order-modal-content-order-btn"
-          onClick={clickOrderButtonHandler}
-        >
-          장바구니에 담기
-        </StyledModalOrderButton>
+        <OrderButton clickHandler={clickOrderButtonHandler}>
+          <>장바구니에 담기</>
+        </OrderButton>
       </StyledModalContent>
     </StyledContainer>
   )

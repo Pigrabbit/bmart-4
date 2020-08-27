@@ -5,8 +5,8 @@ export const CS_EMAIL: string = 'bmart_together@woowahan.com'
 export const SLIDER_INTERVAL_TIME = 2000
 export const GRAPHQL_URI = process.env.REACT_APP_GRAPHQL_URI
 export const SEARCH_URI = process.env.REACT_APP_SEARCH_URI
+export const AUTO_SUGGEST_URI = process.env.REACT_APP_AUTO_SUGGEST_URI
 export const OAUTH_URI = process.env.REACT_APP_GOOGLE_OAUTH_URI
-export const LAZY_LOAD_THRESHOLD = 0.1
 export const BAEDAL_TIP = 1000
 export const MIN_ORDER_PRICE = 5000
 export const CATEGORIES = [
@@ -102,7 +102,17 @@ export const PRODUCT_SORT_TYPE: { id: SortType; name: string }[] = [
   { id: 'priceDesc', name: '가격 높은순' },
 ]
 
+export const KR_WEEKDAY = ['일', '월', '화', '수', '목', '금', '토']
+// relate to CategoryListSection component's lazyloading implements
+// 현재 포커싱된 카테고리 이후 몇 개의 카테고리의 loading을 진행할 것인가에 대한 상수
+export const CATEGORY_SECTION_LAZYLOAD_ADDER = 2
+export const DISCOUNT_PERCENTAGE_CARD_LIMIT = 30
+
+export const CAROUSEL_BASIC_INTERSECTION_RATIO_THRESHOLD = 0.9
+export const CAROUSEL_BASIC_INTERSECTION_THRESHOLD = 0.9
 export const MAX_PRODUCT_PURCHASE_LIMIT = 10
 export const MIN_PRODUCT_PURCHASE_LIMIT = 1
 export const ONE_PAGE_LENGTH = 10
 export const SPECIAL_CHAR_REGEX = /[~!@#$%^&*()_+|<>?:{}]/
+
+export const MAX_SEARCH_QUERY_LENGTH = 30

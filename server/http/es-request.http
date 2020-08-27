@@ -1,8 +1,17 @@
-# es search 
+### es search 
 
 POST http://localhost:4000/search
 Content-Type: application/json
 
 {
   "query": "딸기맛"
+}
+
+### es auto suggest
+
+POST http://localhost:4000/autosuggest
+Content-Type: application/json
+
+{
+  "query": "치"
 }

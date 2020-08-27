@@ -4,6 +4,7 @@ import { COLORS } from '../../utils/styleConstants'
 
 type Props = {
   checked: boolean
+  disabled?: boolean
   changeHandler: (checked: boolean) => void
 }
 
@@ -32,16 +33,24 @@ const StyledContainer = styled.div`
 `
 
 export const Checkbox = (props: Props) => {
-  const { checked } = props
+  const { checked, disabled = false } = props
 
   const clickToggleCheckButtonHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation()
+
     const { checked } = e.target
+
     props.changeHandler(checked)
   }
 
   return (
     <StyledContainer className={`${checked ? 'checked' : ''}`}>
-      <input type="checkbox" checked={checked} onChange={clickToggleCheckButtonHandler} />
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={clickToggleCheckButtonHandler}
+      />
       <i className="icon">{checked ? 'checkmark_alt' : ''}</i>
     </StyledContainer>
   )

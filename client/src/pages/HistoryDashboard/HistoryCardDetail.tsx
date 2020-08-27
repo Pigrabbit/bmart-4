@@ -21,17 +21,21 @@ const StyledContainer = styled.div`
     width: 100%;
   }
 
-  .history-detail-item-price {
-    width: 100px;
-    text-align: center;
-    flex: 0 0 auto;
-    font-weight: 700;
-  }
+  .description {
+    display: flex;
 
-  .history-detail-item-quantity {
-    width: 40px;
-    text-align: center;
-    flex: 0 0 auto;
+    .history-detail-item-price {
+      width: 100px;
+      text-align: center;
+      flex: 0 0 auto;
+      font-weight: 700;
+    }
+
+    .history-detail-item-quantity {
+      width: 40px;
+      text-align: center;
+      flex: 0 0 auto;
+    }
   }
 `
 
@@ -43,8 +47,10 @@ export const HistoryCardDetail = (props: Props) => {
       <StyledLink to={`/product/${productId}`}>
         <p className="history-detail-item-name">{name}</p>
       </StyledLink>
-      <p className="history-detail-item-price">{parseToLocalMoneyString(price)}원</p>
-      <p className="history-detail-item-quantity">{cartProduct.quantity}개</p>
+      <div className="description">
+        <p className="history-detail-item-price">{parseToLocalMoneyString(price)}원</p>
+        <p className="history-detail-item-quantity">{cartProduct.quantity}개</p>
+      </div>
     </StyledContainer>
   )
 }

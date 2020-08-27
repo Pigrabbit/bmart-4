@@ -90,11 +90,23 @@ export const CATEGORIES = [
 ]
 
 export const NAVIGATIONS = [
-  { name: 'home', displayName: '홈', path: '/' },
-  { name: 'search', displayName: '검색', path: '/search' },
-  { name: 'favorite', displayName: '찜', path: '/favorite' },
-  { name: 'history', displayName: '주문내역', path: '/history' },
-  { name: 'cart', displayName: '장바구니', path: '/cart' },
+  { name: 'home', displayName: '홈', path: '/', icon: 'house', focusedIcon: 'house_fill' },
+  { name: 'search', displayName: '검색', path: '/search', icon: 'search', focusedIcon: 'search' },
+  {
+    name: 'favorite',
+    displayName: '찜',
+    path: '/favorite',
+    icon: 'heart',
+    focusedIcon: 'heart_fill',
+  },
+  {
+    name: 'history',
+    displayName: '주문내역',
+    path: '/history',
+    icon: 'square_list',
+    focusedIcon: 'square_list_fill',
+  },
+  { name: 'cart', displayName: '장바구니', path: '/cart', icon: 'cart', focusedIcon: 'cart_fill' },
 ]
 
 export const PRODUCT_SORT_TYPE: { id: SortType; name: string }[] = [

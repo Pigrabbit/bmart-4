@@ -45,28 +45,30 @@ export const MainDashboard = (props: Props) => {
     promotion.refetch()
   }, [])
 
-  return loading ||
-    promotion.loading ||
-    networkStatus === NetworkStatus.refetch ||
-    promotion.networkStatus === NetworkStatus.refetch ||
-    !promotion.data ||
-    !data ? (
-    <LoadingIndicator />
-  ) : (
+  return (
     <Dashboard title="" searchBar={true}>
       <StyledContainer className="dashboard">
         <Carousel bannerList={bigBannerList} />
         <CategoryList />
         <HorizontalList
+          loading={
+            (loading || networkStatus === NetworkStatus.refetch) && !data?.productListByCategory
+          }
           title={`회원님을 위해 준비한 상품`}
-          productList={data.productListByCategory}
+          productList={data?.productListByCategory || []}
           double={true}
-        ></HorizontalList>
-        <Carousel bannerList={smallBannerList} />
-        <HorizontalList
-          title="번쩍 ⚡ 할인 상품"
-          productList={promotion.data.productListByDiscountRate}
         />
+        <Carousel bannerList={smallBannerList} />
+        {promotion.data && promotion.data.productListByDiscountRate && (
+          <HorizontalList
+            loading={
+              (promotion.loading || promotion.networkStatus === NetworkStatus.refetch) &&
+              !promotion.data?.productListByDiscountRate
+            }
+            title="번쩍 ⚡ 할인 상품"
+            productList={promotion.data.productListByDiscountRate}
+          />
+        )}
         <CategoryListSection />
       </StyledContainer>
     </Dashboard>

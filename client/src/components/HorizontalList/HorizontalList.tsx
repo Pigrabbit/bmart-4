@@ -9,6 +9,7 @@ export type Props = {
   title: string
   productList: ProductCardType[]
   double?: boolean
+  loading?: boolean
 }
 
 const StyledContainer = styled.div`
@@ -31,7 +32,8 @@ const StyledProductListWrap = styled.div`
 `
 
 export const HorizontalList = (props: Props) => {
-  const { productList, double = false } = props
+  const { productList, double = false, loading = false } = props
+
   let { title } = props
 
   const renderProductCardList = () => {
@@ -40,11 +42,11 @@ export const HorizontalList = (props: Props) => {
 
     return double ? (
       <>
-        <ProductCardList productList={[...productList.slice(0, half)]} />
-        <ProductCardList productList={[...productList.slice(half, length)]} />
+        <ProductCardList loading={loading} productList={[...productList.slice(0, half)]} />
+        <ProductCardList loading={loading} productList={[...productList.slice(half, length)]} />
       </>
     ) : (
-      <ProductCardList productList={productList} />
+      <ProductCardList loading={loading} productList={productList} />
     )
   }
 

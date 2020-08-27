@@ -118,6 +118,9 @@ export const CartDashboard = (props: Props) => {
             : acc
         }, 0) || 0,
       totalCount: checkedProductList.filter((c) => c.checked).length || 0,
+      stockValidate: orderList.reduce((acc, cur) => {
+        return acc && cur.product.stockCount >= cur.quantity
+      }, true),
     }),
     [orderList, checkedProductList]
   )

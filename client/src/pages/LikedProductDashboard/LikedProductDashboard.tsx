@@ -14,12 +14,10 @@ import { Navbar } from '../../components/Navbar'
 
 type Props = {}
 
-const StyledContainer = styled.div``
-
 export const LikedProductDashboard = (props: Props) => {
   const { loading, data, refetch } = useQuery<LikedProductListData, LikedProductListVars>(
     GET_LIKED_PRODUCTLIST,
-    { variables: { offset: 0, limit: 10 } }
+    { variables: { offset: 0, limit: 100 } }
   )
 
   useEffect(() => {

@@ -7,4 +7,5 @@ export type ProductCardType = {
   basePrice: number
   discountRate: number
   isLiked: boolean
+  stockCount: number
 }

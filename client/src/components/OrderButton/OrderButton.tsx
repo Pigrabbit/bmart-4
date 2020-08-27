@@ -4,7 +4,7 @@ import { STYLES, COLORS } from '../../utils/styleConstants'
 
 type Props = {
   children: React.ReactElement
-  hurdle?: boolean
+  disabled?: boolean
   clickHandler: () => void
 }
 
@@ -44,11 +44,11 @@ const StyledOrderButton = styled.button`
 `
 
 export const OrderButton = (props: Props) => {
-  const { children, hurdle = false } = props
+  const { children, disabled = false } = props
   return (
     <StyledContainer className="cart-dashboard-submit" onClick={props.clickHandler}>
       <StyledButtonWrap>
-        <StyledOrderButton disabled={hurdle}>{children}</StyledOrderButton>
+        <StyledOrderButton disabled={disabled}>{children}</StyledOrderButton>
       </StyledButtonWrap>
     </StyledContainer>
   )

@@ -177,7 +177,7 @@ export const ProductDetail = (props: Props) => {
   const { loading, data } = useQuery<ProductDetailImgData, ProductDetailImgVars>(
     GET_PRODUCT_DETAIL_IMG_SRC_LIST,
     {
-      variables: { coupangProductId },
+      variables: { id },
     }
   )
 

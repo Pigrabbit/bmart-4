@@ -77,12 +77,12 @@ export type ProductDetailImgData = {
 }
 
 export type ProductDetailImgVars = {
-  coupangProductId: string
+  id: string
 }
 
 export const GET_PRODUCT_DETAIL_IMG_SRC_LIST = gql`
-  query GetProductDetailImg($coupangProductId: ID!) {
-    productDetailImgList(coupangProductId: $coupangProductId) {
+  query GetProductDetailImg($id: ID!) {
+    productDetailImgList(id: $id) {
       id
       coupangProductId
       src

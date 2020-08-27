@@ -68,7 +68,6 @@ const searchResultReducer = (state: State, action: Action): State => {
 
 export const SearchResultDashboard = (props: Props) => {
   const location = useLocation<RouteState>()
-  console.log(location.state)
   const { searchResultList, query } = location.state
 
   const initialState: State = {

@@ -1,5 +1,6 @@
 const {
   GraphQLObjectType,
+  GraphQLInputObjectType,
   GraphQLNonNull,
   GraphQLID,
   GraphQLString,
@@ -63,6 +64,16 @@ const OrderType = new GraphQLObjectType({
   }),
 })
 
+const OrderProductInputType = new GraphQLInputObjectType({
+  name: 'OrderProductInput',
+  description: 'This represents and order product',
+  fields: () => ({
+    productId: { type: GraphQLNonNull(GraphQLID) },
+    orderProductId: { type: GraphQLNonNull(GraphQLID) },
+    quantity: { type: GraphQLNonNull(GraphQLInt) },
+  })
+})
+
 const changeStatusMessageType = new GraphQLObjectType({
   name: 'changeStatusMessage',
   description: '수정/삭제 성공 여부 메시지',
@@ -76,5 +87,6 @@ module.exports = {
   CartProductType,
   ProductDetailImgType,
   OrderType,
+  OrderProductInputType,
   changeStatusMessageType,
 }

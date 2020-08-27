@@ -5,6 +5,8 @@ import { Dashboard } from '../../components/Dashboard'
 import { STYLES } from '../../utils/styleConstants'
 import { HistoryCard } from './HistoryCard'
 import { OrderHistoryData, GET_ORDER_HISTORY } from '../../apis/order'
+import { CenteredImg } from '../../components/CenteredImg'
+import { TUNG_MESSAGE } from '../../utils/constants'
 
 type Props = {}
 
@@ -16,12 +18,12 @@ export const HistoryDashboard = (props: Props) => {
   const { loading, data, refetch, networkStatus } = useQuery<OrderHistoryData>(GET_ORDER_HISTORY, {
     notifyOnNetworkStatusChange: true,
   })
-  
+
   useEffect(() => {
     refetch()
   }, [])
 
-  return (
+  return !loading && data && data.orderHistoryList.length > 0 ? (
     <Dashboard title="주문내역">
       <StyledContainer className="history-list">
         {loading || networkStatus === NetworkStatus.refetch
@@ -30,6 +32,10 @@ export const HistoryDashboard = (props: Props) => {
               <HistoryCard key={idx} orderHistory={history} />
             ))}
       </StyledContainer>
+    </Dashboard>
+  ) : (
+    <Dashboard title="주문내역" footer={false}>
+      <CenteredImg description={TUNG_MESSAGE.EMPTY_HISTORY} />
     </Dashboard>
   )
 }

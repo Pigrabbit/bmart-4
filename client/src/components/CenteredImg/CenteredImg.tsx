@@ -27,6 +27,7 @@ const StyledTungWrap = styled.div`
   .description {
     font-size: 20px;
     text-align: center;
+    white-space: pre;
     color: ${COLORS.gray};
   }
 `

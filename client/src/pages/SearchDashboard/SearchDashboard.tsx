@@ -1,15 +1,11 @@
-import React, { MouseEvent, useRef, FormEvent, useReducer, useEffect, ChangeEvent } from 'react'
-import { Redirect } from 'react-router-dom'
-import { Dashboard } from '../../components/Dashboard'
+import React, { useRef, useReducer } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-  SEARCH_URI,
-  SPECIAL_CHAR_REGEX,
-  MAX_SEARCH_QUERY_LENGTH,
-  AUTO_SUGGEST_URI,
-} from '../../utils/constants'
+import { SEARCH_URI, SPECIAL_CHAR_REGEX, AUTO_SUGGEST_URI } from '../../utils/constants'
 import { ProductCardType } from '../../types/productCard'
 import { COLORS, STYLES } from '../../utils/styleConstants'
+import { SearchBarHeader } from './SearchBarHeader'
+import { AutoSuggestQueryList } from './AutoSuggestQueryList'
 
 type Props = {}
 
@@ -34,30 +30,6 @@ const StyledContainer = styled.div`
   }
 `
 
-const StyledForm = styled.form`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${COLORS.lightBlue};
-`
-
-const StyledInput = styled.input`
-  width: 90%;
-  border: none;
-  height: 40px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  padding: 0 12px;
-`
-
-const StyledSubmitBtn = styled.button`
-  margin-top: 2px;
-  img {
-    width: 24px;
-  }
-`
-
 export type AutoSuggestType = {
   name: string
 }
@@ -65,7 +37,6 @@ export type AutoSuggestType = {
 type State = {
   query: string
   hasQueried: boolean
-  isQueryLengthOverLimit: boolean
   searchResultList: ProductCardType[]
   autoSuggestList: AutoSuggestType[]
 }
@@ -77,38 +48,19 @@ type Action = {
 
 const searchReducer = (state: State, action: Action) => {
   switch (action.type) {
-    case 'submit': {
-      return {
-        ...state,
-        query: '',
-        hasQueried: true,
-        searchResultList: action.payload.searchResultList,
-      }
-    }
     case 'input': {
       if (SPECIAL_CHAR_REGEX.test(action.payload.query)) return { ...state }
       if (action.payload.query.length === 0) return { ...state, query: '', autoSuggestList: [] }
-      if (action.payload.query.length > MAX_SEARCH_QUERY_LENGTH)
-        return { ...state, isQueryLengthOverLimit: true }
+
       return {
         ...state,
         query: action.payload.query,
-        isQueryLengthOverLimit: false,
       }
     }
     case 'suggest': {
       return {
         ...state,
         autoSuggestList: action.payload.autoSuggestList,
-      }
-    }
-    case 'selectSuggest': {
-      return {
-        ...state,
-        query: action.payload.query,
-        hasQueried: true,
-        searchResultList: action.payload.searchResultList,
-        autoSuggestList: [],
       }
     }
   }
@@ -118,42 +70,35 @@ const searchReducer = (state: State, action: Action) => {
 const initialState = {
   query: '',
   hasQueried: false,
-  isQueryLengthOverLimit: false,
   searchResultList: [],
   autoSuggestList: [],
 }
 
 export const SearchDashboard = (props: Props) => {
   const [state, dispatch] = useReducer(searchReducer, initialState)
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  const history = useHistory()
 
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
-
-  const fetchSearchResult = async () => {
+  const fetchSearchResult = async (query: string) => {
     const result = await fetch(SEARCH_URI as RequestInfo, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query: state.query }),
+      body: JSON.stringify({ query }),
     })
     const data = await result.json()
     return data
   }
 
-  const submitHandler = async (e: FormEvent) => {
-    e.preventDefault()
-
-    const data = await fetchSearchResult()
-    dispatch({ type: 'submit', payload: { searchResultList: data } })
+  const submitHandler = async () => {
+    const query = state.query
+    const data = await fetchSearchResult(query)
+    moveToResultPage(data, query)
   }
 
   let interval: any = useRef(-1)
 
-  const inputHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value
+  const changeInputHandler = async (query: string) => {
     dispatch({ type: 'input', payload: { query } })
 
     if (interval.current !== 0) {
@@ -175,56 +120,33 @@ export const SearchDashboard = (props: Props) => {
     }, 250)
   }
 
-  const clickSuggestHandler = async (e: MouseEvent) => {
-    const query = e.currentTarget.textContent
-    const data = await fetchSearchResult()
-    dispatch({ type: 'selectSuggest', payload: { query, searchResultList: data } })
+  const clickSuggestHandler = async (query: string) => {
+    const data = await fetchSearchResult(query)
+    moveToResultPage(data, query)
+  }
+
+  const moveToResultPage = (searchResultList: ProductCardType[], query: string) => {
+    history.push({
+      pathname: '/search-result',
+      state: { searchResultList, query },
+    })
   }
 
   return (
-    <Dashboard title="검색" navbar={false} searchBar={false} footer={false}>
-      {state.hasQueried ? (
-        <Redirect
-          to={{
-            pathname: '/search-result',
-            state: { searchResultList: state.searchResultList, query: state.query },
-          }}
-        />
-      ) : (
-        <StyledContainer className="search-dashboard">
-          <StyledForm className="search-form" onSubmit={submitHandler}>
-            <StyledInput
-              className="search-input"
-              type="text"
-              ref={inputRef}
-              value={state.query}
-              name="query"
-              placeholder="B마트 상품을 검색해보세요!"
-              autoComplete="off"
-              onChange={inputHandler}
-            />
-            <StyledSubmitBtn
-              className="search-submit-btn"
-              type="submit"
-              disabled={state.isQueryLengthOverLimit}
-            >
-              <img src={`${process.env.PUBLIC_URL}/images/navbar-icon/search.svg`} />
-            </StyledSubmitBtn>
-          </StyledForm>
-          {state.query.length > 0 && state.autoSuggestList.length > 0
-            ? state.autoSuggestList.map((keyword: AutoSuggestType, idx: number) => (
-                <div key={idx} className="search-suggestion" onClick={clickSuggestHandler}>
-                  {keyword.name.split(',')[0]}
-                </div>
-              ))
-            : ''}
-          {state.isQueryLengthOverLimit ? (
-            <p className="search-alert">검색어는 30자 이하로 입력해주세요</p>
-          ) : (
-            ''
-          )}
-        </StyledContainer>
-      )}
-    </Dashboard>
+    <>
+      <SearchBarHeader
+        query={state.query}
+        submitHandler={submitHandler}
+        changeInputHandler={changeInputHandler}
+      />
+      <StyledContainer className="search-dashboard">
+        {state.query.length > 0 && state.autoSuggestList.length > 0 && (
+          <AutoSuggestQueryList
+            autoSuggestList={state.autoSuggestList}
+            clickSuggestHandler={clickSuggestHandler}
+          />
+        )}
+      </StyledContainer>
+    </>
   )
 }

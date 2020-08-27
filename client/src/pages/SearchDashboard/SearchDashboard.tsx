@@ -1,4 +1,4 @@
-import React, { useState, useRef, FormEvent, useReducer, useEffect, ChangeEvent } from 'react'
+import React, { MouseEvent, useRef, FormEvent, useReducer, useEffect, ChangeEvent } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Dashboard } from '../../components/Dashboard'
 import styled from 'styled-components'
@@ -102,6 +102,13 @@ const searchReducer = (state: State, action: Action) => {
         autoSuggestList: action.payload.autoSuggestList,
       }
     }
+    case 'selectSuggest': {
+      return {
+        ...state,
+        query: action.payload.query,
+        autoSuggestList: [],
+      }
+    }
   }
   return state
 }
@@ -152,6 +159,10 @@ export const SearchDashboard = (props: Props) => {
     dispatch({ type: 'suggest', payload: { autoSuggestList: data } })
   }
 
+  const clickSuggestHandler = (e: MouseEvent) => {
+    dispatch({ type: 'selectSuggest', payload: { query: e.currentTarget.textContent } })
+  }
+
   return (
     <Dashboard title="검색" navbar={false} searchBar={false} footer={false}>
       {state.hasQueried ? (
@@ -181,8 +192,8 @@ export const SearchDashboard = (props: Props) => {
           </StyledForm>
           {state.query.length > 0 && state.autoSuggestList.length > 0
             ? state.autoSuggestList.map((keyword: AutoSuggestType, idx: number) => (
-                <div key={idx} className="search-suggestion">
-                  {keyword.name}
+                <div key={idx} className="search-suggestion" onClick={clickSuggestHandler}>
+                  {keyword.name.split(',')[0]}
                 </div>
               ))
             : ''}

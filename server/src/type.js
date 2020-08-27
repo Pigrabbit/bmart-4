@@ -64,8 +64,8 @@ const OrderType = new GraphQLObjectType({
   }),
 })
 
-const OrderProductType = new GraphQLInputObjectType({
-  name: 'OrderProduct',
+const OrderProductInputType = new GraphQLInputObjectType({
+  name: 'OrderProductInput',
   description: 'This represents and order product',
   fields: () => ({
     productId: { type: GraphQLNonNull(GraphQLID) },
@@ -87,6 +87,6 @@ module.exports = {
   CartProductType,
   ProductDetailImgType,
   OrderType,
-  OrderProductType,
+  OrderProductInputType,
   changeStatusMessageType,
 }

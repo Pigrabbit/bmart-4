@@ -1,6 +1,6 @@
 const { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLString } = require('graphql')
 
-const { changeStatusMessageType, OrderProductType } = require('../type')
+const { changeStatusMessageType, OrderProductInputType } = require('../type')
 
 const { likeProductResolver, dislikeProductResolver } = require('../resolver/like-resolver')
 const {
@@ -61,7 +61,7 @@ const RootMutationType = new GraphQLObjectType({
       type: changeStatusMessageType,
       description: '결제하기 기능',
       args: {
-        orderProductList: { type: new GraphQLList(OrderProductType) }
+        orderProductList: { type: new GraphQLList(OrderProductInputType) }
       },
       resolve: checkoutOrderResolver,
     },

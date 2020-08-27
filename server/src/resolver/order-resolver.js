@@ -45,11 +45,11 @@ const checkoutOrderResolver = async (parent, args, context) => {
       await conn.query(updateIsPaidQuery, [orderProductId])
     }
 
-    const updateOrderIsPaidQuery = 'UPDATE `order` o SET o.is_paid = 1'
+    const updateOrderIsPaidQuery = 'UPDATE `order` o SET o.is_paid = 1 WHERE id = ?'
     await conn.query(updateOrderIsPaidQuery, [currentOrderId])
 
     const selectUnpaidOrderQuery =
-      'SELECT order_product op WHERE op.order_id = ? AND op.is_paid = 0'
+      'SELECT * FROM order_product op WHERE op.order_id = ? AND op.is_paid = 0'
     const [rows] = await conn.query(selectUnpaidOrderQuery, [currentOrderId])
 
     if (rows.length === 0) {

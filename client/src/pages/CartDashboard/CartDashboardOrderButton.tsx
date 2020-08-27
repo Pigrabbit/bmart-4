@@ -8,14 +8,10 @@ import {
   MAX_PRODUCT_PURCHASE_LIMIT,
 } from '../../utils/constants'
 import { OrderButton } from '../../components/OrderButton'
-import { useMutation } from '@apollo/client'
-import { CHECKOUT_ORDER, CheckoutOrderData } from '../../apis/graphqlQuery'
-import { useHistory } from 'react-router-dom'
 
 type Props = {
   summary: { totalPrice: number; totalCount: number; stockValidate: boolean }
-  isCheckedOut: boolean
-  setIsCheckedOut: Dispatch<SetStateAction<boolean>>
+  clickCheckoutHandler: () => void
 }
 
 const StyledOrderCount = styled.div`
@@ -30,7 +26,6 @@ const StyledOrderCount = styled.div`
 `
 
 export const CartDashboardOrderButton = (props: Props) => {
-  const { isCheckedOut } = props
   const { totalCount, totalPrice, stockValidate } = props.summary
 
   const hurdle =
@@ -39,20 +34,8 @@ export const CartDashboardOrderButton = (props: Props) => {
     totalPrice < MIN_ORDER_PRICE ||
     !stockValidate
 
-  const [checkoutOrder, { data }] = useMutation<CheckoutOrderData>(CHECKOUT_ORDER)
-  const history = useHistory()
-
-  const clickCheckoutButtonHandler = () => {
-    checkoutOrder()
-    props.setIsCheckedOut(true)
-  }
-
-  useEffect(() => {
-    if (data?.checkoutOrder.success && !isCheckedOut) history.push('/history')
-  }, [data, isCheckedOut])
-
   return (
-    <OrderButton disabled={hurdle} clickHandler={clickCheckoutButtonHandler}>
+    <OrderButton disabled={hurdle} clickHandler={props.clickCheckoutHandler}>
       <>
         {!hurdle && <StyledOrderCount className="order-count">{totalCount}</StyledOrderCount>}
         {!hurdle

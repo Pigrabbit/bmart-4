@@ -227,13 +227,23 @@ export const DISLIKE_PRODUCT = gql`
   }
 `
 
+export type OrderProductInputType = {
+  productId: string
+  orderProductId: string
+  quantity: number
+}
+
+export type CheckoutOrderVars = {
+  orderProductList: OrderProductInputType[]
+}
+
 export type CheckoutOrderData = {
   checkoutOrder: SuccessData
 }
 
 export const CHECKOUT_ORDER = gql`
-  mutation CheckoutOrder {
-    checkoutOrder {
+  mutation CheckoutOrder($orderProductList: [OrderProductInput]!) {
+    checkoutOrder (orderProductList: $orderProductList) {
       success
     }
   }

@@ -46,7 +46,7 @@ export const ProductCard = (props: Props) => {
   let interval: any = null
 
   const { product, width = '50%', style, lazyLoad } = props
-  const { id, price, name, thumbnailSrc, coupangProductId, basePrice, discountRate } = product
+  const { id, price, name, thumbnailSrc } = product
 
   const [isLiked, setIsLiked] = useState(props.product.isLiked)
 
@@ -76,7 +76,7 @@ export const ProductCard = (props: Props) => {
     }
 
     interval = setTimeout(() => {
-      history.push(`/product/${id}`, { ...product })
+      history.push(`/product/${id}`)
       interval = null
     }, 200)
   }

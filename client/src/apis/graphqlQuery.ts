@@ -42,6 +42,24 @@ export const GET_PRODUCTLIST_BY_CATEGORY = gql`
   }
 `
 
+export type ProductByIdVars = {
+  id: string
+}
+
+export type ProductByIdData = {
+  productById: ProductByCategory
+}
+
+export const GET_PRODUCT_BY_ID = gql`
+  query GetProductById($id: ID!) {
+    productById(id: $id) {
+      name,
+      price,
+      isLiked
+    }
+  }
+`
+
 export type LikedProductListVars = {
   offset: number
   limit: number

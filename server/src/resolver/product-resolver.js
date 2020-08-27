@@ -4,11 +4,19 @@ const { GetProductDetailDTO } = require('../dto/get-product-detail-dto')
 const { ReasonPhrases } = require('http-status-codes')
 
 const getProductById = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
   const { id } = args
+
   const conn = await pool.getConnection()
   try {
-    const query = 'SELECT * FROM product WHERE id = ?'
-    const [rows] = await conn.query(query, [id])
+    const query = `
+      SELECT
+      CASE WHEN (SELECT 1 FROM wishlist w where w.product_id = p.id AND w.user_id = ?) = 1
+      THEN 'true' ELSE 'false' END as is_liked, p.*
+      FROM product p WHERE id = ?
+    `
+    const [rows] = await conn.query(query, [userId, id])
 
     return new GetProductDTO(rows[0])
   } catch {

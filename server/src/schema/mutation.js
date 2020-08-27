@@ -60,6 +60,15 @@ const RootMutationType = new GraphQLObjectType({
     checkoutOrder: {
       type: changeStatusMessageType,
       description: '결제하기 기능',
+      args: {
+        orderProductList: {
+          type: new GraphQLObjectType({
+            productId: { type: GraphQLNonNull(GraphQLID) },
+            orderProductId: { type: GraphQLNonNull(GraphQLID) },
+            quantity: { type: GraphQLNonNull(GraphQLInt) },
+          }),
+        },
+      },
       resolve: checkoutOrderResolver,
     },
   }),

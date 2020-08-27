@@ -11,7 +11,7 @@ import { OrderButton } from '../../components/OrderButton'
 
 type Props = {
   summary: { totalPrice: number; totalCount: number; stockValidate: boolean }
-  clickCheckoutHandler: () => void
+  clickCheckoutButtonHandler: () => void
 }
 
 const StyledOrderCount = styled.div`
@@ -35,7 +35,7 @@ export const CartDashboardOrderButton = (props: Props) => {
     !stockValidate
 
   return (
-    <OrderButton disabled={hurdle} clickHandler={props.clickCheckoutHandler}>
+    <OrderButton disabled={hurdle} clickHandler={props.clickCheckoutButtonHandler}>
       <>
         {!hurdle && <StyledOrderCount className="order-count">{totalCount}</StyledOrderCount>}
         {!hurdle

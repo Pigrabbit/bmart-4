@@ -91,7 +91,7 @@ export const SearchResultDashboard = (props: Props) => {
   return (
     <div>
       {resultExists() ? (
-        <Dashboard title={query}>
+        <Dashboard title={query} footer={false}>
           <div>
             <Sorter
               selectedSorter={state.sorter}

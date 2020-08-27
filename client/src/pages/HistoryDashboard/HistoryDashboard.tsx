@@ -12,6 +12,8 @@ type Props = {}
 
 const StyledContainer = styled.div`
   padding: ${STYLES.padding};
+  margin-top: ${STYLES.margin};
+  background-color: white;
 `
 
 export const HistoryDashboard = (props: Props) => {

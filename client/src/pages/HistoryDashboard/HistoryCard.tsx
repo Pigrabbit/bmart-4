@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { STYLES, COLORS } from '../../utils/styleConstants'
 import { toLocalDateString, parseToLocalMoneyString } from '../../utils/parser'
@@ -10,22 +10,26 @@ type Props = {
 }
 
 const StyledContainer = styled.div`
-  margin: ${STYLES.margin};
-  border: 1px solid black;
-  border-radius: 6px;
+  margin-bottom: 10px;
 
   .history-detail-list {
     height: 100%;
-    margin: 6px 0;
-    display: grid;
-    align-items: stretch;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(auto-fill, minmax(30px, 1fr));
+    margin: 12px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .history-item-title {
+    font-size: 14px;
+
+    b {
+      font-size: 16px;
+      color: #555;
+    }
   }
 
   .history-detail-item:nth-child(odd) {
-    background-color: ${COLORS.lightGray};
-    color: #fff;
+    background-color: #eee;
+    color: black;
   }
 `
 
@@ -37,6 +41,7 @@ const StyledContent = styled.div`
 `
 
 const StyledData = styled.div`
+  width: 100%;
   margin-left: 8px;
   height: 80%;
   display: flex;
@@ -44,19 +49,29 @@ const StyledData = styled.div`
   justify-content: space-between;
 
   .history-item-date {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #888;
   }
 
   .history-item-total-price {
-    font-weight: 500;
+    font-weight: 700;
+    font-size: 21px;
+    margin-top: 10px;
   }
 `
 
 const StyledToggleBtn = styled.button`
   margin: 15px;
+
   i {
     font-size: 24px;
+    transform: rotate(0);
+    transition: transform 300ms ease;
+
+    &.up {
+      transform: rotate(180deg);
+    }
   }
 `
 
@@ -64,14 +79,17 @@ export const HistoryCard = (props: Props) => {
   const { orderHistory } = props
   const { orderedAt, cartProductList } = orderHistory
 
-  const [title, setTitle] = useState<string>(cartProductList[0].product.name)
-  const [quantity, setQuantity] = useState<number>(cartProductList.length)
-  const [orderSum, setOrderSum] = useState<number>(
-    cartProductList.reduce((acc, cur) => {
-      return acc + cur.priceSum
-    }, 0)
+  const orderSum = useMemo(
+    () =>
+      cartProductList.reduce((acc, cur) => {
+        return acc + cur.priceSum
+      }, 0),
+    [cartProductList]
   )
+
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false)
+
+  const title = cartProductList[0]?.product.name || ''
 
   return (
     <StyledContainer className="history-item" onClick={() => setIsDetailOpened(!isDetailOpened)}>
@@ -79,22 +97,22 @@ export const HistoryCard = (props: Props) => {
         <StyledData className="history-item-data">
           <p className="history-item-date">{toLocalDateString(orderedAt)}</p>
           <p className="history-item-title">
-            {title} 외 {quantity}건
+            <b>{title}</b> 외 {cartProductList.length}건
           </p>
-          <p className="history-item-total-price">{parseToLocalMoneyString(orderSum)}원</p>
+          <p className="history-item-total-price">{`${parseToLocalMoneyString(orderSum)}원`}</p>
         </StyledData>
         <StyledToggleBtn className="history-toggle-btn">
-          {isDetailOpened ? (
-            <i className="icon">chevron_up</i>
-          ) : (
-            <i className="icon">chevron_down</i>
-          )}
+          <i className={`icon ${isDetailOpened ? 'up' : ''}`}>chevron_down</i>
         </StyledToggleBtn>
       </StyledContent>
       {isDetailOpened ? (
         <div className="history-detail-list">
           {cartProductList.map((cartProduct, idx) => (
-            <HistoryCardDetail key={idx} cartProduct={cartProduct} />
+            <HistoryCardDetail
+              key={idx}
+              productId={cartProduct.product.id}
+              cartProduct={cartProduct}
+            />
           ))}
         </div>
       ) : (

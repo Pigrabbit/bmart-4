@@ -12,6 +12,9 @@ import {
   ProductInCartData,
   ModifyProductQuantityData,
   DeleteProductFromCartData,
+  CHECKOUT_ORDER,
+  CheckoutOrderData,
+  CheckoutOrderVars,
 } from '../../apis/graphqlQuery'
 import { CartDashboardHeader } from './CartDashboardHeader'
 import { CartDashboardOrderList } from './CartDashboardOrderList'
@@ -21,10 +24,17 @@ import { CartDashboardBill } from './CartDashboardBill'
 import { CenteredImg } from '../../components/CenteredImg'
 import { TUNG_MESSAGE } from '../../utils/constants'
 import { CartDispatchContext } from '../../context/CartContext'
+import { useHistory } from 'react-router-dom'
 
 type Props = {}
 
-export type CheckedProduct = { productOrderId: string; checked: boolean }
+export type CheckedProduct = {
+  productOrderId: string
+  checked: boolean
+  orderProductId: string
+  productId: string
+  quantity: number
+}
 
 const StyledContainer = styled.div`
   .checkout-complete-modal[data-is-checkedout=\'true\'] {
@@ -87,6 +97,9 @@ export const CartDashboard = (props: Props) => {
   const [deleteProductFromCart] = useMutation<DeleteProductFromCartData, DeleteProductFromCartVars>(
     DELETE_PRODUCT_FROM_CART
   )
+  const [checkoutOrder, checkoutData] = useMutation<CheckoutOrderData, CheckoutOrderVars>(
+    CHECKOUT_ORDER
+  )
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [orderList, setOrderList] = useState<ProductInCart[]>([])
@@ -94,6 +107,7 @@ export const CartDashboard = (props: Props) => {
   const [isCheckedOut, setIsCheckedOut] = useState<boolean>(false)
 
   const cartContextDispatch = useContext(CartDispatchContext)
+  const history = useHistory()
 
   useEffect(() => {
     refetch()
@@ -106,6 +120,9 @@ export const CartDashboard = (props: Props) => {
       data.productListInCart.map((order) => ({
         productOrderId: order.id,
         checked: true,
+        productId: order.product.id,
+        quantity: order.quantity,
+        orderProductId: order.product.id,
       }))
     )
     setOrderList(data.productListInCart)
@@ -171,6 +188,25 @@ export const CartDashboard = (props: Props) => {
     setCheckedProductList(newCheckedProductList)
   }
 
+  const clickCheckoutHandler = () => {
+    checkoutOrder({
+      variables: {
+        orderProductList: checkedProductList
+          .filter((c) => c.checked)
+          .map(({ productId, productOrderId, quantity }) => ({
+            productId,
+            orderProductId: productOrderId,
+            quantity,
+          })),
+      },
+    })
+    setIsCheckedOut(true)
+  }
+
+  useEffect(() => {
+    if (checkoutData.data?.checkoutOrder.success && !isCheckedOut) history.push('/history')
+  }, [checkoutData.data, isCheckedOut])
+
   if (isLoading) return <p>...loading</p>
 
   return (
@@ -206,8 +242,7 @@ export const CartDashboard = (props: Props) => {
           <CartDashboardFooter />
           <CartDashboardOrderButton
             summary={getSummary()}
-            isCheckedOut={isCheckedOut}
-            setIsCheckedOut={setIsCheckedOut}
+            clickCheckoutHandler={clickCheckoutHandler}
           />
         </StyledContainer>
       ) : (

@@ -94,7 +94,7 @@ const addProductToCartResolver = async (parent, args, context) => {
 
   const { productId, quantity } = args
   if (quantity <= 0) {
-    throw new Error(ReasonPhrases.BAD_REQUEST)
+    return new Error(ReasonPhrases.BAD_REQUEST)
   }
 
   const conn = await pool.getConnection()
@@ -125,7 +125,7 @@ const addProductToCartResolver = async (parent, args, context) => {
     // 이미 장바구니에 있는 상품이라면
     if (existProduct.length) {
       if (existProduct[0].quantity + quantity > 10) {
-        return -1
+        return new Error(ReasonPhrases.BAD_REQUEST)
       }
 
       const query = `UPDATE order_product SET quantity = ?, price_sum = ? 
@@ -161,7 +161,7 @@ const addProductToCartResolver = async (parent, args, context) => {
 const modifyProductQuantityResolver = async (parent, args) => {
   const { productId, orderProductId, quantity } = args
   if (quantity <= 0) {
-    throw new Error(ReasonPhrases.BAD_REQUEST)
+    return new Error(ReasonPhrases.BAD_REQUEST)
   }
 
   const conn = await pool.getConnection()
@@ -169,7 +169,7 @@ const modifyProductQuantityResolver = async (parent, args) => {
   try {
     const findProductQuery = 'SELECT * FROM product WHERE id = ?'
     const [product] = await conn.query(findProductQuery, [productId])
-    if (!product.length) return 0
+    if (!product.length) return new Error(ReasonPhrases.NOT_FOUND)
 
     const totalPrice = product[0].price * quantity
 

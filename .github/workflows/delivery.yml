@@ -34,6 +34,7 @@ jobs:
         REACT_APP_GRAPHQL_URI: ${{ secrets.REACT_APP_GRAPHQL_URI }}
         REACT_APP_SEARCH_URI: ${{ secrets.REACT_APP_SEARCH_URI }}
         REACT_APP_GOOGLE_OAUTH_URI: ${{ secrets.REACT_APP_GOOGLE_OAUTH_URI }}
+        REACT_APP_AUTO_SUGGEST_URI: ${{ secrets.REACT_APP_AUTO_SUGGEST_URI }} 
         # CI를 true로 할 경우, warning 도 error로 인식하기 때문에 false를 준다
         CI: false
       run: |

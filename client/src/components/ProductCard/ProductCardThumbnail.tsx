@@ -14,7 +14,6 @@ type Props = {
 const StyledThumbnail = styled.div`
   position: relative;
   font-size: 0;
-
   .icon-wrap {
     font-size: 24px;
     line-height: 24px;
@@ -24,17 +23,14 @@ const StyledThumbnail = styled.div`
     right: 4px;
     bottom: 4px;
     z-index: 10;
-
     .icon {
       color: #eee;
       border-radius: 50%;
-
       &.like {
         color: ${COLORS.red};
       }
     }
   }
-
   .thumbnail-wrap {
     width: 100%;
     height: 100%;
@@ -42,14 +38,12 @@ const StyledThumbnail = styled.div`
     filter: brightness(0.96);
     overflow: hidden;
     position: relative;
-
     &.alt::before {
       content: '';
       display: block;
       padding: 50%;
       background-color: #fafafa;
     }
-
     &.sold-out::before {
       content: 'sold out';
       display: block;
@@ -67,7 +61,6 @@ const StyledThumbnail = styled.div`
       justify-content: center;
       align-items: center;
     }
-
     .thumbnail {
       width: 100%;
       height: 100%;

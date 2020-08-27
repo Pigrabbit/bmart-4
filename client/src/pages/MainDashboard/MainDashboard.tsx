@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@apollo/client'
+import { useQuery, NetworkStatus } from '@apollo/client'
 
 import { Carousel } from '../../components/Carousel'
 import { Dashboard } from '../../components/Dashboard'
@@ -22,13 +22,19 @@ type Props = {}
 const StyledContainer = styled.main``
 
 export const MainDashboard = (props: Props) => {
-  const { loading, data } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
+  const { loading, data, refetch, networkStatus } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
     GET_PRODUCTLIST_BY_CATEGORY,
     {
       variables: { category: '과일', offset: 10, limit: 10, sorter: '' },
+      notifyOnNetworkStatusChange: true,
     }
   )
-  return loading || !data ? (
+  
+  useEffect(() => {
+    refetch()
+  }, [])
+
+  return loading || networkStatus === NetworkStatus.refetch || !data ? (
     <LoadingIndicator />
   ) : (
     <Dashboard title="" searchBar={true}>

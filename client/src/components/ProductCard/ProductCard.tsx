@@ -31,7 +31,6 @@ const StyledContainer = styled.div<StyledContainerProp>`
 const StyledContent = styled.div`
   line-height: 20px;
   margin-top: 4px;
-
   .price {
     font-weight: 700;
   }
@@ -61,14 +60,7 @@ export const ProductCard = (props: Props) => {
   let interval: any = null
 
   const { product, width = '50%', style, lazyLoad } = props
-  const {
-    id,
-    price,
-    name,
-    thumbnailSrc,
-    stockCount,
-    discountRate,
-  } = product
+  const { id, price, name, thumbnailSrc, stockCount, discountRate } = product
 
   const [isLiked, setIsLiked] = useState(props.product.isLiked)
 

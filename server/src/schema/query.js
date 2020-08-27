@@ -11,7 +11,8 @@ const { ProductType, CartProductType, ProductDetailImgType, OrderType } = requir
 
 const {
   productListByCategoryResolver,
-  productDetailImgResolver,
+  getProductById,
+  getDetailImgSrcByProductId,
   likedProductListResolver,
 } = require('../resolver/product-resolver')
 const { productListInCartResolver } = require('../resolver/cart-resolver')
@@ -21,6 +22,14 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
+    productById: {
+      type: ProductType,
+      description: 'Single product',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) }
+      },
+      resolve: getProductById
+    },
     productListByCategory: {
       type: new GraphQLList(ProductType),
       description: 'List of products',
@@ -41,9 +50,9 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(ProductDetailImgType),
       description: '상품 상세 이미지 src',
       args: {
-        coupangProductId: { type: GraphQLNonNull(GraphQLID) },
+        id: { type: GraphQLNonNull(GraphQLID) },
       },
-      resolve: productDetailImgResolver,
+      resolve: getDetailImgSrcByProductId,
     },
     likedProductList: {
       type: new GraphQLList(ProductType),

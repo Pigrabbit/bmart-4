@@ -24,7 +24,56 @@ type Props = {}
 
 export type CheckedProduct = { productOrderId: string; checked: boolean }
 
-const StyledContainer = styled.div``
+const StyledContainer = styled.div`
+  .checkout-complete-modal[data-is-checkedout=\'true\'] {
+    animation: 1.8s ease-in-out slideUp;
+  }
+
+  @keyframes slideUp {
+    25% {
+      transform: translateY(0);
+    }
+    75% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+`
+
+const StyledCheckoutCompleteModal = styled.div`
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(16, 178, 173, 0.9);
+  transform: translateY(100%);
+`
+
+const StyledModalContent = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  .checkout-complete-modal-alert {
+    font-family: 'BMHANNAPro';
+    font-size: 48px;
+    font-weight: 300;
+    color: white;
+    text-align: center;
+  }
+`
+
+const StyledRider = styled.img`
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 30% 0 20% 0%;
+`
 
 export const CartDashboard = (props: Props) => {
   const { loading, data, refetch } = useQuery<ProductInCartData>(GET_PRODUCTLIST_IN_CART, {
@@ -40,6 +89,7 @@ export const CartDashboard = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [orderList, setOrderList] = useState<ProductInCart[]>([])
   const [checkedProductList, setCheckedProductList] = useState<CheckedProduct[]>([])
+  const [isCheckedOut, setIsCheckedOut] = useState<boolean>(false)
 
   useEffect(() => {
     refetch()
@@ -112,6 +162,19 @@ export const CartDashboard = (props: Props) => {
     <Dashboard title="장바구니" footer={false} navbar={false}>
       {orderList.length > 0 ? (
         <StyledContainer className="cart-dashboard">
+          <StyledCheckoutCompleteModal
+            className="checkout-complete-modal"
+            data-is-checkedout={isCheckedOut}
+            onAnimationEnd={() => setIsCheckedOut(false)}
+          >
+            <StyledModalContent className="checkout-complete-modal-content">
+              <p className="checkout-complete-modal-alert">결제완료</p>
+              <StyledRider
+                className="checkout-complete-modal-rider"
+                src={`${process.env.PUBLIC_URL}/images/bmart_rider.png`}
+              />
+            </StyledModalContent>
+          </StyledCheckoutCompleteModal>
           <CartDashboardHeader
             checkedProductList={checkedProductList}
             setCheckedProductList={setCheckedProductList}
@@ -126,7 +189,11 @@ export const CartDashboard = (props: Props) => {
           />
           <CartDashboardBill summary={getSummary()} />
           <CartDashboardFooter />
-          <CartDashboardOrderButton summary={getSummary()} />
+          <CartDashboardOrderButton
+            summary={getSummary()}
+            isCheckedOut={isCheckedOut}
+            setIsCheckedOut={setIsCheckedOut}
+          />
         </StyledContainer>
       ) : (
         <CenteredImg src="images/cart-tung.png" />

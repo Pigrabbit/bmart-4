@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react'
+import React, { useReducer } from 'react'
 import { ProductCardType } from '../../types/productCard'
 import { Dashboard } from '../../components/Dashboard'
 import { VerticalList } from '../../components/VerticalList'
@@ -6,16 +6,22 @@ import { Sorter } from '../../components/Sorter'
 import { SortType } from '../../types/sort'
 import { PRODUCT_SORT_TYPE } from '../../utils/constants'
 import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
+import { Header } from '../../components/Header'
+import { Navbar } from '../../components/Navbar'
+import { CenteredImg } from '../../components/CenteredImg'
 
 type Props = {}
 
 type RouteState = {
   searchResultList: ProductCardType[]
+  query: string
 }
 
 type State = {
   resultList: ProductCardType[]
   sorter: SortType
+  query: string
 }
 
 type Action = {
@@ -33,6 +39,7 @@ const searchResultReducer = (state: State, action: Action): State => {
             else return -1
           }),
           sorter: action.payload.sorter,
+          query: state.query,
         }
       } else if (action.payload.sorter === 'priceAsc') {
         return {
@@ -41,6 +48,7 @@ const searchResultReducer = (state: State, action: Action): State => {
             else return -1
           }),
           sorter: action.payload.sorter,
+          query: state.query,
         }
       } else if (action.payload.sorter === 'priceDesc') {
         return {
@@ -49,6 +57,7 @@ const searchResultReducer = (state: State, action: Action): State => {
             else return -1
           }),
           sorter: action.payload.sorter,
+          query: state.query,
         }
       }
     }
@@ -59,11 +68,13 @@ const searchResultReducer = (state: State, action: Action): State => {
 
 export const SearchResultDashboard = (props: Props) => {
   const location = useLocation<RouteState>()
-  const { searchResultList } = location.state
+  console.log(location.state)
+  const { searchResultList, query } = location.state
 
   const initialState: State = {
     resultList: searchResultList,
     sorter: '',
+    query: query,
   }
 
   const [state, dispatch] = useReducer(searchResultReducer, initialState)
@@ -72,16 +83,32 @@ export const SearchResultDashboard = (props: Props) => {
     dispatch({ type: 'sorterChange', payload: { sorter } })
   }
 
+  const resultExists = () => {
+    if (state.resultList && state.resultList.length !== 0) {
+      return true
+    } else return false
+  }
+
   return (
-    <Dashboard title="검색 결과">
-      <>
-        <Sorter
-          selectedSorter={state.sorter}
-          sorterList={PRODUCT_SORT_TYPE}
-          sorterChangeHandler={sorterChangeHandler}
-        />
-        <VerticalList title="" productList={state.resultList} />
-      </>
-    </Dashboard>
+    <div>
+      {resultExists() ? (
+        <Dashboard title={`"${query}"에 대한 검색 결과`}>
+          <div>
+            <Sorter
+              selectedSorter={state.sorter}
+              sorterList={PRODUCT_SORT_TYPE}
+              sorterChangeHandler={sorterChangeHandler}
+            />
+            <VerticalList title="" productList={state.resultList} />{' '}
+          </div>
+        </Dashboard>
+      ) : (
+        <div>
+          <Header title={`"${query}"에 대한 검색 결과`} />
+          <CenteredImg src="images/tung.png"></CenteredImg>
+          <Navbar />
+        </div>
+      )}
+    </div>
   )
 }

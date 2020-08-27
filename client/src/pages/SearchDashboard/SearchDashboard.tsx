@@ -185,7 +185,10 @@ export const SearchDashboard = (props: Props) => {
     <Dashboard title="검색" navbar={false} searchBar={false} footer={false}>
       {state.hasQueried ? (
         <Redirect
-          to={{ pathname: '/search-result', state: { searchResultList: state.searchResultList } }}
+          to={{
+            pathname: '/search-result',
+            state: { searchResultList: state.searchResultList, query: state.query },
+          }}
         />
       ) : (
         <StyledContainer className="search-dashboard">

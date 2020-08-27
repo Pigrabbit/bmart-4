@@ -47,7 +47,6 @@ const StyledSlider = styled.div`
   bottom: 0;
   right: 0;
   z-index: 9999;
-  background-color: rgba(0, 0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +55,7 @@ const StyledSlider = styled.div`
   .confirm-slider-content {
     width: 70%;
     text-align: center;
-    background-color: ${COLORS.gray};
+    background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
     font-size: 16px;
     padding: 5px 0;
@@ -168,6 +167,7 @@ export type StateType = {
   coupangProductId: string
   basePrice: number
   discountRate: number
+  stockCount: number
 }
 
 export const ProductDetail = (props: Props) => {
@@ -195,7 +195,7 @@ export const ProductDetail = (props: Props) => {
     detailImg.refetch()
   }, [])
 
-  return (detailImg.loading || !detailImg.data || product.loading || !product.data) ? (
+  return detailImg.loading || !detailImg.data || product.loading || !product.data ? (
     <LoadingIndicator />
   ) : (
     <Dashboard title="상세정보" navbar={false} footer={false}>
@@ -221,13 +221,19 @@ export const ProductDetail = (props: Props) => {
             <p className="product-detail-name">{product.data.productById.name}</p>
             {product.data.productById.discountRate > 0 ? (
               <div className="product-detail-discount">
-                <p className="product-detail-base-price">{parseToLocalMoneyString(product.data.productById.basePrice)}원</p>
-                <p className="product-detail-discount-rate">{product.data.productById.discountRate}% ↓</p>
+                <p className="product-detail-base-price">
+                  {parseToLocalMoneyString(product.data.productById.basePrice)}원
+                </p>
+                <p className="product-detail-discount-rate">
+                  {product.data.productById.discountRate}% ↓
+                </p>
               </div>
             ) : (
               ''
             )}
-            <p className="product-detail-price">{parseToLocalMoneyString(product.data.productById.price)}원</p>
+            <p className="product-detail-price">
+              {parseToLocalMoneyString(product.data.productById.price)}원
+            </p>
           </StyledInformations>
           <StyledDetails>
             <div className="row">
@@ -253,14 +259,18 @@ export const ProductDetail = (props: Props) => {
             ))}
           </StyledThumbnails>
         </StyledDetailInfo>
-        <OrderButton clickHandler={() => setIsModalVisible(true)}>
-          <>주문하기</>
+        <OrderButton
+          disabled={product.data.productById.stockCount === 0}
+          clickHandler={() => setIsModalVisible(true)}
+        >
+          <>{product.data.productById.stockCount === 0 ? '재고가 부족합니다' : '주문하기'}</>
         </OrderButton>
         {isModalVisible ? (
           <OrderModal
             id={id}
             name={product.data.productById.name}
             price={product.data.productById.price}
+            stockCount={product.data.productById.stockCount}
             thumbnailSrc={detailImg.data.productDetailImgList[0].src}
             savedCount={savedCount}
             setSavedCount={setSavedCount}

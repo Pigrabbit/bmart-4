@@ -16,9 +16,9 @@ import {
 import { CartDashboardHeader } from './CartDashboardHeader'
 import { CartDashboardOrderList } from './CartDashboardOrderList'
 import { CartDashboardOrderButton } from './CartDashboardOrderButton'
-import { NotFound } from './NotFound'
 import { CartDashboardFooter } from './CartDashboardFooter'
 import { CartDashboardBill } from './CartDashboardBill'
+import { CenteredImg } from '../../components/CenteredImg'
 
 type Props = {}
 
@@ -118,6 +118,9 @@ export const CartDashboard = (props: Props) => {
             : acc
         }, 0) || 0,
       totalCount: checkedProductList.filter((c) => c.checked).length || 0,
+      stockValidate: orderList.reduce((acc, cur) => {
+        return acc && cur.product.stockCount >= cur.quantity
+      }, true),
     }),
     [orderList, checkedProductList]
   )
@@ -196,7 +199,7 @@ export const CartDashboard = (props: Props) => {
           />
         </StyledContainer>
       ) : (
-        <NotFound />
+        <CenteredImg src="images/cart-tung.png" />
       )}
     </Dashboard>
   )

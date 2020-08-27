@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { parseToLocalMoneyString } from '../../utils/parser'
 import { STYLES, COLORS } from '../../utils/styleConstants'
@@ -69,7 +69,7 @@ const StyledTitle = styled.div`
 const StyledProductCard = styled.div`
   display: flex;
   padding: ${STYLES.padding} 0;
-
+  position: relative;
   .thumbnail {
     margin-right: 10px;
 
@@ -83,16 +83,24 @@ const StyledProductCard = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
 
     .total-price {
       font-weight: 600;
       color: black;
       font-size: 14px;
     }
+
+    .stock-count {
+      height: 24px;
+      padding-top: 10px;
+      color: ${COLORS.red};
+    }
   }
 `
 const StyledController = styled.div`
   height: 30px;
+  width: 92px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -133,16 +141,29 @@ export const OrderCard = (props: Props) => {
     })
   }
 
+  useEffect(() => {
+    if (product.stockCount < quantity) {
+      props.modifyProductQuantityHandler({
+        productId: product.id,
+        orderProductId: id,
+        quantity: product.stockCount,
+      })
+    }
+  }, [])
+
   const price = `(${parseToLocalMoneyString(product.price)}원)`
   const totalPrice = `${parseToLocalMoneyString(priceSum)}원`
+  const soldOut = product.stockCount === 0
+  const invalidateQuantity = product.stockCount < quantity
 
   return (
     <StyledContainer className="order-card">
       <StyledTitle>
         <label className="check">
           <Checkbox
-            checked={checked}
-            changeHandler={(checked: boolean) => props.toggleCheckboxHandler()}
+            checked={checked && !soldOut && !invalidateQuantity}
+            disabled={soldOut || invalidateQuantity}
+            changeHandler={() => props.toggleCheckboxHandler()}
           />
           <h3 className="product-name">{product.name}</h3>
         </label>
@@ -169,6 +190,13 @@ export const OrderCard = (props: Props) => {
             <div className="description">
               <div className="price">{price}</div>
               <div className="total-price">{totalPrice}</div>
+              {product.stockCount < MAX_PRODUCT_PURCHASE_LIMIT && (
+                <div className="stock-count">
+                  {soldOut
+                    ? '재고가 없어 주문하실 수 없습니다.'
+                    : `상품이 ${product.stockCount}개 남았습니다.`}
+                </div>
+              )}
             </div>
             <StyledController className="quantity">
               <button
@@ -184,7 +212,7 @@ export const OrderCard = (props: Props) => {
               <div className="count">{quantity}</div>
               <button
                 className="increment control-btn"
-                disabled={quantity >= MAX_PRODUCT_PURCHASE_LIMIT}
+                disabled={quantity >= MAX_PRODUCT_PURCHASE_LIMIT || product.stockCount <= quantity}
                 onClick={(e) => {
                   e.preventDefault()
                   modifyProductQuantity(quantity + 1)

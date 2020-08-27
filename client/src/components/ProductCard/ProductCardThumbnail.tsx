@@ -5,6 +5,7 @@ import { COLORS } from '../../utils/styleConstants'
 type Props = {
   isLiked: boolean
   lazyLoad?: boolean
+  isSoldOut: boolean
   thumbnailSrc: string
   toggleProductLike: (e: React.MouseEvent) => void
   seperateClickEventHandler: (e: React.MouseEvent) => void
@@ -40,6 +41,7 @@ const StyledThumbnail = styled.div`
     border-radius: 6px;
     filter: brightness(0.96);
     overflow: hidden;
+    position: relative;
 
     &.alt::before {
       content: '';
@@ -48,20 +50,39 @@ const StyledThumbnail = styled.div`
       background-color: #fafafa;
     }
 
+    &.sold-out::before {
+      content: 'sold out';
+      display: block;
+      font-size: 24px;
+      color: white;
+      font-family: 'BMHANNAPro';
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.4);
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .thumbnail {
       width: 100%;
       height: 100%;
+      position: relative;
     }
   }
 `
 
 export const ProductCardThumbnail = (props: Props) => {
-  const { thumbnailSrc, lazyLoad, isLiked } = props
+  const { thumbnailSrc, lazyLoad, isLiked, isSoldOut } = props
 
   const renderThumbnail = () => {
     if (lazyLoad === undefined) {
       return (
-        <div className="thumbnail-wrap">
+        <div className={`thumbnail-wrap ${isSoldOut ? 'sold-out' : ''}`}>
           <img className="thumbnail" src={thumbnailSrc} alt="" />
         </div>
       )
@@ -74,7 +95,7 @@ export const ProductCardThumbnail = (props: Props) => {
         )
       } else {
         return (
-          <div className="thumbnail-wrap">
+          <div className={`thumbnail-wrap ${isSoldOut ? 'sold-out' : ''}`}>
             <img className="thumbnail" src={thumbnailSrc} data-lazy={thumbnailSrc} alt="" />
           </div>
         )
@@ -84,16 +105,15 @@ export const ProductCardThumbnail = (props: Props) => {
 
   return (
     <StyledThumbnail onDoubleClick={props.seperateClickEventHandler}>
-      {lazyLoad === undefined ||
-        (lazyLoad && (
-          <div className="icon-wrap" onClick={props.toggleProductLike}>
-            {isLiked ? (
-              <i className="icon like">heart_circle</i>
-            ) : (
-              <i className="icon">heart_circle_fill</i>
-            )}
-          </div>
-        ))}
+      {(lazyLoad === undefined || lazyLoad) && (
+        <div className="icon-wrap" onClick={props.toggleProductLike}>
+          {isLiked ? (
+            <i className="icon like">heart_circle_fill</i>
+          ) : (
+            <i className="icon">heart_circle_fill</i>
+          )}
+        </div>
+      )}
       {renderThumbnail()}
     </StyledThumbnail>
   )

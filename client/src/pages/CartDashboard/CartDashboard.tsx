@@ -24,6 +24,7 @@ import {
   ProductInCart,
 } from '../../apis/cart'
 import { CheckoutOrderData, CheckoutOrderVars, CHECKOUT_ORDER } from '../../apis/order'
+import { Confirm } from '../../components/Confirm'
 
 type Props = {}
 
@@ -104,6 +105,7 @@ export const CartDashboard = (props: Props) => {
   const [orderList, setOrderList] = useState<ProductInCart[]>([])
   const [checkedProductList, setCheckedProductList] = useState<CheckedProduct[]>([])
   const [isCheckedOut, setIsCheckedOut] = useState<boolean>(false)
+  const [isConfirmVisible, setIsConfirmVisbile] = useState<boolean>(false)
 
   const cartContextDispatch = useContext(CartDispatchContext)
   const history = useHistory()
@@ -187,7 +189,15 @@ export const CartDashboard = (props: Props) => {
     setCheckedProductList(newCheckedProductList)
   }
 
-  const clickCheckoutHandler = () => {
+  const clickCheckoutButtonHandler = () => {
+    setIsConfirmVisbile(true)
+  }
+
+  const confirmHandler = (isConfirmed: boolean) => {
+    if (!isConfirmed) {
+      setIsConfirmVisbile(false)
+      return
+    }
     checkoutOrder({
       variables: {
         orderProductList: checkedProductList
@@ -199,6 +209,16 @@ export const CartDashboard = (props: Props) => {
           })),
       },
     })
+
+    cartContextDispatch({
+      type: 'removeProduct',
+      payload: {
+        productIdList: checkedProductList
+          .filter((c) => c.checked)
+          .map(({ productId }) => productId),
+      },
+    })
+    setIsConfirmVisbile(false)
     setIsCheckedOut(true)
   }
 
@@ -211,6 +231,14 @@ export const CartDashboard = (props: Props) => {
   return (
     <Dashboard title="장바구니" footer={false} navbar={false}>
       <>
+        {isConfirmVisible && (
+          <Confirm
+            content="결제 하시겠어요?"
+            cancelMessage="조금 더 볼게요"
+            okMessage="결제할래요"
+            getResult={confirmHandler}
+          />
+        )}
         {!loading && data && data.productListInCart.length > 0 && (
           <StyledContainer className="cart-dashboard">
             <StyledCheckoutCompleteModal
@@ -242,7 +270,7 @@ export const CartDashboard = (props: Props) => {
             <CartDashboardFooter />
             <CartDashboardOrderButton
               summary={getSummary()}
-              clickCheckoutHandler={clickCheckoutHandler}
+              clickCheckoutButtonHandler={clickCheckoutButtonHandler}
             />
           </StyledContainer>
         )}

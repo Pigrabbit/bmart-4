@@ -1,9 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { STYLES } from '../../utils/styleConstants'
+import { STYLES, COLORS } from '../../utils/styleConstants'
 
 type Props = {
   content: string
+  cancelMessage?: string
+  okMessage?: string
   getResult: (result: boolean) => void
 }
 
@@ -27,6 +29,7 @@ const StyledContainer = styled.div`
   border-radius: ${STYLES.smallRadius};
   background-color: white;
   font-size: 14px;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.5);
 
   .content {
     height: 80px;
@@ -59,13 +62,16 @@ const StyledContainer = styled.div`
     }
 
     .ok {
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 15px;
+      background-color: ${COLORS.baemint};
+      color: #fff;
     }
   }
 `
 
 export const Confirm = (props: Props) => {
-  const { content } = props
+  const { content, cancelMessage = "취소", okMessage = "확인" } = props
 
   return (
     <StyledWrap className="confirm-wrap">
@@ -73,10 +79,10 @@ export const Confirm = (props: Props) => {
         <div className="content">{content}</div>
         <div className="confirm-btns">
           <button className="confirm-btn cancel" onClick={() => props.getResult(false)}>
-            취소
+            {cancelMessage}
           </button>
           <button className="confirm-btn ok" onClick={() => props.getResult(true)}>
-            확인
+            {okMessage}
           </button>
         </div>
       </StyledContainer>

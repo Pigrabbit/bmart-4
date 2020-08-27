@@ -33,6 +33,31 @@ const productListInCartResolver = async (parent, args, context) => {
   }
 }
 
+const productCountInCartResolver = async (parent, args, context) => {
+  const res = await context.res
+  const userId = res.locals.userId
+  const conn = await pool.getConnection()
+
+  try {
+    const query = `
+      SELECT COUNT(*) as count FROM \`order\` o 
+      JOIN order_product op ON o.id = op.order_id
+      JOIN product p ON p.id = op.product_id
+      WHERE o.user_id = ? AND o.is_paid = 0;
+    `
+
+    const [rows] = await conn.query(query, [userId])
+
+    const result = rows[0].count
+
+    return result
+  } catch (err) {
+    throw new Error(ReasonPhrases.INTERNAL_SERVER_ERROR)
+  } finally {
+    conn.release()
+  }
+}
+
 const productListInOrderResolver = async (parent, args, context) => {
   const { id } = parent
   const conn = await pool.getConnection()
@@ -187,6 +212,7 @@ const deleteProductFromCartResolver = async (parent, args) => {
 module.exports = {
   productListInCartResolver,
   productListInOrderResolver,
+  productCountInCartResolver,
   addProductToCartResolver,
   modifyProductQuantityResolver,
   deleteProductFromCartResolver,

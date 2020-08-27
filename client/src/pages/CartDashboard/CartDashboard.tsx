@@ -12,7 +12,17 @@ import { CenteredImg } from '../../components/CenteredImg'
 import { TUNG_MESSAGE } from '../../utils/constants'
 import { CartDispatchContext } from '../../context/CartContext'
 import { useHistory } from 'react-router-dom'
-import { ProductInCartData, GET_PRODUCTLIST_IN_CART, ModifyProductQuantityData, ModifyProductQuantityVars, MODIFY_PRODUCT_QUANTITY, DeleteProductFromCartData, DeleteProductFromCartVars, DELETE_PRODUCT_FROM_CART, ProductInCart } from '../../apis/cart'
+import {
+  ProductInCartData,
+  GET_PRODUCTLIST_IN_CART,
+  ModifyProductQuantityData,
+  ModifyProductQuantityVars,
+  MODIFY_PRODUCT_QUANTITY,
+  DeleteProductFromCartData,
+  DeleteProductFromCartVars,
+  DELETE_PRODUCT_FROM_CART,
+  ProductInCart,
+} from '../../apis/cart'
 import { CheckoutOrderData, CheckoutOrderVars, CHECKOUT_ORDER } from '../../apis/order'
 
 type Props = {}
@@ -187,6 +197,15 @@ export const CartDashboard = (props: Props) => {
             orderProductId: productOrderId,
             quantity,
           })),
+      },
+    })
+
+    cartContextDispatch({
+      type: 'removeProduct',
+      payload: {
+        productIdList: checkedProductList
+          .filter((c) => c.checked)        
+          .map(({ productId }) => ( productId ))
       },
     })
     setIsCheckedOut(true)

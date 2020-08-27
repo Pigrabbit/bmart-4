@@ -77,7 +77,7 @@ export type ProductByDiscoutRateData = {
 }
 
 export const GET_PRODUCT_BY_DISCOUNT_RATE = gql`
-  query GetProductByDiscountRate($offset: number, $limit: number) {
+  query GetProductByDiscountRate($offset: Int, $limit: Int) {
     productListByDiscountRate(offset: $offset, limit: $limit) {
       id
       price

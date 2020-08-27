@@ -4,7 +4,6 @@ import { useQuery, NetworkStatus } from '@apollo/client'
 
 import { Carousel } from '../../components/Carousel'
 import { Dashboard } from '../../components/Dashboard'
-import { VerticalList } from '../../components/VerticalList'
 import { CategoryList } from '../../components/CategoryList'
 import { HorizontalList } from '../../components/HorizontalList'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
@@ -15,6 +14,9 @@ import {
   GET_PRODUCTLIST_BY_CATEGORY,
   ProductByCategoryData,
   ProductByCategoryVars,
+  ProductByDiscoutRateData,
+  ProductByDiscountRateVars,
+  GET_PRODUCT_BY_DISCOUNT_RATE,
 } from '../../apis/product'
 
 type Props = {}
@@ -22,19 +24,33 @@ type Props = {}
 const StyledContainer = styled.main``
 
 export const MainDashboard = (props: Props) => {
-  const { loading, data, refetch, networkStatus } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
-    GET_PRODUCTLIST_BY_CATEGORY,
+  const { loading, data, refetch, networkStatus } = useQuery<
+    ProductByCategoryData,
+    ProductByCategoryVars
+  >(GET_PRODUCTLIST_BY_CATEGORY, {
+    variables: { category: '과일', offset: 10, limit: 10, sorter: '' },
+    notifyOnNetworkStatusChange: true,
+  })
+
+  const promotion = useQuery<ProductByDiscoutRateData, ProductByDiscountRateVars>(
+    GET_PRODUCT_BY_DISCOUNT_RATE,
     {
-      variables: { category: '과일', offset: 10, limit: 10, sorter: '' },
+      variables: { offset: 0, limit: 10 },
       notifyOnNetworkStatusChange: true,
     }
   )
-  
+
   useEffect(() => {
     refetch()
+    promotion.refetch()
   }, [])
 
-  return loading || networkStatus === NetworkStatus.refetch || !data ? (
+  return loading ||
+    promotion.loading ||
+    networkStatus === NetworkStatus.refetch ||
+    promotion.networkStatus === NetworkStatus.refetch ||
+    !promotion.data ||
+    !data ? (
     <LoadingIndicator />
   ) : (
     <Dashboard title="" searchBar={true}>
@@ -47,7 +63,10 @@ export const MainDashboard = (props: Props) => {
           double={true}
         ></HorizontalList>
         <Carousel bannerList={smallBannerList} />
-        <HorizontalList title="현재 가장 인기 있는 상품" productList={data.productListByCategory} />
+        <HorizontalList
+          title="번쩍 ⚡ 할인 상품"
+          productList={promotion.data.productListByDiscountRate}
+        />
         <CategoryListSection />
       </StyledContainer>
     </Dashboard>

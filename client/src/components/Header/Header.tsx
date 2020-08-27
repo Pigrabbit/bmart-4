@@ -93,7 +93,11 @@ export const Header = (props: Props) => {
         <StyledButton className="header-back-button" onClick={() => history.goBack()}>
           {title !== '' && <i className="icon">arrow_left</i>}
         </StyledButton>
-        <StyledLogo>
+        <StyledLogo
+          onClick={() => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+          }}
+        >
           {title === '' ? (
             <StyledImage
               className="header-title-logo"

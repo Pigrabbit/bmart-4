@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ProductCard } from '../ProductCard'
 import { ProductCardType } from '../../types/productCard'
 import { SkeletonCard } from '../SkeletonCard'
+import { SKELETON_CARD_COUNT } from '../../utils/constants'
 
 type Props = {
   loading: boolean
@@ -25,7 +26,7 @@ export const ProductCardList = (props: Props) => {
   return (
     <StyledProductList className="product-list">
       {loading
-        ? Array(10)
+        ? Array(SKELETON_CARD_COUNT)
             .fill('')
             .map((_, idx) => <SkeletonCard key={idx} width="36%" style={{ marginRight: '10px' }} />)
         : productList.map((product, idx) => (

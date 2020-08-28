@@ -16,7 +16,8 @@ code {
   font-family: inherit;
   outline: none;
   box-sizing: border-box;
-  webkit-tap-highlight: transparent;
+  -webkit-tap-highlight: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {

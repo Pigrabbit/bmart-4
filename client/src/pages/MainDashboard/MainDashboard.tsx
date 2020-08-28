@@ -52,7 +52,12 @@ export const MainDashboard = (props: Props) => {
         <CategoryList />
         <HorizontalList
           loading={
-            (loading || networkStatus === NetworkStatus.refetch) && !data?.productListByCategory
+            loading ||
+            networkStatus === NetworkStatus.refetch ||
+            promotion.loading ||
+            promotion.networkStatus === NetworkStatus.refetch
+              &&
+            !data?.productListByCategory
           }
           title={`회원님을 위해 준비한 상품`}
           productList={data?.productListByCategory || []}
@@ -61,7 +66,11 @@ export const MainDashboard = (props: Props) => {
         <Carousel bannerList={smallBannerList} />
         <HorizontalList
           loading={
-            (promotion.loading || promotion.networkStatus === NetworkStatus.refetch) &&
+            loading ||
+            networkStatus === NetworkStatus.refetch ||
+            promotion.loading ||
+            promotion.networkStatus === NetworkStatus.refetch
+            &&
             !promotion.data?.productListByDiscountRate
           }
           title="번쩍 ⚡ 할인 상품"

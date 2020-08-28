@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, NetworkStatus } from '@apollo/client'
 import {
   GET_PRODUCTLIST_BY_CATEGORY,
   ProductByCategoryData,
@@ -94,7 +94,7 @@ export const CategoryList = (props: Props) => {
     previousRatio = currentRatio
   }
 
-  const { loading, data, refetch } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
+  const { loading, data, refetch, networkStatus } = useQuery<ProductByCategoryData, ProductByCategoryVars>(
     GET_PRODUCTLIST_BY_CATEGORY,
     {
       variables: { category, offset: 10, limit: 10, sorter: 'priceCountDesc' },
@@ -111,7 +111,7 @@ export const CategoryList = (props: Props) => {
       <VerticalList
         title={category}
         lazyLoad={imageLazyLoaded}
-        loading={loading && !data?.productListByCategory}
+        loading={(loading || networkStatus === NetworkStatus.refetch ) && !data?.productListByCategory}
         productList={data?.productListByCategory || []}
       />
       <StyledMoreLinkRow>

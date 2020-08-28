@@ -24,6 +24,7 @@ const StyledContainer = styled.div`
     b {
       font-size: 16px;
       color: #555;
+      margin-right: 4px;
     }
   }
 
@@ -34,7 +35,7 @@ const StyledContainer = styled.div`
 `
 
 const StyledContent = styled.div`
-  height: 100px;
+  padding: 16px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,13 +92,16 @@ export const HistoryCard = (props: Props) => {
 
   const title = cartProductList[0]?.product.name || ''
 
+  const count = cartProductList.length
+
   return (
     <StyledContainer className="history-item" onClick={() => setIsDetailOpened(!isDetailOpened)}>
       <StyledContent className="history-item-content">
         <StyledData className="history-item-data">
           <p className="history-item-date">{toLocalDateString(orderedAt)}</p>
           <p className="history-item-title">
-            <b>{title}</b> 외 {cartProductList.length}건
+            <b>{title}</b>
+            {count > 1 && `외 ${cartProductList.length - 1}건`}
           </p>
           <p className="history-item-total-price">{`${parseToLocalMoneyString(orderSum)}원`}</p>
         </StyledData>

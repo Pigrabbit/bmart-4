@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { STYLES, COLORS, HEADER_HEIGHT } from '../../utils/styleConstants'
 import { NAVIGATIONS } from '../../utils/constants'
 import { StyledLink } from '../../styles/StyledLink'
 import { useHistory } from 'react-router-dom'
+import { AuthDispatchContext, AuthStateContext } from '../../context/AuthContext'
 
 type Props = {
   title: string
@@ -87,6 +88,17 @@ export const Header = (props: Props) => {
   const history = useHistory()
   const searchUri = NAVIGATIONS.find((nav) => nav.name === 'search')
 
+  const { isAuthenticated } = useContext(AuthStateContext)
+  const dispatch = useContext(AuthDispatchContext)
+
+  const clickSignOutButtonHandler = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('firstname')
+    localStorage.removeItem('lastname')
+    
+    dispatch({ type: 'signOut', payload: { isAuthenticated: false } })
+  }
+
   return (
     <StyledContainer className="header" data-testid="header">
       <StyledHeader>
@@ -108,6 +120,9 @@ export const Header = (props: Props) => {
             <StyledTitle className="header-title-text">{`${title}`}</StyledTitle>
           )}
         </StyledLogo>
+        <StyledButton className="signout-button" disabled={!isAuthenticated} onClick={clickSignOutButtonHandler}>
+          {title === '' && <i className="icon">square_arrow_right</i>}
+        </StyledButton>
       </StyledHeader>
       {searchBar && searchUri && (
         <StyledLink to={`${searchUri.path}`}>

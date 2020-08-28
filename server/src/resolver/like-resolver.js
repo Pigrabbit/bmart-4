@@ -9,6 +9,12 @@ const likeProductResolver = async (parent, args, context) => {
   const conn = await pool.getConnection()
 
   try {
+    const checkExistQuery = 'SELECT * FROM wishlist WHERE user_id = ?  AND product_id = ?'
+    const [likedItems] = await conn.query(checkExistQuery, [userId, productId])
+    if (likedItems.length) {
+      return new Error(ReasonPhrases.BAD_REQUEST)
+    }
+
     const query = 'INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)'
 
     const [rows] = await conn.query(query, [userId, productId])
